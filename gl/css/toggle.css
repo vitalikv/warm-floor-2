@@ -1,0 +1,145 @@
+
+
+
+
+.reating-arkows {
+ position: relative;
+ margin: 12px 3px;
+}
+.reating-arkows *, .reating-arkows *:before, .reating-arkows *:after {
+ -moz-box-sizing: border-box;
+ box-sizing: border-box;
+  cursor:pointer;
+}
+.reating-arkows input[type="checkbox"] {
+ opacity: 0;
+ position: absolute;
+ top: 0;
+ left: 0;
+}
+.reating-arkows input[type="checkbox"][disabled] ~ label {
+ pointer-events: none;
+}
+.reating-arkows input[type="checkbox"][disabled] ~ label .trianglesusing {
+ opacity: 0.4;
+}
+.reating-arkows input[type="checkbox"]:checked ~ label .trianglesusing:before {
+ content: attr(data-unchecked);
+ left: 0;
+}
+.reating-arkows input[type="checkbox"]:checked ~ label .trianglesusing:after {
+ content: attr(data-checked);
+}
+.reating-arkows label {
+ -webkit-user-select: none;
+ -moz-user-select: none;
+ -ms-user-select: none;
+ user-select: none;
+ position: relative;
+ display: -webkit-flex;
+ display: -ms-flexbox;
+ display: flex;
+ -webkit-align-items: center;
+ -ms-flex-align: center;
+ align-items: center;
+}
+
+.reating-arkows label .trianglesusing {
+ position: relative;
+}
+.reating-arkows label .trianglesusing:before {
+ content: attr(data-checked);
+ position: absolute;
+ top: 0;
+ text-transform: uppercase;
+ text-align: center;
+}
+.reating-arkows label .trianglesusing:after {
+ content: attr(data-unchecked);
+ position: absolute;
+ z-index: 5;
+ text-transform: uppercase;
+ text-align: center;
+ background: white;
+ -webkit-transform: translate3d(0, 0, 0);
+ transform: translate3d(0, 0, 0);
+}
+.reating-arkows input[type="checkbox"][disabled] ~ label {
+ color: rgba(119, 119, 119, 0.5);
+}
+.reating-arkows input[type="checkbox"]:focus ~ label .trianglesusing, .reating-arkows input[type="checkbox"]:hover ~ label .trianglesusing {
+ background-color: #696464;
+}
+.reating-arkows input[type="checkbox"]:focus ~ label .trianglesusing:after, .reating-arkows input[type="checkbox"]:hover ~ label .trianglesusing:after {
+ color: #484242;
+}
+.reating-arkows input[type="checkbox"]:hover ~ label {
+ color: #615b5b;
+}
+.reating-arkows input[type="checkbox"]:checked ~ label:hover {
+ color: #38962d;
+}
+.reating-arkows input[type="checkbox"]:checked ~ label .trianglesusing {
+ background-color: #46963e;
+}
+.reating-arkows input[type="checkbox"]:checked ~ label .trianglesusing:after {
+ color: #388e2e;
+}
+.reating-arkows input[type="checkbox"]:checked:focus ~ label .trianglesusing, .reating-arkows input[type="checkbox"]:checked:hover ~ label .trianglesusing {
+ background-color: #45a53a;
+}
+.reating-arkows input[type="checkbox"]:checked:focus ~ label .trianglesusing:after, .reating-arkows input[type="checkbox"]:checked:hover ~ label .trianglesusing:after {
+ color: #39942f;
+}
+
+.reating-arkows label .trianglesusing {
+ -webkit-transition: background-color 0.3s cubic-bezier(0, 1, 0.5, 1);
+ transition: background-color 0.3s cubic-bezier(0, 1, 0.5, 1);
+ background: #736d6d;
+}
+.reating-arkows label .trianglesusing:before {
+ color: rgba(255, 255, 255, 0.5);
+}
+.reating-arkows label .trianglesusing:after {
+ -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 1, 0.5, 1);
+ transition: transform 0.3s cubic-bezier(0, 1, 0.5, 1);
+ color: #6b6565;
+}
+.reating-arkows input[type="checkbox"]:focus ~ label .trianglesusing:after, .reating-arkows input[type="checkbox"]:hover ~ label .trianglesusing:after {
+ box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4);
+}
+.reating-arkows input[type="checkbox"]:checked ~ label .trianglesusing:after {
+ -webkit-transform: translate3d(65px, 0, 0);
+ transform: translate3d(65px, 0, 0);
+}
+.reating-arkows input[type="checkbox"]:checked:focus ~ label .trianglesusing:after, .reating-arkows input[type="checkbox"]:checked:hover ~ label .trianglesusing:after {
+ box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4);
+}
+.reating-arkows label {
+ font-size: 14px;
+}
+.reating-arkows label .trianglesusing {
+ height: 36px;
+ -webkit-flex: 0 0 114px;
+ -ms-flex: 0 0 114px;
+ flex: 0 0 114px;
+ border-radius: 4px;
+}
+.reating-arkows label .trianglesusing:before {
+ left: 47px;
+ font-size: 12px;
+ line-height: 36px;
+ width: 67px;
+ padding: 0 12px;
+}
+.reating-arkows label .trianglesusing:after {
+ top: 2px;
+ left: 2px;
+ border-radius: 2px;
+ width: 45px;
+ line-height: 32px;
+ font-size: 12px;
+}
+.reating-arkows label .trianglesusing:hover:after {
+ box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4);
+}

@@ -1,0 +1,30 @@
+ErrorDocument 404 /include/404.php
+
+AddDefaultCharset utf-8
+DirectoryIndex index.php
+Options -Indexes
+
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTP_HOST} ^www.3d-stroyka\.ru$ [NC]
+RewriteRule ^(.*)$ http://3d-stroyka.ru/$1 [R=301,L]
+
+
+RewriteRule ^index\.php$ / [R=301,L]
+RewriteRule ^review$ review.php
+RewriteRule ^documentation$ documentation.php
+RewriteRule ^buy$ buy.php
+RewriteRule ^contact$ contact.php
+RewriteRule ^get_pay$ components/get_pay.php
+RewriteRule ^calculator\/.*$ gl/index.php
+RewriteRule ^putfile$ gl/putfile.php
+RewriteRule ^active_1\/.*$ gl/components/activeUser.php
+
+
+RewriteRule ^download$ download.php
+RewriteRule ^dw/program.zip$ dw/download_1.php
+RewriteRule ^plan$ three/index.php
+
+
+
+

@@ -1,0 +1,42 @@
+
+/***страницы использующие этот стиль:  index***/
+
+/*********************************content*************************************/
+
+
+
+#welcome { color: #000; font-size:13px; line-height:1.5;}
+
+.block1 { width:28.98%; margin:30px 6.48% 0 0; float:left; padding:20px 0; text-align: center;}
+.block1 { border-radius:3px; background:#fff; background: linear-gradient(to top, #f3f3f3, #fff, #f3f3f3); box-shadow: 0 1px 3px rgba(0,0,0,0.6); text-shadow: 0 -1px 1px rgba(0,0,0,0.25);   }
+.block1:last-child { margin-right:0; }
+.block1:hover { box-shadow:0 0 3px rgba(255,158,19,1); }
+
+a.block1_h1 { font-size:14px; font-weight:bold; text-align:center; color:#222; text-decoration:none; }
+a.block1_h1:hover { text-decoration:underline; }
+.block1_text { float:left; width:60%; margin:20px 0 0 15px; text-align:left; font-size:12px; color:#222; } 
+.block1 img { display:block; float:right; width:30%; margin:20px 10px 0 0; background:#fff; border: 1px solid #ccc; }
+
+.otstup999 { height: 30px; }
+
+
+.block-news { display:block; width:22.22%; margin: 0px 20px; color:#000; float:left; }
+.news { display: block; width: 100%;  font-size: 12px; border-bottom: 1px solid #898989; background: #fff; padding: 15px 10px 15px 10px;}
+
+
+@media screen and (max-width: 950px), screen and (max-device-width: 950px) {
+.n-mg { display:none; }
+#featured li.ui-tabs-nav-item a{ height:20px;  }
+#featured .ui-tabs-panel .info{ height:100%; }
+#block1-last, #block1 { font-size: 11px; }
+}
+
+@media screen and (max-width: 480px), screen and (max-device-width: 480px) {
+#featured .ui-tabs-panel{ max-width:100%; }
+#featured ul.ui-tabs-nav{ display:none; } 
+.block1 { font-size:11px; }
+}
+
+/**********************************************************************/
+
+
