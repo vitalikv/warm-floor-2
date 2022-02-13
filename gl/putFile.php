@@ -34,6 +34,7 @@ clickMoveGizmo.js
 scaleBox.js
 loadObj.js
 uiInterface.js
+uiInterface_user_1.js
 ';
 
 

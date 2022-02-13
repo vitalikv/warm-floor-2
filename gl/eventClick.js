@@ -7,47 +7,7 @@ $('[data-action="top_panel_1"]').mousedown(function () { clickInterface(); });
 $('[data-action="left_panel_1"]').mousedown(function () { clickInterface(); });
 
 
-// переключаем разделы
-$('[nameId="butt_main_menu"]').mousedown(function () { $('[nameId="background_main_menu"]').css({"display":"block"}); });
-$('[nameId="reset_scene_1"]').mousedown(function () { resetScene(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
-$('[nameId="button_main_menu_reg_1"]').mousedown(function () { changeMainMenuUI({value: 'button_main_menu_reg_1'}); });
-$('[nameId="button_load_1"]').mousedown(function () { changeMainMenuUI({value: 'button_load_1'}); });
-$('[nameId="button_save_1"]').mousedown(function () { changeMainMenuUI({value: 'button_save_1'}); });
-$('[nameId="button_help"]').mousedown(function () { changeMainMenuUI({value: 'button_help'}); });
-$('[nameId="button_contact"]').mousedown(function () { changeMainMenuUI({value: 'button_contact'}); });
-//$('[nameId="load_pr_1"]').mousedown(function () { loadFile(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
-//$('[nameId="save_pr_1"]').mousedown(function () { saveFile(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
 
-
-
-getSlotMainMenuUI();	
-
-
-// собираем в массив элементы из main_menu (UI)
-function getSlotMainMenuUI()
-{
-	var q = $('[list_ui="window_main_menu_content"]');
-	
-	for ( var i = 0; i < q.length; i++ )
-	{
-		infProject.ui.main_menu[infProject.ui.main_menu.length] = q[i];
-	}
-}
-
-
-// переключаем кнопки в главном меню (сохрание/загрузка)
-// прячем все, кроме выбранного раздела
-function changeMainMenuUI(cdm)
-{
-	var q = infProject.ui.main_menu;
-	
-	for ( var i = 0; i < q.length; i++ )
-	{
-		if(q[i].attributes.wwm_1.value == cdm.value) { $(q[i]).show(); continue; }  		
-	
-		$(q[i]).hide();		
-	}	
-}
 
 
 $('[nameId="button_wrap_catalog"]').mousedown(function () { changeRightMenuUI({el: this}); });

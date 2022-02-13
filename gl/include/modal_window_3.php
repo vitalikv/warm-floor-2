@@ -93,6 +93,28 @@
 {
 	display: -webkit-box;
 	display: flex;	
+	
+	position: absolute;
+	right: 0;
+	left: 0;	
+}
+
+
+.wm_save_inf_project
+{
+	display: flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;	
+	align-items: center;
+	justify-content: center;
+	margin: 35px auto 0 auto;
+	width: 300px;
+	height: 180px;
+	font-family: arial,sans-serif;
+	font-size: 18px;
+	color: #666;
+	text-decoration: none;
+	text-align: center;
 }
 
 
@@ -101,12 +123,14 @@
 	display: flex; /* Флексы */
 	align-items: center; /* Выравнивание текста по вертикали */
 	justify-content: center; /* Выравнивание текста по горизонтали */
+	flex-direction: column;
+	-webkit-flex-direction: column;	
+	
+	position: relative;
 	
 	margin: 35px auto;
-	padding: 10px 0;
-	width: 45%;	
-	max-width: 350px;
-	height: 250px;
+	width: 300px;	
+	height: 280px;
 	
 	font-family: arial,sans-serif;
 	font-size: 18px;
@@ -115,7 +139,35 @@
 	text-align:  center;	
 	
 	border: 1px solid #b3b3b3; 
-	border-radius: 10px;
+	border-radius: 6px;
+	box-shadow: 0px 0px 2px #bababa, inset 0px 0px 1px #fff;
+	background-color:#f1f1f1;
+	cursor: pointer;
+}
+
+
+.window_main_menu_content_block_2
+{
+	display: flex; /* Флексы */
+	align-items: center; /* Выравнивание текста по вертикали */
+	justify-content: center; /* Выравнивание текста по горизонтали */
+	
+	position: relative;
+	
+	margin: 35px auto;
+	padding: 10px;
+	width: 300px;	
+	height: auto;
+	
+	font-family: arial,sans-serif;
+	font-size: 18px;
+	color: #666;
+	text-decoration: none;
+	text-align:  center;	
+	
+	border: 1px solid #b3b3b3; 
+	border-radius: 6px;
+	box-shadow: 0px 0px 2px #bababa, inset 0px 0px 1px #fff;
 	background-color:#f1f1f1;
 	cursor: pointer;
 }
@@ -238,7 +290,7 @@
 	width: auto;
 	height: 20px; 
 	margin: 10px;
-	margin-top: 50px;
+	margin-top: 40px;
 	text-decoration:none; 
 	text-align:center; 
 	padding:11px 11px; 
@@ -251,6 +303,12 @@
 	color:#737373; 
 
 	cursor: pointer;
+}
+
+.inf_butt_youtube_1
+{
+	position: relative;
+	width: 50px;	
 }
 
 .inf_contact
@@ -281,6 +339,17 @@
 }
 
 
+.button_reset_pass_1
+{
+	margin: auto;
+	width: 200px;
+	text-align: center;
+	font-size: 14px;
+	color: #666;
+	font-family: arial,sans-serif;
+	cursor: pointer;
+	text-decoration: underline;	
+}
 
 
 @media screen and (max-width:850px), screen and (max-device-width:850px) 
@@ -311,264 +380,7 @@
 </style>
 
 
-<script>
-$(document).ready(function(){
-	$('[nameId="background_main_menu"]').mousedown(function () 
-	{	 
-		$('[nameId="background_main_menu"]').css({"display":"none"}); 
-	});
 
-				
-	$('[nameId="button_close_main_menu"]').mousedown(function () 
-	{  
-		$('[nameId="background_main_menu"]').css({"display":"none"}); 
-	});
-	
-	$('[nameId="window_main_menu"]').mousedown(function (e) { e.stopPropagation(); });
-		
-		
-
-	$('[nameId="button_check_reg_1"]').mousedown(function () { changeMainMenuRegistMenuUI({el: this}); });
-	$('[nameId="button_check_reg_2"]').mousedown(function () { changeMainMenuRegistMenuUI({el: this}); });	
-	
-	
-	// переключаем в главном меню в форме регистрация кнопки: вход/регистрация
-	function changeMainMenuRegistMenuUI(cdm)
-	{
-		var inf_block = $('[nameId="info_reg_1"]');
-		var inf_str_1 = $('[nameId="info_reg_1_1"]');
-		var inf_str_2 = $('[nameId="info_reg_1_2"]');
-		
-		inf_block.hide();
-		inf_str_1.hide();
-		inf_str_2.hide();		
-	
-		if(cdm.el.attributes.nameId.value == "button_check_reg_1") 
-		{
-			$('[nameId="act_reg_1"]').text('Войти');
-			$('[nameId="act_reg_1"]').attr("b_type", "reg_1"); 
-		}
-		if(cdm.el.attributes.nameId.value == "button_check_reg_2") 
-		{
-			$('[nameId="act_reg_1"]').text('Зарегистрироваться');
-			$('[nameId="act_reg_1"]').attr("b_type", "reg_2");
-		}	
-	}
-
-
-	
-
-$('[nameId="act_reg_1"]').mousedown(function () { checkRegDataIU(); });
-
-
-// вход/регистрация пользователя (проверка правильности ввода данных почта/пароль)
-function checkRegDataIU()
-{
-	var pattern_1 = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i;
-	var pattern_2 = /^[a-z0-9]{4,20}$/i;
-	var mail = $('[nameId="input_reg_mail"]');
-	var pass = $('[nameId="input_reg_pass"]');
-	
-	var inf_block = $('[nameId="info_reg_1"]');
-	var inf_str_1 = $('[nameId="info_reg_1_1"]');
-	var inf_str_2 = $('[nameId="info_reg_1_2"]');
-	
-	inf_block.hide();
-	inf_str_1.hide();
-	inf_str_2.hide();
-	
-	var flag_1 = false;
-	var flag_2 = false;
-	
-	mail.val(mail.val().trim());	// удаляем пробелы  
-	pass.val(pass.val().trim());	// удаляем пробелы 
-	
-	// проверка почты
-	if(mail.val() != '')
-	{
-		if(pattern_1.test(mail.val()))
-		{
-			flag_1 = true;
-		}
-		else
-		{
-			inf_str_1.show();
-			inf_str_1.text('Не верно указанна почта');			
-		}
-	}
-	else
-	{		
-		inf_str_1.show();
-		inf_str_1.text('Укажите e-mail');
-	}
-	
-	
-	// проверка пароля
-	if(pass.val() != '')
-	{
-		if(pattern_2.test(pass.val()))
-		{
-			flag_2 = true;
-		}
-		else
-		{
-			inf_str_2.show();
-			inf_str_2.html('Не верно указан пароль<br>(Только цифры и латинские буквы от 4 до 20 знаков)');			
-		}
-	}		
-	else
-	{		
-		inf_str_2.show();
-		inf_str_2.text('Укажите пароль');
-	}
-	
-	
-	// данные введены верно
-	if(flag_1 && flag_2)
-	{ 
-		inf_block.hide();
-		
-		//console.log();
-		var type = $('[nameId="act_reg_1"]').attr("b_type");
-		
-		$.ajax
-		({
-			type: "POST",					
-			url: infProject.path+'components/regUser.php',
-			data: {"type": type, "mail": mail.val(), "pass": pass.val()},
-			dataType: 'json',
-			success: function(data)
-			{  
-				if(type=='reg_1')	// авторизация пользователя
-				{
-					if(data.success)
-					{
-						infProject.user.id = data.info.id;
-						infProject.user.mail = data.info.mail;
-						infProject.user.pass = data.info.pass;
-
-						$('[nameId="reg_content_1"]').show();
-						$('[nameId="reg_content_2"]').hide();
-
-						getListProject({id: infProject.user.id});
-					}
-					else
-					{
-						if(data.err.desc)
-						{
-							console.log(data.err.desc);
-							inf_str_1.html(data.err.desc);
-							
-							inf_block.show();
-							inf_str_1.show();
-							inf_str_1.show();
-							inf_str_2.hide();													
-						}
-					}
-				}
-				else if(type=='reg_2')	// регистрация нового пользователя
-				{
-					if(data.success)
-					{
-						inf_str_1.html("на вашу почту отправлено письмо<br>зайдите в вашу почту и подтвердите регистрацию<br>(если письмо не пришло посмотрите в папке спам)");
-						//inf_str_1.html("Вы успешно зарегистрировались");						
-						
-						inf_block.show();
-						inf_str_1.show();
-						inf_str_1.show();
-						inf_str_2.hide();												
-					}
-					else
-					{						
-						if(data.err.desc)
-						{
-							console.log(data.err.desc);
-							inf_str_1.html(data.err.desc);
-							
-							inf_block.show();
-							inf_str_1.show();
-							inf_str_1.show();
-							inf_str_2.hide();													
-						}						
-					}
-				}				
-			}
-		});		
-	}
-	else	// данные введены НЕ верно
-	{  
-		inf_block.show();
-	}
-};
-
-	
-});	
-
-
-// получаем с сервера список проектов принадлежащих пользователю
-function getListProject(cdm)
-{  
-	$.ajax
-	({
-		type: "POST",					
-		url: infProject.path+'components/loadListProject.php',
-		data: {"id": cdm.id },
-		dataType: 'json',
-		success: function(data)
-		{  
-			var html_load = '';
-			var html_save = '';
-			
-			for(var i = 0; i < 2; i++)
-			{
-				if(data[i]) continue;
-				
-				data[i] = {id: 0, name: 'Пустой проект'}
-			}
-			
-			for(var i = 0; i < data.length; i++)
-			{				
-				if(data[i].preview) 
-				{
-					html_save += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="save_pr_1"><img src="'+data[i].preview+'"></div>';
-					html_load += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="load_pr_1"><img src="'+data[i].preview+'"></div>';
-				}
-				else
-				{
-					html_save += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="save_pr_1">'+data[i].name+'</div>';
-					html_load += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="load_pr_1">'+data[i].name+'</div>';					
-				}
-			}
-			
-			$('[nameId="wm_list_save"]').html(html_save);
-			$('[nameId="wm_list_load"]').html(html_load);
-	
-			
-			$('[nameId="save_pr_1"]').on('mousedown', function(){ clickButtonSaveProjectUI(this); });
-			$('[nameId="load_pr_1"]').on('mousedown', function(){ clickButtonLoadProjectUI(this); });
-		}
-	});	
-}
-
-// кликнули на кнопку сохранить проекта
-function clickButtonSaveProjectUI(el)
-{
-	saveFile({id: el.attributes.projectid.value, upUI: true}); 
-	
-	$('[nameId="background_main_menu"]').hide();
-}
-
-
-
-// кликнули на кнопку загрузки проекта
-function clickButtonLoadProjectUI(el)
-{
-	loadFile({id: el.attributes.projectid.value}); 
-	
-	$('[nameId="background_main_menu"]').hide();
-}
- 
-</script>
 
 
 <div class="background_main_menu" nameId="background_main_menu" ui_1="">
@@ -599,9 +411,9 @@ function clickButtonLoadProjectUI(el)
 								<div class="window_main_menu_content_1_item" nameId="button_help">Видеоинструкция</div>
 								<div class="window_main_menu_content_1_item" nameId="button_contact">Контакты</div>
 							</div>
-							<div class="window_main_menu_content_1_column">
+							<div class="window_main_menu_content_1_column" style="position: relative;">
 								
-								<div wwm_1="button_load_1" list_ui="window_main_menu_content" style="display: none;"> 
+								<div wwm_1="button_load_1" style="display: none;"> 
 									<div class="window_main_menu_content_1_h1">
 										Загрузить
 									</div>
@@ -610,7 +422,7 @@ function clickButtonLoadProjectUI(el)
 											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться. 
 										
 											<div style="max-width: 350px; margin: auto;">
-												<div class="window_main_menu_button_reg_1 button_gradient_1" nameId="button_main_menu_reg_1">
+												<div nameId="bl_inf_regin_l" class="window_main_menu_button_reg_1 button_gradient_1">
 													Авторизоваться
 												</div>	
 											</div>	
@@ -618,24 +430,24 @@ function clickButtonLoadProjectUI(el)
 									</div>
 								</div>
 								
-								<div wwm_1="button_save_1" list_ui="window_main_menu_content" style="display: none;">
+								<div wwm_1="button_save_1" style="display: none;">
 									<div class="window_main_menu_content_1_h1">
 										Сохранить
 									</div>
-									<div class="window_main_menu_content_1_wrap_1" nameId="wm_list_save">
+									<div nameId="wm_list_save">
 										<div class="wm_reg_13 wm_reg_border_1 wm_reg_text_1">
 											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться.
 
 											<div style="max-width: 350px; margin: auto;">
-												<div class="window_main_menu_button_reg_1 button_gradient_1" nameId="button_main_menu_reg_1">
+												<div nameId="bl_inf_regin_s" class="window_main_menu_button_reg_1 button_gradient_1">
 													Авторизоваться
 												</div>	
 											</div>											
 										</div>										
-									</div>
+									</div>									
 								</div>
 								
-								<div wwm_1="button_main_menu_reg_1" list_ui="window_main_menu_content" style="display: block;">
+								<div wwm_1="button_main_menu_reg_1" style="display: block;">
 								
 									<div nameId="reg_content_1" style="display: none;">
 									
@@ -690,9 +502,13 @@ function clickButtonLoadProjectUI(el)
 															Почта указана
 														</div>
 														<div nameId="info_reg_1_2" style="display: none;">
-															Пароль указана
+															Пароль указан
 														</div>													
 													</div>
+												</div>
+
+												<div class="button_reset_pass_1" nameId="button_reset_pass_1">
+													забыли пароль ?
 												</div>
 												
 												<div class="window_main_menu_button_reg_1 button_gradient_1" b_type="reg_1" nameId="act_reg_1">
@@ -701,12 +517,53 @@ function clickButtonLoadProjectUI(el)
 											</div>																					
 										</div>
 										
-									</div>								
+									</div>																								
+								</div>	
+
+
+
+
+
+								<div wwm_1="button_reset_pass_1" style="display: none;">								
+								
+									<div nameId="reset_pass_content_2" style="display: block;">
+									
+										<div class="window_main_menu_content_1_h1">
+											Восстановление пароля
+										</div>
+										<div class="window_main_menu_form_reg">
+											<div class="window_main_menu_form_reg_block_1">
+												
+												<div style="height: 30px;"></div>
+												
+												<div class="window_main_menu_form_reg_block_1_1">
+													<div class="window_main_menu_form_reg_block_1_label">
+														почта
+													</div>											
+													<input class="input_form_reg" type="text" nameId="input_reset_pass" value="">
+												</div>	
+
+												<div class="window_main_menu_form_reg_block_1_1">
+													<div nameId="info_reset_pass_1" class="wm_reg_12 wm_reg_border_1 wm_reg_text_1" style="display: none;">
+														<div nameId="info_reset_pass_1_1" style="display: none;">
+															Почта указана
+														</div>												
+													</div>
+												</div>												
+												
+												<div class="window_main_menu_button_reg_1 button_gradient_1" nameId="act_reset_pass">
+													Восстановить
+												</div>
+											</div>																					
+										</div>
+										
+									</div>	
+									
+								</div>
+
 								
 								
-								</div>								
-								
-								<div wwm_1="button_help" list_ui="window_main_menu_content" style="display: none;">
+								<div wwm_1="button_help" style="display: none;">
 									<div class="window_main_menu_content_1_h1">
 										Полезная информация
 									</div>								
@@ -729,7 +586,7 @@ function clickButtonLoadProjectUI(el)
 									</div>		
 								</div>
 
-								<div wwm_1="button_contact" list_ui="window_main_menu_content" style="display: none;">
+								<div wwm_1="button_contact" style="display: none;">
 									<div class="window_main_menu_content_1_h1">
 										Контакты
 									</div>								
