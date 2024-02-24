@@ -49,7 +49,7 @@ class WindDivSubs
 
 		if(data.result === true)
 		{					
-			this.yooLabel.value = 'project=otop'+'&id='+data.id+'&token='+data.token;
+			this.yooLabel.value = 'project=wf1'+'&id='+data.id+'&token='+data.token;
 			this.yooSum.value = sum;
 			
 			this.formPost.submit();

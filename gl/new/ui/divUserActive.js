@@ -9,9 +9,9 @@ class MyUserActive
 		this.windDivSubs = new WindDivSubs();
 	}
 	
-	init({wrap})
+	init({wrap, subs, token})
 	{
-		const pay = true;
+		const pay = false;
 
 		
 		if(!pay)	// подиска не оформлена или закончилась
@@ -27,14 +27,13 @@ class MyUserActive
 		}
 		else	// подиска оформлена
 		{
-			//const days = subs.days;
-			const days = 44;
+			const days = subs.days;
 			wrap.innerHTML = this.html_2({days});
 			getListProject({id: infProject.user.id});
 		}
 		
 		
-		const divTariff = this.windDivSubs.crDivSubsTariff({token: 222});
+		const divTariff = this.windDivSubs.crDivSubsTariff({token});
 		
 		const divSubsTariff = wrap.querySelector('[nameId="divSubsTariff"]');
 		divSubsTariff.append(divTariff); 		

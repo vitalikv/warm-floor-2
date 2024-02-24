@@ -329,20 +329,22 @@ async function checkRegDataIU()
 				infProject.user.mail = data.info.mail;
 				infProject.user.pass = data.info.pass;
 				infProject.user.status = data.info.status;
-				
+				const token = data.info.token;
+				const subs = data.subs;
+					
 				const wrap = document.querySelector('[nameId="reg_content_1"]');
 				wrap.style.display = 'block';
 				document.querySelector('[nameId="reg_content_2"]').style.display = 'none';
 				
 				
-				if(1===2)
+				if(infProject.user.mail !== '9455469@mail.ru')
 				{
 					getListProject({id: infProject.user.id});
 				}
 				else
 				{
 					const myUserActive = new MyUserActive();				
-					myUserActive.init({wrap});									
+					myUserActive.init({wrap, subs, token});									
 				}
 			}
 			else

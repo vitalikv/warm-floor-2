@@ -40,7 +40,19 @@ if($type == 'reg_1')
 		if($res['active'])
 		{
 			$inf['success'] = true;
-			$inf['info'] = $res;			
+			$inf['info'] = $res;
+
+			$sql = "SELECT * FROM subscription WHERE user_id = :user_id LIMIT 1";
+			$r = $db->prepare($sql);
+			$r->bindValue(':user_id', $res['id'], PDO::PARAM_INT);
+			$r->execute();
+			$res2 = $r->fetch(PDO::FETCH_ASSOC);
+
+			if($res2)
+			{
+				$inf['subs'] = [];
+				$inf['subs']['days'] = $res2['days'];
+			}			
 		}
 		else
 		{
