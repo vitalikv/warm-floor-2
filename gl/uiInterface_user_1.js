@@ -239,7 +239,7 @@ document.querySelector('[nameId="act_reg_1"]').onmousedown = function(e){ checkR
 // вход/регистрация пользователя (проверка правильности ввода данных почта/пароль)
 async function checkRegDataIU()
 {
-	var pattern_1 = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i;
+	//var pattern_1 = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i;
 	var pattern_2 = /^[a-z0-9]{4,20}$/i;
 	var mail = document.querySelector('[nameId="input_reg_mail"]');
 	var pass = document.querySelector('[nameId="input_reg_pass"]');
@@ -261,7 +261,7 @@ async function checkRegDataIU()
 	// проверка почты
 	if(mail.value != '')
 	{
-		if(pattern_1.test(mail.value))
+		if(validateEmail(mail.value))
 		{
 			flag_1 = true;
 		}
@@ -380,6 +380,15 @@ async function checkRegDataIU()
 	}
 };
 
+
+function validateEmail(email) 
+{
+  return String(email)
+	.toLowerCase()
+	.match(
+	  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+	);
+}
 	
 
 document.querySelector('[nameId="act_reset_pass"]').onmousedown = function(e){ resetPassRegIU(); }
@@ -387,7 +396,7 @@ document.querySelector('[nameId="act_reset_pass"]').onmousedown = function(e){ r
 // сброс пароля
 async function resetPassRegIU()
 {
-	var pattern_1 = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i;
+	//var pattern_1 = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i;
 	var mail = document.querySelector('[nameId="input_reset_pass"]');
 	
 	var inf_block = document.querySelector('[nameId="info_reset_pass_1"]');
@@ -404,7 +413,7 @@ async function resetPassRegIU()
 	// проверка почты
 	if(mail.value != '')
 	{
-		if(pattern_1.test(mail.value))
+		if(validateEmail(mail.value))
 		{
 			flag_1 = true;
 		}
