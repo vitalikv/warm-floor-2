@@ -67,28 +67,28 @@ class WindDivSubs
 	{
 		const css1 = `display: flex; flex-direction: column; color: #666;`;
 		const css2 = `font-size: 15px;`;
-		const cssSubs = `display: flex; flex-direction: column; align-items: center; justify-content: center; width: 120px; height: 120px; margin: 0 20px; background: #eaffd4; border: solid 1px #b3b3b3;`;
-		const cssPrice = `margin: auto; font-size: 14px; font-weight: bold;`;
+		const cssSubs = `display: flex; flex-direction: column; align-items: center; justify-content: center; width: 160px; height: 120px; margin: 0 20px; background: #eaffd4; border: solid 1px #b3b3b3;`;
+		const cssPrice = `margin: auto; font-size: 24px; font-weight: bold;`;
 		const cssBtn = `margin: 0 0 20px 0; padding: 10px; border: 1px solid #b3b3b3; cursor: pointer; user-select: none;`;
 		
 		const html =
 		`<div style="${css1}">
-			<div style="font-size: 17px; margin: 20px 0;">Подписка</div>
+			<div style="font-size: 20px; margin: 40px 0;">Подписка</div>
 			
 			<div style="display: flex;">
 				<div style="${cssSubs}">
-					<div style="${cssPrice}">500 руб.</div>
-					<div nameId="btnSendPost1" class="button_gradient_1" style="${cssBtn}">1 месяц</div>
+					<div style="${cssPrice}">300 руб.</div>
+					<div nameId="btnSendPost1" class="button_gradient_1" style="${cssBtn}">30 дней</div>
 				</div>
 
 				<div style="${cssSubs}">
-					<div style="${cssPrice}">1300 руб.</div>
-					<div nameId="btnSendPost2" class="button_gradient_1" style="${cssBtn}">3 месяца</div>
+					<div style="${cssPrice}">550 руб.</div>
+					<div nameId="btnSendPost2" class="button_gradient_1" style="${cssBtn}">60 дней</div>
 				</div>
 
 				<div style="${cssSubs}">
-					<div style="${cssPrice}">2000 руб.</div>
-					<div nameId="btnSendPost3" class="button_gradient_1" style="${cssBtn}">6 месяцев</div>
+					<div style="${cssPrice}">750 руб.</div>
+					<div nameId="btnSendPost3" class="button_gradient_1" style="${cssBtn}">90 дней</div>
 				</div>				
 			</div>
 		</div>`;
