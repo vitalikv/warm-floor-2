@@ -33,6 +33,8 @@ clickObj.js
 clickMoveGizmo.js
 scaleBox.js
 loadObj.js
+new/ui/divUserActive.js
+new/ui/divSubs.js
 uiInterface.js
 uiInterface_user_1.js
 ';

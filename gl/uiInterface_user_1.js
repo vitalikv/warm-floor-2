@@ -330,10 +330,23 @@ async function checkRegDataIU()
 				infProject.user.pass = data.info.pass;
 				infProject.user.status = data.info.status;
 				
-				document.querySelector('[nameId="reg_content_1"]').style.display = 'block';
+				const wrap = document.querySelector('[nameId="reg_content_1"]');
+				wrap.style.display = 'block';
 				document.querySelector('[nameId="reg_content_2"]').style.display = 'none';
 
-				getListProject({id: infProject.user.id});
+				//getListProject({id: infProject.user.id});
+				
+				const myUserActive = new MyUserActive();
+				//const days = subs.days;
+				const days = 44;
+				
+				wrap.innerHTML = myUserActive.html_1();
+				
+				const divSubsTariff = wrap.querySelector('[nameId="divSubsTariff"]');
+				
+				const windDivSubs = new WindDivSubs();
+				const divTariff = windDivSubs.crDivSubsTariff({token: 222});
+				divSubsTariff.append(divTariff); 				
 			}
 			else
 			{
