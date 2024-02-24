@@ -592,7 +592,7 @@
 									</div>								
 									<div class="inf_contact button_gradient_1">
 										<div class="inf_contact_text">
-											otoplenie-doma@mail.ru
+											otoplenie-doma-1@mail.ru
 										</div>
 									</div>		
 								</div>								

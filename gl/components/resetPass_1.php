@@ -66,7 +66,7 @@ function sendMess($inf)
 	//$mail_form = "Content-type:text/html; Charset=utf-8\r\nFrom:mail@xn------6cdcklga3agac0adveeerahel6btn3c.xn--p1ai";
 	$mail_form = "Content-type:text/html; Charset=utf-8\r\nFrom:mail@".$_SERVER['HTTP_HOST'];
 	
-	$arrayTo = array($inf['mail'].', otoplenie-doma@mail.ru');
+	$arrayTo = array($inf['mail'].', otoplenie-doma-1@mail.ru');
 	$email = implode(",", $arrayTo);
 	
 	$url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
@@ -77,7 +77,7 @@ function sendMess($inf)
 	//echo $url;	
 	
 	$tema = "Обновление пароля";
-	$mess = 'Здравствуйте, вы забыли пароль на сайте "отопление-дома-своими-руками.рф" (Расчет теплого пола 3D). Чтобы обновить пароль, пройдите по <a href="'.$url.'/reset_pass_1/'.$inf['token'].'">ссылке</a>.<br><br>';
+	$mess = 'Здравствуйте, вы забыли пароль на сайте отопление-дома-своими-руками.рф (Расчет теплого пола 3D). Чтобы обновить пароль, пройдите по <a href="'.$url.'/reset_pass_1/'.$inf['token'].'">ссылке</a>.<br><br>';
 	
 	mail($email, $tema, $mess, $mail_form);	
 }

@@ -46,7 +46,9 @@ if($type == 'reg_1')
 		{
 			$inf['success'] = false;
 			$inf['err']['code'] = 2;
-			$inf['err']['desc'] = 'Регистрация не завершена<br><br>на вашу почту отправлено письмо<br>зайдите в вашу почту и подтвердите регистрацию<br>(если письмо не пришло посмотрите в папке спам)';						
+			$inf['err']['desc'] = 'Регистрация не завершена<br><br>на вашу почту отправлено письмо<br>зайдите в вашу почту и подтвердите регистрацию<br>(если письмо не пришло посмотрите в папке спам)';
+
+			sendMess($res);
 		}
 	}
 	else
@@ -123,18 +125,18 @@ if($type == 'reg_2')
 // отправляем сообщение активации почты 
 function sendMess($inf)
 {
-	$mail_form = "Content-type:text/html; Charset=utf-8\r\nFrom:mail@xn------6cdcklga3agac0adveeerahel6btn3c.xn--p1ai";
-
-	$arrayTo = array($inf['mail'].', otoplenie-doma@mail.ru');
+	$mail_form = "Content-type:text/html; Charset=utf-8\r\nFrom:mail@".$_SERVER['HTTP_HOST'];
+	
+	$arrayTo = array($inf['mail'].', otoplenie-doma-1@mail.ru');
 	$email = implode(",", $arrayTo);
-
-
+	
+	$url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+	
 	$tema = "Программа теплый пол «активация почты»";
-	$mess = 'Здравствуйте, вы зарегистрировались на сайте http://отопление-дома-своими-руками.рф (программа теплый пол). Чтобы закончить регистрацию, пройдите по <a href="http://отопление-дома-своими-руками.рф/active_1/'.$inf['token'].'">ссылке</a>.<br><br>';
+	$mess = 'Здравствуйте, вы зарегистрировались на сайте отопление-дома-своими-руками.рф (программа теплый пол). Чтобы закончить регистрацию, пройдите по <a href="'.$url.'/active_1/'.$inf['token'].'">ссылке</a>.<br><br>';	
 	
 	mail($email, $tema, $mess, $mail_form);	
 }
-
 
 ?>
 
