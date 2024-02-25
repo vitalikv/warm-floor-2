@@ -62,7 +62,7 @@ function onDocumentMouseDown( event )
 {
 	//event.preventDefault();
 
-	if (window.location.hostname == '3d-stroyka' || window.location.hostname == 'warm-floor-2' || window.location.hostname == 'xn------6cdcklga3agac0adveeerahel6btn3c.xn--p1ai'){} 
+	if (window.location.hostname == 'otop-rf' || window.location.hostname == 'warm-floor-2' || window.location.hostname == 'xn------6cdcklga3agac0adveeerahel6btn3c.xn--p1ai'){} 
 	else { return; }
  
 	long_click = false;

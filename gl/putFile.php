@@ -58,8 +58,11 @@ for ($i = 0; $i < count($arr)-1; $i++)
 {
 	echo $arr[$i].'<br>';
 	$file = file_get_contents($arr[$i]);
+	$file = preg_replace("|console.log\((.*)\);|i","",$file);
 	fwrite($newFile, $file);	
 }
+
+//$file2 = preg_replace('#(\/\/(.*?)(\n|$|\r|(\r\n)))|(\/\*(.*?)\*\/)#i','',$file2);	// удаляем комменты
 
 // Закрывает открытый файл
 fclose($newFile);
