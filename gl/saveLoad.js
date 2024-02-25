@@ -354,46 +354,49 @@ function saveWindows(wall)
 }
 
 
-function saveFile(cdm) 
+async function saveFile(cdm) 
 { 
 	if(!cdm.id) return;
 	
 	var json = JSON.stringify( getJsonGeometry() );
 	
 	// сохраняем в папку
-	$.ajax
-	({
-		url: infProject.path+'saveJson.php',
-		type: 'POST',
-		data: {myarray: json},
-		dataType: 'json',
-		success: function(json)
-		{ 			
-			console.log(json); 
-		},
-		error: function(json){ console.log(json);  }
-	});	
+	if(1==2)
+	{
+		$.ajax
+		({
+			url: infProject.path+'saveJson.php',
+			type: 'POST',
+			data: {myarray: json},
+			dataType: 'json',
+			success: function(json)
+			{ 			
+				console.log(json); 
+			},
+			error: function(json){ console.log(json);  }
+		});			
+	}
 	
-	
-	//var preview = saveAsImagePreview();
-	var preview = null;
 	
 	// сохраняем в бд
-	$.ajax
-	({
-		url: infProject.path+'components/saveSql.php',
-		type: 'POST',
-		data: {json: json, id: cdm.id, user_id: infProject.user.id, preview: preview},
-		dataType: 'json',
-		success: function(json)
-		{ 			
-			console.log(json);
-			
-			if(cdm.upUI) { getListProject({id: infProject.user.id}); }		// обновляем меню сохрание проектов
-		},
-		error: function(json){ console.log(json); }
-	});	
-	
+	if(1==1)
+	{
+		//var preview = saveAsImagePreview();
+		var preview = null;
+		
+		const url = infProject.path+'components/saveSql.php';			
+		
+		// preview= пустое, чтобы не сохранять изображение
+		const response = await fetch(url, 
+		{
+			method: 'POST',
+			body: 'id='+cdm.id+'&user_id='+infProject.user.id+'&preview=&json='+encodeURIComponent(json),
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },				
+		});
+		const data = await response.json();		
+		//console.log(data);
+		if(cdm.upUI) { getListProject({id: infProject.user.id}); }		// обновляем меню сохрание проектов
+	}		
 	
 	if(1==2)
 	{
