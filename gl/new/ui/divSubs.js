@@ -17,24 +17,24 @@ class WindDivSubs
 		this.yooSum = this.formPost.querySelector('input[name="sum"]');
 
 		const btn1 = this.divForm.querySelector('[nameId="btnSendPost1"]');		
-		btn1.onmousedown = () => { this.sendPost({month: 1, token}); }
+		btn1.onmousedown = () => { this.sendPost({days: 30, token}); }
 		
 		const btn2 = this.divForm.querySelector('[nameId="btnSendPost2"]');		
-		btn2.onmousedown = () => { this.sendPost({month: 3, token}); }
+		btn2.onmousedown = () => { this.sendPost({days: 60, token}); }
 
 		const btn3 = this.divForm.querySelector('[nameId="btnSendPost3"]');		
-		btn3.onmousedown = () => { this.sendPost({month: 6, token}); }		
+		btn3.onmousedown = () => { this.sendPost({days: 90, token}); }		
 		
 		return this.divForm;
 	}
 
 	
-	async sendPost({month, token})
+	async sendPost({days, token})
 	{
 		let sum = 0;
-		if(month === 1) sum = 20;
-		if(month === 3) sum = 30;
-		if(month === 6) sum = 40;		
+		if(days === 30) sum = 300;
+		if(days === 60) sum = 550;
+		if(days === 90) sum = 750;
 		if(sum === 0) return;
 		
 		const url = infProject.path+'/components/payment.php';					
@@ -65,7 +65,7 @@ class WindDivSubs
 	// кнопки для подписки
 	htmlForm()
 	{
-		const css1 = `display: flex; flex-direction: column; color: #666;`;
+		const css1 = `display: flex; flex-direction: column; color: #666; align-items: center; justify-content: center;`;
 		const css2 = `font-size: 15px;`;
 		const cssSubs = `display: flex; flex-direction: column; align-items: center; justify-content: center; width: 160px; height: 120px; margin: 0 20px; background: #eaffd4; border: solid 1px #b3b3b3;`;
 		const cssPrice = `margin: auto; font-size: 24px; font-weight: bold;`;
@@ -91,6 +91,8 @@ class WindDivSubs
 					<div nameId="btnSendPost3" class="button_gradient_1" style="${cssBtn}">90 дней</div>
 				</div>				
 			</div>
+			
+			<div style="margin: 20px auto auto auto; font-size: 16px;">Оплата происходит на сайте Юмани, без привязки карты (автоматическое списание не происходит).</div>
 		</div>`;
 
 		return html;

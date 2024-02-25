@@ -11,8 +11,8 @@ class MyUserActive
 	
 	init({wrap, subs, token})
 	{
-		const pay = false;
-
+		let pay = false;
+		if(subs && subs.days && subs.days > 0) pay = true;
 		
 		if(!pay)	// подиска не оформлена или закончилась
 		{
