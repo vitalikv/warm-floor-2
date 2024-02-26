@@ -24,6 +24,10 @@ class MyUserActive
 			b_load.innerHTML = this.htmlInfoNoSubs();
 			b_save.innerHTML = this.htmlInfoNoSubs();
 			b_load.classList.remove('window_main_menu_content_1_wrap_1');
+			
+			const divTariff = this.windDivSubs.crDivSubsTariff({token});		
+			const divSubsTariff = wrap.querySelector('[nameId="divSubsTariff"]');
+			divSubsTariff.append(divTariff);			
 		}
 		else	// подиска оформлена
 		{
@@ -31,12 +35,6 @@ class MyUserActive
 			wrap.innerHTML = this.html_2({days});
 			getListProject({id: infProject.user.id});
 		}
-		
-		
-		const divTariff = this.windDivSubs.crDivSubsTariff({token});
-		
-		const divSubsTariff = wrap.querySelector('[nameId="divSubsTariff"]');
-		divSubsTariff.append(divTariff); 		
 	}
 	
 	
@@ -91,11 +89,11 @@ class MyUserActive
 	htmlInfoNoSubs()
 	{
 		const css1 = this.getCss1();
-		
+		//Чтобы воспользоваться всеми возможности программы, оформите подписку.
 		const html =
 		`<div>
 			<div style="${css1}">
-				<div style="margin-top: 20px;">Чтобы воспользоваться всеми возможности программы, оформите подписку.</div>
+				<div style="margin-top: 20px;">Сохранение и загрузка проектов доступна после оформлении подписки.</div>
 				<div nameId="divSubsTariff"></div>
 			</div>
 		</div>`;
