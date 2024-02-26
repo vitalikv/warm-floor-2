@@ -336,6 +336,7 @@ async function checkRegDataIU()
 				wrap.style.display = 'block';
 				document.querySelector('[nameId="reg_content_2"]').style.display = 'none';
 				
+				//myLeftPanel.crUserPanel();
 				
 				if(infProject.user.mail !== '9455469@mail.ru')
 				{

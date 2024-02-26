@@ -45,10 +45,8 @@ function createGrid(cdm)
 	lineGrid.userData.size = size;
 	lineGrid.userData.count = count;
 	lineGrid.userData.color = (cdm.uColor) ? cdm.uColor : lineGrid.children[0].material.color.clone();
-
 	
-	$('[nameid="size-grid-tube-xy-1"]').val(Math.round(size * 100));	// перводим в см	
-	
+	myLeftPanel.setValueInputGridSize(Math.round(size * 100));	// перводим в см
 	
 	if(cdm.pos)
 	{
@@ -71,7 +69,7 @@ function updateGrid(cdm)
 	if(!size) 
 	{
 		var size = grid.userData.size * 100; // перводим в см
-		$('[nameid="size-grid-tube-xy-1"]').val(size);
+		myLeftPanel.setValueInputGridSize(size);
 		
 		return;
 	}

@@ -167,7 +167,7 @@ var arrWallFront = [];
 
 var clickO = resetPop.clickO();
 infProject.scene.array = resetPop.infProjectSceneArray();
-infProject.scene.grid = { obj: createGrid(infProject.settings.grid), active: false, link: false, show: true };
+infProject.scene.grid = { obj: null, active: false, link: false, show: true };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
 infProject.scene.block.click = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
 infProject.scene.block.hover = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
@@ -1619,7 +1619,7 @@ document.body.addEventListener("keydown", function (e)
 			}
 			if(infProject.activeInput == 'size-grid-tube-xy-1')
 			{
-				updateGrid({size : $('[nameid="size-grid-tube-xy-1"]').val()});
+				//updateGrid({size : $('[nameid="size-grid-tube-xy-1"]').val()});
 			}
 			if(infProject.activeInput == 'size_wall_width_1') 
 			{ 
@@ -1710,199 +1710,23 @@ function checkNumberInput(cdm)
 
 
 
-
+let myLeftPanel;
 var docReady = false;
 
 $(document).ready(function () 
 { 
-	docReady = true; 
+	docReady = true;
+	myLeftPanel = new MyLeftPanel();
+	//myLeftPanel.crDefPanel(); бесплатная фейковая панель (сетка)
+	myLeftPanel.crUserPanel();
+	
+	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
+	
 	loadFile('');
 	if(infProject.scene.load != '') { loadStartForm({form: infProject.scene.load}); }
 
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
-	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
-		 
-	 
-	
-	if(1==2)
-	{
-		var loader = new THREE.FBXLoader();
-		loader.load( infProject.path+'export/arrobj.fbx', function ( objects ) 
-		{ console.log(222, objects);
-			
-			for ( var i = 0; i < objects.children.length; i++ )
-			{
-				var obj = objects.children[i];
-				obj.position.set(i*0.3,0,0);
-
-				obj.userData.tag = 'obj';
-				obj.userData.id = countId; countId++;
-				obj.userData.obj3D = {};
-				obj.userData.obj3D.lotid = 1; 
-				infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-								
-			
-				obj.traverse( function ( child ) {
-					if ( child.isMesh ) 
-					{ console.log(child.name);
-						child.castShadow = true;
-						child.receiveShadow = true;
-					}
-				} );
-				scene.add( obj );
-				
-				if(i==0 && 1==2)
-				{
-					var txt = obj.toJSON();
-					//console.log(csv);
-					var csv = JSON.stringify( txt );	
-					var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);	
-					
-					var link = document.createElement('a');
-					document.body.appendChild(link);
-					link.href = csvData;
-					link.target = '_blank';
-					link.download = 'filename.json';
-					link.click();			
-				}				
-				
-			}
-		});
-		
-	}
-	
-	
-	if(1==2)
-	{
-		var loader = new THREE.FBXLoader();
-		loader.load( infProject.path+'import/bak_1.fbx', function ( objects )  
-		{ 		
-			var obj = objects.children[0];
-			obj.position.set(0,0,0);
-
-			obj.userData.tag = 'obj';
-			obj.userData.id = countId; countId++;
-			obj.userData.obj3D = {};
-			obj.userData.obj3D.lotid = 1; 
-			infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-			
-			obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0 } );
-			obj.material.visible = false;
-			
-			scene.add( obj );
-		});				
-	}
-	
-	
-	if(1==2)	
-	{
-		
-		var loader = new THREE.FBXLoader();
-		loader.load( infProject.path+'export/kran3.bin', function ( objects ) 
-		{ console.log(222, objects);
-			
-			var obj = objects.children[0];
-			obj.position.set(3,0,0);
-
-			obj.userData.tag = 'obj';
-			obj.userData.id = countId; countId++;
-			obj.userData.obj3D = {};
-			obj.userData.obj3D.lotid = 1; 
-			infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-
-			scene.add( obj );
-		});		
-		
-		
-		var oReq = new XMLHttpRequest();
-		oReq.open("POST", infProject.path+'export/kran3.bin', true);
-		oReq.onload = function (oEvent) 
-		{
-			console.log(444, oReq.response);
-
-			var obj = new THREE.FBXLoader().parse(oReq.response)
-			scene.add( obj ); 
-		};
-		oReq.send();						
-		
-	}	
-
-
-	if(1==2)
-	{
-		
-		$.ajax
-		({
-			url: infProject.path+'components/fbxLoadSql.php',
-			type: 'POST',
-			success: function(fbx)
-			{ 
-
-
-				var loader = new THREE.FBXLoader(); console.log(222, fbx);
-				loader.parse( fbx, function ( objects ) 
-				{ 
-					
-					var obj = objects.children[i];
-					obj.position.set(0,0,1);
-
-					obj.userData.tag = 'obj';
-					obj.userData.id = countId; countId++;
-					obj.userData.obj3D = {};
-					obj.userData.obj3D.lotid = 1; 
-					infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;									
-
-					scene.add( obj );				
-				});
-										
-			},
-		});			
-		
-		
-		new THREE.MTLLoader().load
-		( 
-			infProject.path+'export/nasos.mtl',
-			
-			function ( materials ) 
-			{
-				materials.preload();
-				
-				new THREE.OBJLoader().setMaterials( materials ).load						
-				( 
-					infProject.path+'export/nasos.obj', 
-					function ( object ) 
-					{		
-						
-						//object.scale.set(0.1, 0.1, 0.1);
-						
-						var obj = object.children[0];
-						
-						obj.position.set(3,1,-1.5);
-						
-						if(1==2)
-						{
-							var box = new THREE.Box3().setFromObject( obj );
-							var center = new THREE.Vector3();
-							box.getCenter( center );
-							obj.position.sub( center );										
-						}
-						
-						var v = obj.geometry.attributes.position.array;
-						
-						obj.material.lightMap = lightMap_1;
-						
-						obj.userData.tag = 'obj';
-						obj.userData.id = countId; countId++;
-						obj.userData.obj3D = {};
-						obj.userData.obj3D.lotid = 1; 
-						infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-		
-						scene.add( obj );
-					} 
-				);
-			}
-		);					
-	}
+	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }		 
 	
 });
 

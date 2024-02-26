@@ -35,6 +35,7 @@ scaleBox.js
 loadObj.js
 new/ui/divUserActive.js
 new/ui/divSubs.js
+new/ui/myLeftPanel.js
 uiInterface.js
 uiInterface_user_1.js
 ';
