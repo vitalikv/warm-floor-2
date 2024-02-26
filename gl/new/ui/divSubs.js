@@ -95,7 +95,6 @@ class WindDivSubs
 			<div style="margin: 20px auto auto auto; font-size: 16px;">Оплата происходит на сайте Юмани, без привязки карты (автоматическое списание не происходит).</div>
 			<div style="margin: 40px auto auto auto; font-size: 16px;">
 				<div style="padding: 5px;">Зачисление происходит в течении 1 - 10 минут.</div> 
-				<div style="padding: 5px;">На вашу почту придет сообщение об оформлении подписки (если не пришло, посмотрите в папке спам).</div>
 				<div style="padding: 5px;">Если в течении пару часов подписка не активировалась, напишите нам на почту otoplenie-doma-1@mail.ru</div>
 			</div>
 		</div>`;

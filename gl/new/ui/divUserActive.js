@@ -34,6 +34,13 @@ class MyUserActive
 			const days = subs.days;
 			wrap.innerHTML = this.html_2({days});
 			getListProject({id: infProject.user.id});
+			
+			if(days < 4)
+			{
+				const divTariff = this.windDivSubs.crDivSubsTariff({token});		
+				const divSubsTariff = wrap.querySelector('[nameId="divSubsTariff"]');
+				divSubsTariff.append(divTariff);				
+			}
 		}
 	}
 	
