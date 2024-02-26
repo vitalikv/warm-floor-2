@@ -338,15 +338,18 @@ async function checkRegDataIU()
 				
 				//myLeftPanel.crUserPanel();
 				
-				if(infProject.user.mail === '9455469@mail.ru' || infProject.user.mail === '9334997@mail.ru')
-				{
-					const myUserActive = new MyUserActive();				
-					myUserActive.init({wrap, subs, token});									
-				}
-				else
-				{
-					getListProject({id: infProject.user.id});
-				}				
+				//if(infProject.user.mail === '9455469@mail.ru' || infProject.user.mail === '9334997@mail.ru')
+				//{
+				//	const myUserActive = new MyUserActive();				
+				//	myUserActive.init({wrap, subs, token});									
+				//}
+				//else
+				//{
+				//	getListProject({id: infProject.user.id});
+				//}
+
+				const myUserActive = new MyUserActive();				
+				myUserActive.init({wrap, subs, token});				
 			}
 			else
 			{
