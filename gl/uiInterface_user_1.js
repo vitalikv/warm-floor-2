@@ -162,10 +162,32 @@ async function getListProject(cdm)
 		else { arr[arr.length] = {id: 0, name: 'Пустой проект'}; }	
 	}
 	
+	const css1 = 
+	`display: flex; 
+	align-items: center; 
+	justify-content: space-between;
+	flex-direction: column;
+	position: relative;		
+	margin: 35px;
+	width: 250px;	
+	height: 250px;
+	font-size: 18px;
+	color: #666;
+	text-decoration: none;
+	text-align: center;			
+	border: 1px solid #b3b3b3; 
+	box-shadow: 0px 0px 2px #bababa, inset 0px 0px 1px #fff;
+	background:#f1f1f1;
+	cursor: pointer;`;	
+
+	const cssName = `margin: auto;`;
+	const cssBtn = `margin: 0 auto 20px auto; padding: 10px; border: 1px solid #b3b3b3; cursor: pointer; user-select: none;`;
+		
+		
 	for(var i = 0; i < arr.length; i++)
 	{
-		var src_1 = `<div><div>${arr[i].name}</div><div style='margin-top: 10px;'>сохранить</div></div>`;
-		var src_2 = `<div><div>${arr[i].name}</div><div style='margin-top: 10px;'>загрузить</div></div>`;
+			let src_1 = `<div style="${cssName}">${arr[i].name}</div><div class="button_gradient_1" style="${cssBtn}">сохранить</div>`;
+			let src_2 = `<div style="${cssName}">${arr[i].name}</div><div class="button_gradient_1" style="${cssBtn}">загрузить</div>`;
 		
 		if(arr[i].preview) 
 		{
@@ -182,9 +204,8 @@ async function getListProject(cdm)
 			`;			
 		}
 
-
-		html_save += `<div class="window_main_menu_content_block_1" style='background: #f0ebd1;' projectId="${arr[i].id}" nameId="save_pr_1">${src_1}</div>`;	
-		html_load += `<div class="window_main_menu_content_block_1" style='background: #d1d9f0;' projectId="${arr[i].id}" nameId="load_pr_1">${src_2}</div>`;
+		html_save += `<div style='${css1} background: #f0ebd1;' projectId="${arr[i].id}" nameId="save_pr_1">${src_1}</div>`;	
+		html_load += `<div style='${css1} background: #d1d9f0;' projectId="${arr[i].id}" nameId="load_pr_1">${src_2}</div>`;
 	}
 	
 

@@ -19,6 +19,8 @@
 	width: 95%;
 	height: 95%;	
 	
+	font-family: arial, sans-serif;
+	
 	background: white;
 	border-radius: 8px;
 	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
@@ -96,7 +98,10 @@
 	
 	position: absolute;
 	right: 0;
-	left: 0;	
+	left: 0;
+
+	align-items: center;
+	justify-content: space-evenly;	
 }
 
 
@@ -434,7 +439,7 @@
 									<div class="window_main_menu_content_1_h1">
 										Сохранить
 									</div>
-									<div nameId="wm_list_save">
+									<div class="window_main_menu_content_1_wrap_1" nameId="wm_list_save">
 										<div class="wm_reg_13 wm_reg_border_1 wm_reg_text_1">
 											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться.
 
