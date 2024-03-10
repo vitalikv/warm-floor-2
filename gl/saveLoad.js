@@ -395,7 +395,7 @@ async function saveFile(cdm)
 		});
 		const data = await response.json();		
 		//console.log(data);
-		if(cdm.upUI) { getListProject({id: infProject.user.id}); }		// обновляем меню сохрание проектов
+		if(cdm.upUI) { getListProject({id: infProject.user.id, typeInfo: 'save'}); }		// обновляем меню сохрание проектов
 	}		
 	
 	if(1==2)

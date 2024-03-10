@@ -129,15 +129,30 @@ function changeMainMenuRegistMenuUI(cdm)
 
 
 // получаем с сервера список проектов принадлежащих пользователю
-async function getListProject(cdm)
+async function getListProject({id, typeInfo = 'load'})
 { 
-
-	var url = infProject.path+'components/loadListProject.php';			
+	const b_load = document.querySelector('[nameId="wm_list_load"]');
+	const b_save = document.querySelector('[nameId="wm_list_save"]');
 	
-	var response = await fetch(url, 
+	const cssInf =
+	`margin: 30px auto 0 auto;
+	width: 70%;
+	padding: 40px;
+	font-size: 17px;
+	text-align: center;
+	border: solid 1px #b3b3b3;`;
+	
+	let textInfo = 'Подождите, идет загрузка списка проектов.';
+	if(typeInfo === 'save') textInfo = 'Подождите, идет сохранение проекта.';
+	
+	b_load.innerHTML = `<div style="${cssInf}">Подождите, идет сохранение проекта.</div>`;
+	b_save.innerHTML = `<div style="${cssInf}">Подождите, идет сохранение проекта.</div>`;	
+	
+	const url = infProject.path+'components/loadListProject.php';				
+	const response = await fetch(url, 
 	{
 		method: 'POST',
-		body: 'id='+cdm.id,
+		body: 'id='+id,
 		headers: 
 		{	
 			'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
@@ -145,12 +160,9 @@ async function getListProject(cdm)
 	});	
 
 	if(!response.ok) return;
-	var json = await response.json();
-	
-	
-	var html_load = '';
-	var html_save = '';
-	
+	const json = await response.json();
+
+
 	var arr = [];
 	var count = 2;
 	
@@ -183,11 +195,13 @@ async function getListProject(cdm)
 	const cssName = `margin: auto;`;
 	const cssBtn = `margin: 0 auto 20px auto; padding: 10px; border: 1px solid #b3b3b3; cursor: pointer; user-select: none;`;
 		
-		
+	let html_load = '';
+	let html_save = '';
+	
 	for(var i = 0; i < arr.length; i++)
 	{
-			let src_1 = `<div style="${cssName}">${arr[i].name}</div><div class="button_gradient_1" style="${cssBtn}">сохранить</div>`;
-			let src_2 = `<div style="${cssName}">${arr[i].name}</div><div class="button_gradient_1" style="${cssBtn}">загрузить</div>`;
+		let src_1 = `<div style="${cssName}">${arr[i].name}</div><div class="button_gradient_1" style="${cssBtn}">сохранить</div>`;
+		let src_2 = `<div style="${cssName}">${arr[i].name}</div><div class="button_gradient_1" style="${cssBtn}">загрузить</div>`;
 		
 		if(arr[i].preview) 
 		{
@@ -206,17 +220,14 @@ async function getListProject(cdm)
 
 		html_save += `<div style='${css1} background: #f0ebd1;' projectId="${arr[i].id}" nameId="save_pr_1">${src_1}</div>`;	
 		html_load += `<div style='${css1} background: #d1d9f0;' projectId="${arr[i].id}" nameId="load_pr_1">${src_2}</div>`;
-	}
+	}	
 	
-
-	var b_load = document.querySelector('[nameId="wm_list_load"]');
-	var b_save = document.querySelector('[nameId="wm_list_save"]');
 	
 	b_load.innerHTML = html_load;
 	b_save.innerHTML = html_save;
 
-	var arrLoadEl = b_load.querySelectorAll('[nameId="load_pr_1"]');
-	var arrSaveEl = b_save.querySelectorAll('[nameId="save_pr_1"]');
+	const arrLoadEl = b_load.querySelectorAll('[nameId="load_pr_1"]');
+	const arrSaveEl = b_save.querySelectorAll('[nameId="save_pr_1"]');
 
 	arrLoadEl.forEach(function(el) 
 	{
