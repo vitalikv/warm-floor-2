@@ -5,7 +5,7 @@ require_once ($_SERVER['DOCUMENT_ROOT']."/gl/include/bd_1.php");
 $id = trim($_POST['id']);
 $user_id = trim($_POST['user_id']);
 //$pass = trim($_POST['pass']);
-$name = 'Проект ('.date("G:i").' '.date("d-m-Y").')';
+$name = date("Y-m-d").' '.date("G:i");
 $json = $_POST['json']; 
 $preview = trim($_POST['preview']); 
 //$date = date("Y-m-d-G-i");

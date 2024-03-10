@@ -145,8 +145,8 @@ async function getListProject({id, typeInfo = 'load'})
 	let textInfo = 'Подождите, идет загрузка списка проектов.';
 	if(typeInfo === 'save') textInfo = 'Подождите, идет сохранение проекта.';
 	
-	b_load.innerHTML = `<div style="${cssInf}">Подождите, идет сохранение проекта.</div>`;
-	b_save.innerHTML = `<div style="${cssInf}">Подождите, идет сохранение проекта.</div>`;	
+	b_load.innerHTML = `<div style="${cssInf}">${textInfo}</div>`;
+	b_save.innerHTML = `<div style="${cssInf}">${textInfo}</div>`;	
 	
 	const url = infProject.path+'components/loadListProject.php';				
 	const response = await fetch(url, 
