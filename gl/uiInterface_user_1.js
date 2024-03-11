@@ -175,7 +175,8 @@ async function getListProject({id, typeInfo = 'load'})
 	}
 	
 	const css1 = 
-	`display: flex; 
+	`position: relative;
+	display: flex; 
 	align-items: center; 
 	justify-content: space-between;
 	flex-direction: column;
@@ -192,34 +193,27 @@ async function getListProject({id, typeInfo = 'load'})
 	background:#f1f1f1;
 	cursor: pointer;`;	
 
-	const cssName = `margin: auto;`;
-	const cssBtn = `margin: 0 auto 20px auto; padding: 10px; border: 1px solid #b3b3b3; cursor: pointer; user-select: none;`;
+	const cssName = `position: absolute; top: 20px; margin: auto;`;
+	const cssBtn = `position: absolute; bottom: 20px; margin: auto; padding: 10px; border: 1px solid #b3b3b3; cursor: pointer; user-select: none;`;
+	const cssImg = `display: block; width: 100%; margin: auto; -o-object-fit: contain; object-fit: contain;`;
 		
 	let html_load = '';
 	let html_save = '';
 	
 	for(var i = 0; i < arr.length; i++)
 	{
-		let src_1 = `<div style="${cssName}">${arr[i].name}</div><div class="button_gradient_1" style="${cssBtn}">сохранить</div>`;
-		let src_2 = `<div style="${cssName}">${arr[i].name}</div><div class="button_gradient_1" style="${cssBtn}">загрузить</div>`;
+		let prev = '';
 		
 		if(arr[i].preview) 
 		{
-			src_1 = `			 
-			<div style='margin: auto;'>${arr[i].name}</div>
-			<img src="${arr[i].preview}" style="display: block; width: 100%; margin: auto; -o-object-fit: contain; object-fit: contain;">
-			<div style='margin: auto;'>сохранить</div>
-			`;
-			
-			src_2 = `
-			<div style='margin: auto;'>${arr[i].name}</div>
-			<img src="${arr[i].preview}" style="display: block; width: 100%; margin: auto; -o-object-fit: contain; object-fit: contain;"> 			
-			<div style='margin: auto;'>загрузить</div>
-			`;			
+			prev = `<div style="padding: 15px;"><img src="${arr[i].preview}" style="${cssImg}"></div>`;			
 		}
 
-		html_save += `<div style='${css1} background: #f0ebd1;' projectId="${arr[i].id}" nameId="save_pr_1">${src_1}</div>`;	
-		html_load += `<div style='${css1} background: #d1d9f0;' projectId="${arr[i].id}" nameId="load_pr_1">${src_2}</div>`;
+		let btn1 = `<div style="${cssName}">${arr[i].name}</div>${prev}<div class="button_gradient_1" style="${cssBtn}">сохранить</div>`;
+		let btn2 = `<div style="${cssName}">${arr[i].name}</div>${prev}<div class="button_gradient_1" style="${cssBtn}">загрузить</div>`;
+		
+		html_save += `<div style='${css1} background: #f0ebd1;' projectId="${arr[i].id}" nameId="save_pr_1">${btn1}</div>`;	
+		html_load += `<div style='${css1} background: #d1d9f0;' projectId="${arr[i].id}" nameId="load_pr_1">${btn2}</div>`;
 	}	
 	
 	

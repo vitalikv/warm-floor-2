@@ -381,8 +381,8 @@ async function saveFile(cdm)
 	// сохраняем в бд
 	if(1==1)
 	{
-		//var preview = saveAsImagePreview();
-		var preview = null;
+		const preview = saveAsImagePreview();
+		//var preview = null;
 		
 		const url = infProject.path+'components/saveSql.php';			
 		
@@ -390,7 +390,7 @@ async function saveFile(cdm)
 		const response = await fetch(url, 
 		{
 			method: 'POST',
-			body: 'id='+cdm.id+'&user_id='+infProject.user.id+'&preview=&json='+encodeURIComponent(json),
+			body: 'id='+cdm.id+'&user_id='+infProject.user.id+'&preview='+encodeURIComponent(preview)+'&json='+encodeURIComponent(json),
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },				
 		});
 		const data = await response.json();		

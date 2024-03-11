@@ -1371,11 +1371,11 @@ function saveAsImagePreview()
 { 
 	try 
 	{		
-		var rd = 400/w_w;
+		var rd = 250/w_w;
 		var flag = infProject.scene.grid.obj.visible;
 		
 		if(flag) { infProject.scene.grid.obj.visible = false; }
-		renderer.setSize( 400, w_h*rd );
+		renderer.setSize( 250, w_h*rd );
 		renderer.antialias = true;
 		renderer.render( scene, camera );
 		
