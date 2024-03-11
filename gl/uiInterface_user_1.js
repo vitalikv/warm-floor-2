@@ -178,7 +178,7 @@ async function getListProject({id, typeInfo = 'load'})
 	`position: relative;
 	display: flex; 
 	align-items: center; 
-	justify-content: space-between;
+	justify-content: center;
 	flex-direction: column;
 	position: relative;		
 	margin: 35px;
@@ -194,7 +194,7 @@ async function getListProject({id, typeInfo = 'load'})
 	cursor: pointer;`;	
 
 	const cssName = `position: absolute; top: 20px; margin: auto;`;
-	const cssBtn = `position: absolute; bottom: 20px; margin: auto; padding: 10px; border: 1px solid #b3b3b3; cursor: pointer; user-select: none;`;
+	const cssBtn = `position: absolute; bottom: 10px; margin: auto; padding: 10px; border: 1px solid #b3b3b3; cursor: pointer; user-select: none;`;
 	const cssImg = `display: block; width: 100%; margin: auto; -o-object-fit: contain; object-fit: contain;`;
 		
 	let html_load = '';
