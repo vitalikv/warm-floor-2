@@ -807,7 +807,13 @@ function loadFilePL(arr)
 		
 		var line = createLineWF({point: p, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)}); 
 		
-		geometryTubeWF({line : line, createLine : true});	
+		geometryTubeWF({line : line, createLine : true});
+		
+		if(line.userData.wf_line.tube)
+		{	
+			const tube = line.userData.wf_line.tube;
+			tube.userData.wf_tube.color = new THREE.Color(pipe[i].color);
+		}		
 	}	
 
 	
