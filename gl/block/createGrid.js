@@ -9,7 +9,7 @@ function createGrid(cdm)
 	
 	var size = (cdm.size) ? cdm.size : 0.2;
 	size = Math.round(size * 100)/100; 
-	var count = (cdm.count) ? cdm.count : (15/size);
+	var count = (cdm.count) ? cdm.count : (20/size);
 	
 	var color = 0xd6d6d6;	
 	if(cdm.color) { color = cdm.color; }	
