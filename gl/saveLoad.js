@@ -361,7 +361,7 @@ async function saveFile(cdm)
 	var json = JSON.stringify( getJsonGeometry() );
 	
 	// сохраняем в папку
-	if(1==2)
+	if(cdm.local)
 	{
 		$.ajax
 		({
@@ -376,10 +376,7 @@ async function saveFile(cdm)
 			error: function(json){ console.log(json);  }
 		});			
 	}
-	
-	
-	// сохраняем в бд
-	if(1==1)
+	else // сохраняем в бд
 	{
 		const preview = saveAsImagePreview();
 		//var preview = null;
@@ -590,6 +587,7 @@ function getJsonGeometry()
 	json.floors[0].rooms = rooms;
 	json.furn = furn;
 	json.pipe = pipe;
+	json.grids = myGrids.saveGrids();
 	
 	return json;
 }
@@ -604,7 +602,7 @@ function loadFile(cdm)
 	if(cdm.id == 0) { resetScene(); return; }	 
 	
 	
-	if(1==2)	// загрузка json из папки
+	if(1==1)	// загрузка json из папки
 	{
 		$.ajax
 		({
@@ -653,7 +651,8 @@ function loadFilePL(arr)
 	var rooms = arr.floors[0].rooms;
 	var furn = (arr.furn) ? arr.furn : [];
 	var pipe = (arr.pipe) ? arr.pipe : [];
-			
+	const grids = arr.grids;
+	
 	var wall = [];
 	
 	for ( var i = 0; i < walls.length; i++ )
@@ -835,6 +834,7 @@ function loadFilePL(arr)
 	// восстанавливаем countId
 	
 	
+	if(grids) myGrids.loadGrids({data: grids});
 	
 	calculationAreaFundament_2();
 	

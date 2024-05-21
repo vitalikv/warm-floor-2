@@ -107,6 +107,11 @@ function onDocumentMouseDown( event )
 		{
 			if(clickO.move.userData.wf_point.type == 'tool') { clickPointToolsWF( clickO.move ); return; }
 		}
+		if(clickO.move.userData.tag == 'gridPointToolWf')
+		{
+			clickO.move = myGridPointTool.mousedown({event, obj: clickO.move}); 
+			return;
+		}		
 	}
 	 
 	clickO.obj = null; 	
@@ -156,6 +161,11 @@ function clickRayHit(event)
 		var ray = hoverCursorLineWF(event);	
 		if(ray) { rayhit = ray; }		
 	}
+	
+	
+	rayhit = myGrids.clickRayhit({event});
+	if(rayhit) return rayhit;	
+
 
 	if(!infProject.scene.block.click.controll_wd)
 	{
@@ -234,9 +244,10 @@ function clickMouseActive(cdm)
 		else if( tag == 'door' ) { clickWD( rayhit ); }
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
-		else if( tag == 'wf_line' ) {  }
 		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj, rayhit ); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
+		else if( tag == 'gridPointToolWf') { myGridPointTool.mousedown({event, obj}); }
+		else if( tag == 'gridPointWf') { clickO.move = myGridPointMove.mousedown({event, obj}); }
 		else { flag = false; }
 	}
 	else if(cdm.type == 'up')
@@ -330,6 +341,8 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'free_dw' ) { dragWD_2( event, obj ); }
 		else if ( tag == 'boxWF' && camera == cameraTop ) { moveObjectPop( event ); }
 		else if ( tag == 'obj' ) { moveObjectPop( event ); }
+		else if ( tag == 'gridPointToolWf' ) { myGridPointTool.mousemove( event ); }
+		else if ( tag == 'gridPointWf' ) { myGridPointMove.mousemove( event ); }
 	}
 	else 
 	{
@@ -385,7 +398,13 @@ function onDocumentMouseUp( event )
 			{ 
 				clickWFPointUp(obj); 
 			}			
-		}		
+		}
+		else if(tag == 'gridPointToolWf') {  }
+		else if(tag == 'gridPointWf') 
+		{
+			myGridPointMove.mouseup();
+			clickO.move = null;
+		}
 		else { clickO.move = null; }		
 	}
 

@@ -36,6 +36,10 @@ loadObj.js
 new/ui/divUserActive.js
 new/ui/divSubs.js
 new/ui/myLeftPanel.js
+new/ui/topPanel/myBtnGrid.js
+new/scene/grid/myGrids.js
+new/scene/grid/myGridPointMove.js
+new/scene/grid/myGridPointTool.js
 uiInterface.js
 uiInterface_user_1.js
 ';

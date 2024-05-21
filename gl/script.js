@@ -1169,6 +1169,10 @@ function clickButton( event )
 			clickO.move = infProject.tools.wf.plane;
 			infProject.tools.wf.plane.visible = true;
 		}
+		else if(clickO.button == 'crGridPoint')
+		{
+			clickO.move = myGridPointTool.addPointFromBtn({ pos: intersects[0].point, event });
+		}		
 		else if(clickO.button == 'add_lotid')
 		{
 			loadObjServer({lotid: clickO.options, cursor: true});
@@ -1239,6 +1243,10 @@ function clickInterface(cdm)
 			clickO.button = 'create_tube_box_1';
 			infProject.tools.wf.plane.visible = false;
 		}
+		else if(cdm.button == 'crGridPoint')
+		{
+			clickO.button = 'crGridPoint';
+		}		
 		else if(cdm.button == 'add_lotid')
 		{
 			clickO.button = 'add_lotid';
@@ -1642,6 +1650,11 @@ document.body.addEventListener("keydown", function (e)
 		return; 
 	}
 
+	if (window.location.hostname === 'warm-floor-2')
+	{
+		//if(clickO.keys[18] && e.keyCode == 77) { loadFile({id: 0}); }				// alt + m
+		if(clickO.keys[18] && e.keyCode == 84) { saveFile({id: 1, local: true}); }			// alt + t	
+	}
 
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	
@@ -1711,14 +1724,24 @@ function checkNumberInput(cdm)
 
 
 let myLeftPanel;
+let myBtnGrid;
+let myGrids;
+let myGridPointMove;
+let myGridPointTool;
+
 var docReady = false;
 
 $(document).ready(function () 
 { 
 	docReady = true;
 	myLeftPanel = new MyLeftPanel();
+	myBtnGrid = new MyBtnGrid();
 	//myLeftPanel.crDefPanel(); бесплатная фейковая панель (сетка)
 	myLeftPanel.crUserPanel();
+	
+	myGrids = new MyGrids();
+	myGridPointMove = new MyGridPointMove();
+	myGridPointTool = new MyGridPointTool();	
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	

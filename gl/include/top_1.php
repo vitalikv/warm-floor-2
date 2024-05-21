@@ -22,12 +22,11 @@
 		
 		<div class="button1-wrap-2" nameId='top_menu_b1' inf-visible='false' style="display: none;">		
 			<? if($interface['tube_1'] == 1){ ?>
+			<div nameId="crGridWf"></div>
+			
 			<div class="button1-wrap-1">
 				<div data-action ='create_tube_1' class="button1">Труба</div>
-			</div>
-			<!--<div class="button1-wrap-1">
-				<div data-action ='create_tube_box_1' class="button1">Контур</div>
-			</div>-->			
+			</div>		
 			<? } ?>		
 		</div>
 		
