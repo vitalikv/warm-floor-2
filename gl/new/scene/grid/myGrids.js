@@ -144,8 +144,6 @@ class MyGrids
 	// удаление одной точки
 	deletePoint({point})
 	{
-		console.log(1111, [...this.dataGrids]);
-		
 		const points = this.getPointsFromPoint({point});
 		scene.remove(point);
 		
@@ -166,9 +164,6 @@ class MyGrids
 		{
 			this.upGeometryLine({point: points[0]});
 		}
-		
-		
-		console.log(1111, [...this.dataGrids]);
 	}
 
 

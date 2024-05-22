@@ -44,7 +44,11 @@ class MyGridPointMove
 		
 		offset.y = 0;		
 		
-		obj.position.add( offset );
+		obj.position.add(offset);
+		
+		const newPos = this.pointAligning({point: obj});
+		this.offset.add(newPos.clone().sub(obj.position));
+		obj.position.copy(newPos);		
 
 		myGrids.upGeometryLine({point: obj});
 	}
@@ -64,7 +68,54 @@ class MyGridPointMove
 		this.actObj = null;
 		this.isDown = false;
 		this.isMove = false;
-	}	
+	}
+
+
+	// выравнивание точки к направляющим X/Z
+	pointAligning({point})
+	{
+		let pos = point.position.clone();
+		const points = myGrids.getPointsFromPoint({point});
+		const axisX = [];
+		const axisZ = [];
+		
+		for ( let i = 0; i < points.length; i++ )
+		{
+			if(point === points[i]) continue;
+			
+			const p1 = spPoint(points[i].position, points[i].position.clone().add(new THREE.Vector3(1,0,0)), point.position);	
+			const p2 = spPoint(points[i].position, points[i].position.clone().add(new THREE.Vector3(0,0,1)), point.position);
+			
+			const x = Math.abs( points[i].position.x - p1.x );
+			const z = Math.abs( points[i].position.z - p2.z );
+			
+			if(x < 0.06 / camera.zoom) { axisX.push({dist: 0, pos: points[i].position}); }
+			if(z < 0.06 / camera.zoom) { axisZ.push({dist: 0, pos: points[i].position}); }	
+		}
+
+		
+		if(axisX.length > 0)
+		{
+			for ( let i = 0; i < axisX.length; i++ ) axisX[i].dist = point.position.distanceTo(axisX[i].pos);			
+			axisX.sort(function (a, b) { return a.dist - b.dist; });		 
+		} 
+		
+		if(axisZ.length > 0)
+		{
+			for ( let i = 0; i < axisZ.length; i++ ) axisZ[i].dist = point.position.distanceTo(axisZ[i].pos);			
+			axisZ.sort(function (a, b) { return a.dist - b.dist; });		
+		}
+		
+		if(axisX.length > 0 && axisZ.length > 0) 
+		{ 
+			pos.x = axisX[0].pos.x; 
+			pos.z = axisZ[0].pos.z; 		 
+		}
+		else if(axisX.length > 0) pos.x = axisX[0].pos.x;
+		else if(axisZ.length > 0) pos.z = axisZ[0].pos.z;		
+		
+		return pos;
+	}
 }
 
 

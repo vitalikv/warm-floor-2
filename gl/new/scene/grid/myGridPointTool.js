@@ -121,6 +121,12 @@ class MyGridPointTool
 			obj.position.copy(this.arrPoints[0].position.clone());
 			this.offset = obj.position.clone();
 		}
+		else
+		{
+			const newPos = myGridPointMove.pointAligning({point: obj});
+			this.offset.add(newPos.clone().sub(obj.position));
+			obj.position.copy(newPos);			
+		}
 
 		myGrids.upGeometryLine({point: obj});
 	}
@@ -138,7 +144,9 @@ class MyGridPointTool
 		
 		if(points.length > 2)
 		{
-			joint = point.position.distanceTo(points[0].position) < 0.2 ? true : false;
+			const dist = point.position.distanceTo(points[0].position);
+			joint = (dist < 0.1 / camera.zoom) ? true : false;
+			//joint = point.position.distanceTo(points[0].position) < 0.2 ? true : false;	// без привязки к zoom камеры
 		}
 
 		return joint;
