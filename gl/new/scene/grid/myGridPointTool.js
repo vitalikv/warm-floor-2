@@ -28,6 +28,30 @@ class MyGridPointTool
 		
 		return obj;
 	}
+	
+	
+	clickRight()
+	{
+		const points = this.arrPoints;
+		const line = (points[0].userData.line) ? points[0].userData.line : null;
+		
+		if(line)
+		{
+			line.geometry.dispose();
+			scene.remove(line);
+		}
+		
+		for ( let i = 0; i < points.length; i++ )
+		{
+			scene.remove(points[i]);
+		}		
+		
+		this.arrPoints = [];
+		
+		this.clearPoint();
+
+		//this.render();
+	}	
 
 
 	mousedown = ({event, obj, clickBtn = false}) =>

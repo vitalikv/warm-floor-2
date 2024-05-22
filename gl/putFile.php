@@ -40,6 +40,7 @@ new/ui/topPanel/myBtnGrid.js
 new/scene/grid/myGrids.js
 new/scene/grid/myGridPointMove.js
 new/scene/grid/myGridPointTool.js
+new/scene/grid/myGridsSaveLoad.js
 uiInterface.js
 uiInterface_user_1.js
 ';

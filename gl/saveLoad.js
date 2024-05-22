@@ -587,7 +587,7 @@ function getJsonGeometry()
 	json.floors[0].rooms = rooms;
 	json.furn = furn;
 	json.pipe = pipe;
-	json.grids = myGrids.saveGrids();
+	json.grids = myGridsSaveLoad.saveGrids();
 	
 	return json;
 }
@@ -834,7 +834,7 @@ function loadFilePL(arr)
 	// восстанавливаем countId
 	
 	
-	if(grids) myGrids.loadGrids({data: grids});
+	if(grids) myGridsSaveLoad.loadGrids({data: grids});
 	
 	calculationAreaFundament_2();
 	

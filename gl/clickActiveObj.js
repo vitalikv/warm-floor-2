@@ -132,6 +132,7 @@ function objActiveColor_2D(obj)
 		var tube = obj.userData.wf_line.tube;
 		if(tube) { tube.material.color = new THREE.Color(infProject.listColor.active2D); }		
 	}
+	else if(tag == 'gridPointWf'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }
 	
 	if(clickO.hover == obj) { clickO.hover = null; }
 }
@@ -165,6 +166,7 @@ function objDeActiveColor_2D()
 		var tube = o.userData.wf_line.tube;
 		if(tube) { tube.material.color = tube.userData.wf_tube.color; }
 	}
+	else if(o.userData.tag == 'gridPointWf'){ o.material.color = myGrids.colorPoint.clone(); }
 	
 	if(clickO.hover == clickO.last_obj) { clickO.hover = null; }
 } 

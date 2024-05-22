@@ -5,17 +5,18 @@ class MyGrids
 	dataGrids = [];
 	geomPoint;
 	matPoint;
-	
+	colorPoint;
 	
 	constructor()
 	{
 		this.geomPoint = new THREE.SphereGeometry( 0.05, 16, 16 );
-		this.matPoint = new THREE.MeshStandardMaterial({ color: 0x222222, lightMap: lightMap_1 });
+		this.colorPoint = new THREE.Color(0x222222);
+		this.matPoint = new THREE.MeshLambertMaterial({ color: this.colorPoint, lightMap: lightMap_1 });
 	}
 	
 	crPoint({pos})
 	{
-		const obj = new THREE.Mesh( this.geomPoint, this.matPoint ); 
+		const obj = new THREE.Mesh( this.geomPoint, this.matPoint.clone() ); 
 
 		obj.userData.tag = 'gridPointWf';
 		obj.userData.line = null;
@@ -108,43 +109,103 @@ class MyGrids
 	}
 	
 	
-	saveGrids()
+	// получаем сетку которая относится к этой точке
+	getDataGridFromPoint({point})
 	{
-		const data = [];
+		let data = null;
 		
-		const points = [];
 		for ( let i = 0; i < this.dataGrids.length; i++ )
 		{
-			const pos = this.dataGrids[i].points.map((p) => p.position);
-			data.push({pos});
+			const index = this.dataGrids[i].points.indexOf(point);
+			if (index > -1)
+			{
+				data = this.dataGrids[i];
+				break;
+			}
 		}
 		
-		return data;
+		return data;		
 	}
 	
-	loadGrids({data})
+	// получаем массив точек из точки
+	getPointsFromPoint({point})
 	{
-		const points = [];
-		for ( let i = 0; i < data.length; i++ )
+		return point.userData.points;		
+	}
+
+	
+	// получаем линию из точки
+	getLineFromPoint({point})
+	{
+		return point.userData.line;		
+	}
+	
+
+	// удаление одной точки
+	deletePoint({point})
+	{
+		console.log(1111, [...this.dataGrids]);
+		
+		const points = this.getPointsFromPoint({point});
+		scene.remove(point);
+		
+		const index = points.indexOf(point);
+		if (index > -1) points.splice(index, 1);
+
+		if(points.length < 3)
 		{
-			const arrPos = data[i].pos;
-			const points = [];
+			const line = this.getLineFromPoint({point: points[0]});
+			this.deleteLine({line});
 			
-			for ( let i2 = 0; i2 < arrPos.length; i2++ )
-			{
-				const pos = arrPos[i2];
-				const point = this.crPoint({pos: new THREE.Vector3(pos.x, pos.y, pos.z)});
-				points.push(point);
-			}
+			const dataGrid = this.getDataGridFromPoint({point: points[0]});
+			this.deleteDataGrid({dataGrid});
 			
-			this.crLine({points});
+			this.deletePoints({points});
+		}
+		else
+		{
 			this.upGeometryLine({point: points[0]});
-			
-			this.crGrid({points});
 		}
 		
-		return data;
-	}	
+		
+		console.log(1111, [...this.dataGrids]);
+	}
+
+
+	// удаление всех точек одной сетки
+	deletePoints({points})
+	{		
+		for ( let i = points.length - 1; i > -1; i-- )
+		{
+			scene.remove(points[i]);
+			const index = points.indexOf(points[i]);
+			if (index > -1) points.splice(index, 1);			
+		}
+	}
+
+
+	deleteLine({line})
+	{
+		line.geometry.dispose();
+		scene.remove(line);
+	}
+	
+	
+	deleteDataGrid({dataGrid})
+	{
+		for ( let i = 0; i < this.dataGrids.length; i++ )
+		{
+			const index = this.dataGrids.indexOf(dataGrid);
+			if (index > -1) 
+			{
+				this.dataGrids.splice(index, 1);
+				break;
+			}
+		}
+	}
+	
+	
+
 }
 
 

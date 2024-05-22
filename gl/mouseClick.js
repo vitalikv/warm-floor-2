@@ -48,6 +48,10 @@ function mouseDownRight()
 		else if(obj.userData.tag == 'obj')
 		{
 			deleteObjectPop(obj); console.log(infProject.scene.array.obj);
+		}
+		else if(obj.userData.tag == 'gridPointToolWf')
+		{
+			myGridPointTool.clickRight();
 		}		
 
 		clickO = resetPop.clickO();
