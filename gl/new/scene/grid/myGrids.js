@@ -2,6 +2,8 @@
 // создание сетки для теплого пола
 class MyGrids 
 {
+	indGrid = 0;
+	indPoint = 0;
 	dataGrids = [];
 	geomPoint;
 	matPoint;
@@ -19,10 +21,13 @@ class MyGrids
 		const obj = new THREE.Mesh( this.geomPoint, this.matPoint.clone() ); 
 
 		obj.userData.tag = 'gridPointWf';
+		obj.userData.id = this.indPoint;
 		obj.userData.line = null;
 		obj.userData.points = [];
 		obj.position.copy(pos);		
 		scene.add( obj );
+		
+		this.indPoint++;
 
 		return obj;
 	}
@@ -61,28 +66,49 @@ class MyGrids
 
 	crGrid({points})
 	{
+		this.setPointsClockWise({points});
+		
 		for ( let i = 0; i < points.length; i++ )
 		{
 			points[i].userData.tag = 'gridPointWf';
 			points[i].userData.points = points;
 		}
 		
-		this.dataGrids.push({points});
+		const mesh = myGridMesh.crMesh({points}); 
+
+		console.log(points.map(p => p.userData.id));
+		
+		this.dataGrids.push({id: this.indGrid, points});
+		
+		this.indGrid++;
 	}
+	
+	
+	// меняем построение точек в против часавой
+	setPointsClockWise({points})
+	{
+		const arrPos = [];		
+		for ( let i = 0; i < points.length; i++ ) arrPos.push(points[i].position.clone());
+		
+		const result = myMath.checkClockWise(arrPos);	// проверяем последовательность построения точек (по часовой стрелке или нет)
+		// если по часовой стрелки, то разворачиваем массив, чтобы был против часовой
+		if(result < 0) points.reverse();			
+	}
+	
 
 	upGeometryLine({point})
 	{		
 		const line = point.userData.line;
 		if(!line) return;
 		
-		const points = point.userData.points;
+		const points = this.getPointsFromPoint({point});
 
 		const arrP = [];
 		
 		for ( let i = 0; i < points.length; i++ ) arrP.push(points[i].position.clone());
 		if(point.userData.tag !== 'gridPointToolWf') arrP.push(points[0].position.clone());
 		
-		var geometry = new THREE.Geometry();
+		const geometry = new THREE.Geometry();
 		geometry.vertices = arrP;
 		//geometry.verticesNeedUpdate = true;
 		

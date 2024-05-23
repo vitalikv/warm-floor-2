@@ -90,9 +90,11 @@
 	<script src="<?=$path?>new/ui/divSubs.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/myLeftPanel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/topPanel/myBtnGrid.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/core/myMath.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGrids.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridPointMove.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridPointTool.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/grid/myGridMesh.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridsSaveLoad.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>uiInterface.js?<?=$vrs?>"></script>	

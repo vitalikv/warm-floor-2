@@ -1725,9 +1725,11 @@ function checkNumberInput(cdm)
 
 let myLeftPanel;
 let myBtnGrid;
+let myMath;
 let myGrids;
 let myGridPointMove;
 let myGridPointTool;
+let myGridMesh;
 let myGridsSaveLoad;
 
 var docReady = false;
@@ -1740,9 +1742,11 @@ $(document).ready(function ()
 	//myLeftPanel.crDefPanel(); бесплатная фейковая панель (сетка)
 	myLeftPanel.crUserPanel();
 	
+	myMath = new MyMath();
 	myGrids = new MyGrids();
 	myGridPointMove = new MyGridPointMove();
 	myGridPointTool = new MyGridPointTool();
+	myGridMesh = new MyGridMesh();
 	myGridsSaveLoad = new MyGridsSaveLoad();	
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);

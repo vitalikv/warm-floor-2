@@ -83,8 +83,13 @@ class MyGridPointMove
 		{
 			if(point === points[i]) continue;
 			
-			const p1 = spPoint(points[i].position, points[i].position.clone().add(new THREE.Vector3(1,0,0)), point.position);	
-			const p2 = spPoint(points[i].position, points[i].position.clone().add(new THREE.Vector3(0,0,1)), point.position);
+			const A = points[i].position;
+			const B1 = points[i].position.clone().add(new THREE.Vector3(1,0,0));
+			const B2 = points[i].position.clone().add(new THREE.Vector3(0,0,1));
+			const C = point.position;			
+			
+			const p1 = myMath.mathProjectPointOnLine2D({A, B: B1, C});	
+			const p2 = myMath.mathProjectPointOnLine2D({A, B: B2, C});
 			
 			const x = Math.abs( points[i].position.x - p1.x );
 			const z = Math.abs( points[i].position.z - p2.z );
