@@ -74,11 +74,11 @@ class MyGrids
 			points[i].userData.points = points;
 		}
 		
-		const mesh = myGridMesh.crMesh({points}); 
+		const result = myGridMesh.upGridMeshes({points, sizeCell: 0.1}); 
 
 		console.log(points.map(p => p.userData.id));
 		
-		this.dataGrids.push({id: this.indGrid, points});
+		this.dataGrids.push({id: this.indGrid, points, grille: {meshes: result.meshes, v: result.arrVectors, sizeCell: result.sizeCell} });
 		
 		this.indGrid++;
 	}
@@ -182,6 +182,9 @@ class MyGrids
 			this.deleteLine({line});
 			
 			const dataGrid = this.getDataGridFromPoint({point: points[0]});
+			
+			myGridMesh.deleteGridMeshes({meshes: dataGrid.grille.meshes});
+			
 			this.deleteDataGrid({dataGrid});
 			
 			this.deletePoints({points});
@@ -189,6 +192,9 @@ class MyGrids
 		else
 		{
 			this.upGeometryLine({point: points[0]});
+			
+			// обновление обрешетки
+			myGridMesh.upGridMeshFromPoint({point: points[0]});			
 		}
 	}
 

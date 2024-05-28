@@ -51,6 +51,9 @@ class MyGridPointMove
 		obj.position.copy(newPos);		
 
 		myGrids.upGeometryLine({point: obj});
+		
+		// обновление обрешетки
+		myGridMesh.upGridMeshFromPoint({point: obj});
 	}
 	
 	mouseup = () =>
