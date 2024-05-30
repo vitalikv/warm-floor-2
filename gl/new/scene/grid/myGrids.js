@@ -8,12 +8,15 @@ class MyGrids
 	geomPoint;
 	matPoint;
 	colorPoint;
+	posY = 0;
 	
 	constructor()
 	{
 		this.geomPoint = new THREE.SphereGeometry( 0.05, 16, 16 );
 		this.colorPoint = new THREE.Color(0x222222);
 		this.matPoint = new THREE.MeshLambertMaterial({ color: this.colorPoint, lightMap: lightMap_1 });
+		
+		this.posY = infProject.settings.grid.pos.y;
 	}
 	
 	crPoint({pos})
@@ -24,7 +27,7 @@ class MyGrids
 		obj.userData.id = this.indPoint;
 		obj.userData.line = null;
 		obj.userData.points = [];
-		obj.position.copy(pos);		
+		obj.position.set(pos.x, this.posY, pos.z);		
 		scene.add( obj );
 		
 		this.indPoint++;
@@ -46,7 +49,7 @@ class MyGrids
 			const geometry = new THREE.Geometry();
 			geometry.vertices = arrP;
 	
-			line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0xff0000}) );	
+			line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x222222}) );	
 			scene.add( line );					
 		}
 		else
@@ -74,11 +77,11 @@ class MyGrids
 			points[i].userData.points = points;
 		}
 		
-		const result = myGridMesh.upGridMeshes({points, sizeCell: 0.1}); 
-
+		const grille = myGridMesh.upGridMeshes({points, sizeCell: 0.1}); 
+		
 		console.log(points.map(p => p.userData.id));
 		
-		this.dataGrids.push({id: this.indGrid, points, grille: {meshes: result.meshes, v: result.arrVectors, sizeCell: result.sizeCell} });
+		this.dataGrids.push({id: this.indGrid, points, grille });
 		
 		this.indGrid++;
 	}
@@ -133,6 +136,37 @@ class MyGrids
 
 		return rayhit;
 	}
+	
+	
+	// находим контур по клику или ищем контур при перетаскивании точки трубы
+	mouseDetectContour({event, click = false})
+	{
+		let dataGrid = null;
+
+		if(click)
+		{
+			planeMath.position.set( 0, 0, 0 );
+			planeMath.rotation.set(-Math.PI/2, 0, 0);
+			planeMath.updateMatrixWorld();			
+		}
+		
+		const intersects = rayIntersect(event, planeMath, 'one');
+		
+		if(intersects.length > 0)
+		{
+			for ( let i = 0; i < this.dataGrids.length; i++ )
+			{
+				const inside = myMath.checkPointInsideForm({point: intersects[0].point, arrP: this.dataGrids[i].points});				
+				if(inside) 
+				{
+					dataGrid = this.dataGrids[i];
+					break;
+				}
+			}							
+		}	
+
+		return dataGrid;
+	}	
 	
 	
 	// получаем сетку которая относится к этой точке

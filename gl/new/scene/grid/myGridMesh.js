@@ -7,6 +7,8 @@ class MyGridMesh
 	{
 		const arrPos = points.map(p => p.position.clone());
 		arrPos.push(arrPos[0]);
+		
+		const posY = arrPos[0].y;
 
 		const result = this.calcBoundGrid({arrPos});
 
@@ -14,24 +16,29 @@ class MyGridMesh
 		
 		const arrVectors = this.calcVectorsLines({arrLines, arrPos});	// массив линий с точками
 
+		const crossP = this.calcCrossPointLines({lines: arrVectors, sizeCell});
+		
 		if(meshes) this.deleteGridMeshes({meshes});	
 		
-		meshes = this.crGridMeshes({arrVectors});
+		meshes = this.crGridMeshes({arrVectors, posY});
 			
-		return { meshes, arrVectors, sizeCell };
+		return { meshes, v: arrVectors, crossP, sizeCell };
 	}
 	
 	
 	// создание обрешетки
-	crGridMeshes({arrVectors})
+	crGridMeshes({arrVectors, posY})
 	{
 		const meshes = [];
 		
 		for ( let i = 0; i < arrVectors.length; i++ )
 		{	
+			const v1 = new THREE.Vector3(arrVectors[i][0].x, posY, arrVectors[i][0].z);
+			const v2 = new THREE.Vector3(arrVectors[i][1].x, posY, arrVectors[i][1].z);
+			
 			const geometry = new THREE.Geometry();
-			geometry.vertices = [arrVectors[i][0].clone(), arrVectors[i][1].clone()];
-			const line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0xff0000}) );	
+			geometry.vertices = [v1, v2];
+			const line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x009dff}) );	
 			scene.add( line );
 			meshes.push(line);
 		}
@@ -204,6 +211,49 @@ class MyGridMesh
 	}
 
 
+	// рассчитываем точки пересечения линий
+	calcCrossPointLines({lines, sizeCell})
+	{
+		let crossP = [];
+		const help = false;
+		
+		for ( let i = 0; i < lines.length; i++ )
+		{
+			for ( let i2 = 0; i2 < lines.length; i2++ )
+			{
+				if(lines[i] === lines[i2]) continue;
+				
+				const index = crossP.findIndex((o) => o.i2 === i);
+				if (index > -1) continue;
+			
+				const cross = myMath.checkCrossLine(lines[i][0], lines[i][1], lines[i2][0], lines[i2][1]);
+				if(!cross) continue;
+				
+				const pt = myMath.intersectionTwoLines_2(lines[i][0], lines[i][1], lines[i2][0], lines[i2][1]);
+				
+				if(pt)
+				{
+					crossP.push({i, i2, pt});
+				}								
+			}
+		}
+
+		if(crossP.length > 0) crossP = crossP.map(p => p.pt);
+		
+		if(help)
+		{
+			for ( let i = 0; i < crossP.length; i++ )
+			{
+				const obj = new THREE.Mesh( myGrids.geomPoint, myGrids.matPoint.clone() );
+				obj.position.copy(crossP[i]);
+				scene.add(obj);					
+			}
+		}
+		
+		return crossP;
+	}
+
+
 	// обновление обрешетки по одной точки из контура
 	upGridMeshFromPoint({point})
 	{
@@ -215,12 +265,31 @@ class MyGridMesh
 			const meshes = dataGrid.grille.meshes;
 			const sizeCell = dataGrid.grille.sizeCell;
 			
-			const result = this.upGridMeshes({points, meshes, sizeCell});
-			dataGrid.grille.meshes = result.meshes;
-			dataGrid.grille.v = result.arrVectors;
+			dataGrid.grille = this.upGridMeshes({points, meshes, sizeCell});
 		}		
 	}
 
+
+	// находим ближайшую позицию 
+	getClosestPos({pos, arrPos})
+	{
+		let result = {minDist: Infinity, pos: pos};	
+		
+		for ( let i = 0; i < arrPos.length; i++ )
+		{						
+			const dist = pos.distanceTo(arrPos[i]);
+			
+			if (dist < result.minDist) 
+			{
+				result.minDist = dist;
+				result.pos = arrPos[i].clone();
+			}			
+		}
+		
+		return result.pos; 
+	}
+	
+	
 	// удаление обрешетки
 	deleteGridMeshes({meshes})
 	{

@@ -167,9 +167,26 @@ function clickRayHit(event)
 	}
 	
 	
-	rayhit = myGrids.clickRayhit({event});
-	if(rayhit) return rayhit;	
+	// ищем точку контура сетки
+	if(!rayhit) 
+	{
+		var ray = myGrids.clickRayhit({event});
+		if(ray) { rayhit = ray; return rayhit; }
+	}	
 
+
+	// ищем контур
+	if(!rayhit) 
+	{
+		const dataGrid = myGrids.mouseDetectContour({event, click: true});
+		
+		if(dataGrid) 
+		{ 
+			rayhit = {object: { dataGrid, userData: {tag: 'dataGrid'} }};
+			return rayhit;
+		}
+	}
+	
 
 	if(!infProject.scene.block.click.controll_wd)
 	{
@@ -252,6 +269,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
 		else if( tag == 'gridPointToolWf') { myGridPointTool.mousedown({event, obj}); }
 		else if( tag == 'gridPointWf') { clickO.move = myGridPointMove.mousedown({event, obj}); }
+		else if( tag == 'dataGrid') { console.log(333, obj); }
 		else { flag = false; }
 	}
 	else if(cdm.type == 'up')
@@ -326,6 +344,8 @@ function onDocumentMouseMove( event )
 	if ( !long_click ) { long_click = ( lastClickTime - new Date().getTime() < catchTime ) ? true : false; }
 
 	var obj = clickO.move;
+	
+	
 	
 	if ( obj ) 
 	{
