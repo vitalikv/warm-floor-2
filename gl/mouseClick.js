@@ -269,7 +269,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
 		else if( tag == 'gridPointToolWf') { myGridPointTool.mousedown({event, obj}); }
 		else if( tag == 'gridPointWf') { clickO.move = myGridPointMove.mousedown({event, obj}); }
-		else if( tag == 'dataGrid') { console.log(333, obj); }
+		else if( tag == 'dataGrid') { myGrids.activateDataGrid({dataGrid: obj.dataGrid}); }
 		else { flag = false; }
 	}
 	else if(cdm.type == 'up')

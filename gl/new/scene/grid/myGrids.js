@@ -5,6 +5,7 @@ class MyGrids
 	indGrid = 0;
 	indPoint = 0;
 	dataGrids = [];
+	actDataGrid = null;
 	geomPoint;
 	matPoint;
 	colorPoint;
@@ -19,6 +20,7 @@ class MyGrids
 		this.posY = infProject.settings.grid.pos.y;
 	}
 	
+	// точка для контура
 	crPoint({pos})
 	{
 		const obj = new THREE.Mesh( this.geomPoint, this.matPoint.clone() ); 
@@ -35,10 +37,9 @@ class MyGrids
 		return obj;
 	}
 	
-	
+	// линия для контура
 	crLine({points})
-	{
-		
+	{		
 		let line = null;
 		
 		if(!points[0].userData.line)
@@ -66,7 +67,8 @@ class MyGrids
 		//this.upGeometryLine({point: points[0]});
 	}
 
-
+	
+	// создание нового контура
 	crGrid({points})
 	{
 		this.setPointsClockWise({points});
@@ -119,7 +121,8 @@ class MyGrids
 		line.geometry = geometry;	
 	}	
 
-
+	
+	// определяем кликну ли на точку контура
 	clickRayhit({event})
 	{
 		let rayhit = null;
@@ -138,7 +141,7 @@ class MyGrids
 	}
 	
 	
-	// находим контур по клику или ищем контур при перетаскивании точки трубы
+	// определяем кликну ли контуру или ищем контур при перетаскивании точки трубы
 	mouseDetectContour({event, click = false})
 	{
 		let dataGrid = null;
@@ -167,6 +170,41 @@ class MyGrids
 
 		return dataGrid;
 	}	
+	
+	
+	// получить активную сетку
+	getActDataGrid()
+	{
+		return this.actDataGrid;
+	}
+	
+	
+	// активируем сетку при клике
+	activateDataGrid({dataGrid})
+	{
+		const meshes = dataGrid.grille.meshes;		
+		if(meshes.length === 0) return;
+		
+		meshes[0].material.color = new THREE.Color(myGridMesh.actColorNumber);
+		
+		myUiGridPanel.setValueInputSizeCell(dataGrid.grille.sizeCell * 100);
+		
+		this.actDataGrid = dataGrid;
+	}
+
+
+	// деактивируем сетку
+	deActivateDataGrid({dataGrid})
+	{
+		const meshes = dataGrid.grille.meshes;		
+		if(meshes.length === 0) return;
+		
+		meshes[0].material.color = new THREE.Color(myGridMesh.defColorNumber);
+
+		myUiGridPanel.setValueInputSizeCell('');
+		
+		this.actDataGrid = null;
+	}
 	
 	
 	// получаем сетку которая относится к этой точке

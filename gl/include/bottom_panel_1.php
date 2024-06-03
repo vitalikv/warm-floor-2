@@ -1,7 +1,7 @@
 
 
 
-<div class="bottom_panel_1" style="z-index: 1;">	
+<div class="bottom_panel_1" nameId="bottom_panel_1" style="z-index: 1;">	
 
 	<?if($interface['click_wall_2D'] == 1){?>
 		<div class="toolbar" nameId='wall_menu_1' style="display: none;">

@@ -1,7 +1,16 @@
 
 // обрешетка
 class MyGridMesh 
-{	
+{
+	defColorNumber = 0x009dff;
+	actColorNumber = 0xff0000;
+	
+	constructor()
+	{
+		
+	}
+	
+	
 	// создание или обновление (через удаление старой) обрешетки
 	upGridMeshes({points, meshes = null, sizeCell = 0.2})
 	{
@@ -30,6 +39,7 @@ class MyGridMesh
 	crGridMeshes({arrVectors, posY})
 	{
 		const meshes = [];
+		const material = new THREE.LineBasicMaterial({color: this.defColorNumber});
 		
 		for ( let i = 0; i < arrVectors.length; i++ )
 		{	
@@ -38,7 +48,7 @@ class MyGridMesh
 			
 			const geometry = new THREE.Geometry();
 			geometry.vertices = [v1, v2];
-			const line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x009dff}) );	
+			const line = new THREE.Line( geometry, material );	
 			scene.add( line );
 			meshes.push(line);
 		}
@@ -269,8 +279,30 @@ class MyGridMesh
 		}		
 	}
 
+	// получаем размера ячейки обрешетки активированной сетки
+	getGridMeshSizeCell()
+	{
+		const dataGrid = myGrids.getActDataGrid();
+		if(!dataGrid) return;
+		
+		return dataGrid.grille.sizeCell;
+	}
+	
 
-	// находим ближайшую позицию 
+	// изменение размера ячейки обрешетки
+	changeGridMeshSizeCell({sizeCell})
+	{
+		const dataGrid = myGrids.getActDataGrid();
+		if(!dataGrid) return;
+		
+		const points = dataGrid.points;
+		const meshes = dataGrid.grille.meshes;
+		
+		dataGrid.grille = this.upGridMeshes({points, meshes, sizeCell});
+	}
+	
+
+	// находим ближайшую позицию (когда тащим трубу, находим ближайшую точку ячейки)
 	getClosestPos({pos, arrPos})
 	{
 		let result = {minDist: Infinity, pos: pos};	

@@ -1725,6 +1725,7 @@ function checkNumberInput(cdm)
 
 let myLeftPanel;
 let myBtnGrid;
+let myUiGridPanel;
 let myMath;
 let myGrids;
 let myGridPointMove;
@@ -1741,6 +1742,7 @@ $(document).ready(function ()
 	myBtnGrid = new MyBtnGrid();
 	//myLeftPanel.crDefPanel(); бесплатная фейковая панель (сетка)
 	myLeftPanel.crUserPanel();
+	myUiGridPanel = new MyUiGridPanel();
 	
 	myMath = new MyMath();
 	myGrids = new MyGrids();
