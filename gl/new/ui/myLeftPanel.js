@@ -47,7 +47,7 @@ class MyLeftPanel
 
 		this.inputGridSize.onkeydown = (e) => 
 		{
-			if (e.code === 'Enter') 
+			if (e.code === 'Enter' || e.code === 'NumpadEnter') 
 			{
 				updateGrid({size : e.target.value});
 			}
@@ -77,7 +77,7 @@ class MyLeftPanel
   
 		const html =
 		`<div class="left-input-block">
-			<div class="left-input-block-header">сетка</div>
+			<div class="left-input-block-header">глобальная сетка</div>
 			
 			<div style="${css3}">
 				<div style="${css1}">
@@ -118,7 +118,7 @@ class MyLeftPanel
 	{	
 		const html =
 		`<div class="left-input-block">
-			<div class="left-input-block-header">сетка</div>
+			<div class="left-input-block-header">глобальная сетка</div>
 			
 			<div class="reating-arkows">
 			 <input id="a" type="checkbox" checked="checked">

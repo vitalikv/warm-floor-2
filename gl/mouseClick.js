@@ -173,19 +173,6 @@ function clickRayHit(event)
 		var ray = myGrids.clickRayhit({event});
 		if(ray) { rayhit = ray; return rayhit; }
 	}	
-
-
-	// ищем контур
-	if(!rayhit) 
-	{
-		const dataGrid = myGrids.mouseDetectContour({event, click: true});
-		
-		if(dataGrid) 
-		{ 
-			rayhit = {object: { dataGrid, userData: {tag: 'dataGrid'} }};
-			return rayhit;
-		}
-	}
 	
 
 	if(!infProject.scene.block.click.controll_wd)
@@ -236,6 +223,19 @@ function clickRayHit(event)
 		}			
 	}
 	
+
+	// ищем контур
+	if(!rayhit) 
+	{
+		const dataGrid = myGrids.mouseDetectContour({event, click: true});
+		
+		if(dataGrid) 
+		{ 
+			rayhit = {object: { dataGrid, userData: {tag: 'dataGrid'} }};
+			return rayhit;
+		}
+	}	
+	
 	
 	return rayhit;
 }
@@ -267,9 +267,9 @@ function clickMouseActive(cdm)
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
 		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj, rayhit ); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
-		else if( tag == 'gridPointToolWf') { myGridPointTool.mousedown({event, obj}); }
-		else if( tag == 'gridPointWf') { clickO.move = myGridPointMove.mousedown({event, obj}); }
-		else if( tag == 'dataGrid') { myGrids.activateDataGrid({dataGrid: obj.dataGrid}); }
+		else if( tag == 'gridPointToolWf' && camera == cameraTop ) { myGridPointTool.mousedown({event, obj}); }
+		else if( tag == 'gridPointWf' && camera == cameraTop ) { clickO.move = myGridPointMove.mousedown({event, obj}); }
+		else if( tag == 'dataGrid' && camera == cameraTop ) { myGridActivate.activateDataGrid({dataGrid: obj.dataGrid}); }
 		else { flag = false; }
 	}
 	else if(cdm.type == 'up')

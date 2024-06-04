@@ -25,6 +25,8 @@ class MyGridPointMove
 		this.offset = intersects[0].point;		
 		
 		this.isDown = true;
+		
+		myGridActivate.activatePointDataGrid({point: obj});
 
 		return this.actObj;
 	}
@@ -53,7 +55,7 @@ class MyGridPointMove
 		myGrids.upGeometryLine({point: obj});
 		
 		// обновление обрешетки
-		myGridMesh.upGridMeshFromPoint({point: obj});
+		myGridMesh.upGridMeshFromPoint({point: obj, upCross: false});
 	}
 	
 	mouseup = () =>
@@ -61,6 +63,8 @@ class MyGridPointMove
 		const obj = this.actObj;
 		const isDown = this.isDown;
 		const isMove = this.isMove;
+		
+		if(obj) myGridMesh.upGridMeshFromPoint({point: obj});
 		
 		this.clearPoint();		
 	}

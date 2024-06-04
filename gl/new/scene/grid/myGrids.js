@@ -5,7 +5,6 @@ class MyGrids
 	indGrid = 0;
 	indPoint = 0;
 	dataGrids = [];
-	actDataGrid = null;
 	geomPoint;
 	matPoint;
 	colorPoint;
@@ -15,7 +14,7 @@ class MyGrids
 	{
 		this.geomPoint = new THREE.SphereGeometry( 0.05, 16, 16 );
 		this.colorPoint = new THREE.Color(0x222222);
-		this.matPoint = new THREE.MeshLambertMaterial({ color: this.colorPoint, lightMap: lightMap_1 });
+		this.matPoint = new THREE.MeshLambertMaterial({ color: this.colorPoint, transparent: true, depthTest: false, lightMap: lightMap_1 });
 		
 		this.posY = infProject.settings.grid.pos.y;
 	}
@@ -77,6 +76,7 @@ class MyGrids
 		{
 			points[i].userData.tag = 'gridPointWf';
 			points[i].userData.points = points;
+			points[i].visible = false;
 		}
 		
 		const grille = myGridMesh.upGridMeshes({points, sizeCell: 0.1}); 
@@ -172,39 +172,7 @@ class MyGrids
 	}	
 	
 	
-	// получить активную сетку
-	getActDataGrid()
-	{
-		return this.actDataGrid;
-	}
-	
-	
-	// активируем сетку при клике
-	activateDataGrid({dataGrid})
-	{
-		const meshes = dataGrid.grille.meshes;		
-		if(meshes.length === 0) return;
-		
-		meshes[0].material.color = new THREE.Color(myGridMesh.actColorNumber);
-		
-		myUiGridPanel.setValueInputSizeCell(dataGrid.grille.sizeCell * 100);
-		
-		this.actDataGrid = dataGrid;
-	}
 
-
-	// деактивируем сетку
-	deActivateDataGrid({dataGrid})
-	{
-		const meshes = dataGrid.grille.meshes;		
-		if(meshes.length === 0) return;
-		
-		meshes[0].material.color = new THREE.Color(myGridMesh.defColorNumber);
-
-		myUiGridPanel.setValueInputSizeCell('');
-		
-		this.actDataGrid = null;
-	}
 	
 	
 	// получаем сетку которая относится к этой точке

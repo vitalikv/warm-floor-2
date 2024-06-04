@@ -12,7 +12,7 @@ class MyGridMesh
 	
 	
 	// создание или обновление (через удаление старой) обрешетки
-	upGridMeshes({points, meshes = null, sizeCell = 0.2})
+	upGridMeshes({points, meshes = null, sizeCell = 0.2, upCross = true})
 	{
 		const arrPos = points.map(p => p.position.clone());
 		arrPos.push(arrPos[0]);
@@ -25,21 +25,27 @@ class MyGridMesh
 		
 		const arrVectors = this.calcVectorsLines({arrLines, arrPos});	// массив линий с точками
 
-		const crossP = this.calcCrossPointLines({lines: arrVectors, sizeCell});
+		const crossP = (upCross) ? this.calcCrossPointLines({lines: arrVectors, sizeCell}) : [];
 		
-		if(meshes) this.deleteGridMeshes({meshes});	
+		let material = null;
+		if(meshes) 
+		{
+			if(meshes.length > 0) material = meshes[0].material;
 		
-		meshes = this.crGridMeshes({arrVectors, posY});
+			this.deleteGridMeshes({meshes});
+		}			
+		
+		meshes = this.crGridMeshes({arrVectors, posY, material});
 			
 		return { meshes, v: arrVectors, crossP, sizeCell };
 	}
 	
 	
 	// создание обрешетки
-	crGridMeshes({arrVectors, posY})
+	crGridMeshes({arrVectors, posY, material = null})
 	{
 		const meshes = [];
-		const material = new THREE.LineBasicMaterial({color: this.defColorNumber});
+		if(!material) material = new THREE.LineBasicMaterial({color: this.defColorNumber});
 		
 		for ( let i = 0; i < arrVectors.length; i++ )
 		{	
@@ -265,7 +271,7 @@ class MyGridMesh
 
 
 	// обновление обрешетки по одной точки из контура
-	upGridMeshFromPoint({point})
+	upGridMeshFromPoint({point, upCross = true})
 	{
 		const dataGrid = myGrids.getDataGridFromPoint({point});
 		
@@ -275,14 +281,14 @@ class MyGridMesh
 			const meshes = dataGrid.grille.meshes;
 			const sizeCell = dataGrid.grille.sizeCell;
 			
-			dataGrid.grille = this.upGridMeshes({points, meshes, sizeCell});
+			dataGrid.grille = this.upGridMeshes({points, meshes, sizeCell, upCross});
 		}		
 	}
 
 	// получаем размера ячейки обрешетки активированной сетки
 	getGridMeshSizeCell()
 	{
-		const dataGrid = myGrids.getActDataGrid();
+		const dataGrid = myGridActivate.getActDataGrid();
 		if(!dataGrid) return;
 		
 		return dataGrid.grille.sizeCell;
@@ -292,7 +298,7 @@ class MyGridMesh
 	// изменение размера ячейки обрешетки
 	changeGridMeshSizeCell({sizeCell})
 	{
-		const dataGrid = myGrids.getActDataGrid();
+		const dataGrid = myGridActivate.getActDataGrid();
 		if(!dataGrid) return;
 		
 		const points = dataGrid.points;

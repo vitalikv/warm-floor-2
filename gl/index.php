@@ -96,6 +96,7 @@
 	<script src="<?=$path?>new/scene/grid/myGridPointMove.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridPointTool.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridMesh.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/grid/myGridActivate.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridsSaveLoad.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>uiInterface.js?<?=$vrs?>"></script>	
