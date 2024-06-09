@@ -12,16 +12,24 @@ class MyGridMesh
 	
 	
 	// создание или обновление (через удаление старой) обрешетки
-	upGridMeshes({points, meshes = null, sizeCell = 0.2, upCross = true})
+	upGridMeshes({dataGrid, sizeCell, upCross = true})
 	{
+		const points = dataGrid.points;
+		let meshes = (dataGrid.grille.meshes) ? dataGrid.grille.meshes : null;
+		sizeCell = (sizeCell) ? sizeCell : dataGrid.grille.sizeCell;
+		let offset = (dataGrid.grille.offset) ? dataGrid.grille.offset : new THREE.Vector2(0, 0);
+		const modeOffset = (dataGrid.grille.modeOffset) ? dataGrid.grille.modeOffset : false;
+		
 		const arrPos = points.map(p => p.position.clone());
 		arrPos.push(arrPos[0]);
 		
 		const posY = arrPos[0].y;
 
 		const result = this.calcBoundGrid({arrPos});
-
-		const arrLines = this.calcLinesGrid({x: result.x, z: result.z, centerPos: result.centerPos, sizeCell});
+		
+		const result2 = this.calcLinesGrid({x: result.x, z: result.z, centerPos: result.centerPos, sizeCell, offset});
+		const arrLines = result2.arrLines;
+		offset = result2.offset;
 		
 		const arrVectors = this.calcVectorsLines({arrLines, arrPos});	// массив линий с точками
 
@@ -37,7 +45,7 @@ class MyGridMesh
 		
 		meshes = this.crGridMeshes({arrVectors, posY, material});
 			
-		return { meshes, v: arrVectors, crossP, sizeCell };
+		return { meshes, v: arrVectors, crossP, sizeCell, offset, modeOffset };
 	}
 	
 	
@@ -97,15 +105,20 @@ class MyGridMesh
 
 
 	// рассчет прямоугольной сетки из линий
-	calcLinesGrid({x, z, centerPos, sizeCell})
+	calcLinesGrid({x, z, centerPos, sizeCell, offset = new THREE.Vector2(0, 0) })
 	{
 		let size = sizeCell;	// размер ячейки
 		
 		const countX = Math.floor(x/size);
 		const countZ = Math.floor(z/size);
 		
-		const ofssetX = (countX * size) / 2;
-		const ofssetZ = (countZ * size) / 2;
+		let centerX = (countX * size) / 2;	// ширина от начала до конца сетки, деленная на 2
+		let centerZ = (countZ * size) / 2;
+		
+		offset = this.calcOffsetLines({x, z, countX, countZ, size, offset });
+		
+		centerX -= offset.x;
+		centerZ -= offset.y;
 		
 		const arrLines = [];
 		const help = false;		// показываем линии (help)
@@ -113,21 +126,24 @@ class MyGridMesh
 		
 		for ( let i = 0; i <= countX; i ++ ) 
 		{		
-			const v1 = new THREE.Vector3(0,0,0).add(centerPos).add(new THREE.Vector3(( i * size ) - ofssetX, 0, -z/2));
-			const v2 = new THREE.Vector3(0,0,z).add(centerPos).add(new THREE.Vector3(( i * size ) - ofssetX, 0, -z/2));
+			const v1 = new THREE.Vector3(0,0,0).add(centerPos).add(new THREE.Vector3(( i * size ) - centerX, 0, -z/2));
+			const v2 = new THREE.Vector3(0,0,z).add(centerPos).add(new THREE.Vector3(( i * size ) - centerX, 0, -z/2));
 			arrLines.push({dir: 'z', points: [v1.clone(), v2.clone()]});
 		}
 		
 		for ( let i = 0; i <= countZ; i ++ ) 
-		{
-			
-			const v1 = new THREE.Vector3(0,0,0).add(centerPos).add(new THREE.Vector3(-x/2, 0, ( i * size ) - ofssetZ));
-			const v2 = new THREE.Vector3(x,0,0).add(centerPos).add(new THREE.Vector3(-x/2, 0, ( i * size ) - ofssetZ));
+		{			
+			const v1 = new THREE.Vector3(0,0,0).add(centerPos).add(new THREE.Vector3(-x/2, 0, ( i * size ) - centerZ));
+			const v2 = new THREE.Vector3(x,0,0).add(centerPos).add(new THREE.Vector3(-x/2, 0, ( i * size ) - centerZ));
 			arrLines.push({dir: 'x', points: [v1.clone(), v2.clone()]});
 		}
 
 		if(help)
 		{
+			const obj = new THREE.Mesh( myGrids.geomPoint, myGrids.matPoint.clone() );
+			obj.position.copy(centerPos);
+			scene.add( obj );
+			
 			for ( let i = 0; i < arrLines.length; i++ )
 			{
 				const v1 = arrLines[i].points[0].clone();
@@ -140,9 +156,46 @@ class MyGridMesh
 			}			
 		}
 
-		return arrLines;
+		return { arrLines, offset };
 	}
-	
+
+
+	// рассчет смещения линий обрешетки, чтобы линии всегда были в контуре
+	calcOffsetLines({x, z, countX, countZ, size, offset})
+	{
+		let offsetX = offset.x;
+		let offsetZ = offset.y;
+		
+		if(x < (countX * size + offsetX))
+		{
+			let countZaLimit = Math.floor(((countX * size + offsetX) - x) / size);
+			countZaLimit += 1;			
+			const dlinaOffset = countZaLimit * size;
+			offsetX -= dlinaOffset;
+		}
+		else if(0 > offsetX)
+		{
+			let countZaLimit = Math.floor(Math.abs(offsetX) / size);			
+			const dlinaOffset = countZaLimit * size;			
+			offsetX += dlinaOffset;			
+		}
+
+		if(z < (countX * size + offsetZ))
+		{
+			let countZaLimit = Math.floor(((countZ * size + offsetZ) - z) / size);
+			countZaLimit += 1;			
+			const dlinaOffset = countZaLimit * size;
+			offsetZ -= dlinaOffset;
+		}
+		else if(0 > offsetZ)
+		{
+			let countZaLimit = Math.floor(Math.abs(offsetZ) / size);			
+			const dlinaOffset = countZaLimit * size;
+			offsetZ += dlinaOffset;
+		}
+
+		return new THREE.Vector2(offsetX, offsetZ);
+	}
 	
 	// рассчет окончательной сетки из линий
 	calcVectorsLines({arrLines, arrPos})
@@ -164,8 +217,8 @@ class MyGridMesh
 				
 				if(cross)
 				{
-					//const pt = myMath.intersectionTwoLines_1({line1: {start: p1, end: p2}, line2: {start: arrPos[i2], end: arrPos[i2+1]}});
-					const pt = myMath.intersectionTwoLines_2(p1, p2, arrPos[i2], arrPos[i2+1]);
+					const pt = myMath.intersectionTwoLines_1({line1: {start: p1, end: p2}, line2: {start: arrPos[i2], end: arrPos[i2+1]}});
+					//const pt = myMath.intersectionTwoLines_2(p1, p2, arrPos[i2], arrPos[i2+1]);
 					arrPos2.push(pt);
 				}
 			}
@@ -273,16 +326,10 @@ class MyGridMesh
 	// обновление обрешетки по одной точки из контура
 	upGridMeshFromPoint({point, upCross = true})
 	{
-		const dataGrid = myGrids.getDataGridFromPoint({point});
+		const dataGrid = myGrids.getDataGridFromPoint({point});		
+		if(!dataGrid) return;
 		
-		if(dataGrid)
-		{
-			const points = myGrids.getPointsFromPoint({point});
-			const meshes = dataGrid.grille.meshes;
-			const sizeCell = dataGrid.grille.sizeCell;
-			
-			dataGrid.grille = this.upGridMeshes({points, meshes, sizeCell, upCross});
-		}		
+		dataGrid.grille = this.upGridMeshes({dataGrid, upCross});		
 	}
 
 	// получаем размера ячейки обрешетки активированной сетки
@@ -301,10 +348,16 @@ class MyGridMesh
 		const dataGrid = myGridActivate.getActDataGrid();
 		if(!dataGrid) return;
 		
-		const points = dataGrid.points;
-		const meshes = dataGrid.grille.meshes;
+		dataGrid.grille = this.upGridMeshes({dataGrid, sizeCell});
+	}
+	
+	
+	// смещение обрешетки
+	offsetGridMeshes({dataGrid, offset, upCross = true})
+	{
+		dataGrid.grille.offset.add(offset);
 		
-		dataGrid.grille = this.upGridMeshes({points, meshes, sizeCell});
+		dataGrid.grille = this.upGridMeshes({dataGrid, upCross});		
 	}
 	
 

@@ -79,7 +79,7 @@ class MyGrids
 			points[i].visible = false;
 		}
 		
-		const grille = myGridMesh.upGridMeshes({points, sizeCell: 0.1}); 
+		const grille = myGridMesh.upGridMeshes({dataGrid: {points, grille: {sizeCell: 0.3} } }); 
 		
 		console.log(points.map(p => p.userData.id));
 		

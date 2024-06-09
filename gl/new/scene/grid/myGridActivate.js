@@ -15,7 +15,8 @@ class MyGridActivate
 	activateDataGrid({dataGrid})
 	{
 		const meshes = dataGrid.grille.meshes;
-		const points = dataGrid.points;		
+		const points = dataGrid.points;
+		const modeOffset = dataGrid.grille.modeOffset;
 		if(meshes.length === 0) return;
 		
 		meshes[0].material.color = new THREE.Color(myGridMesh.actColorNumber);
@@ -26,6 +27,8 @@ class MyGridActivate
 		}		
 		
 		myUiGridPanel.setValueInputSizeCell(dataGrid.grille.sizeCell * 100);
+		myUiGridPanel.btnToggleOffset({setAct: (modeOffset) ? 1 : 0});
+		myUiGridPanel.btnToggleLink({setAct: 0});		
 		
 		this.actDataGrid = dataGrid;
 	}
@@ -68,9 +71,12 @@ class MyGridActivate
 			points[i].visible = false;
 		}		
 
-		myUiGridPanel.setValueInputSizeCell('');
+		myUiGridPanel.setValueInputSizeCell('');		
 		
 		this.actDataGrid = null;
+		
+		myUiGridPanel.btnToggleOffset({setAct: 0});
+		myUiGridPanel.btnToggleLink({setAct: 0});		
 	}
 	
 	

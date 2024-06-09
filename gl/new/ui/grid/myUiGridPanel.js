@@ -18,18 +18,33 @@ class MyUiGridPanel
 		const div = document.createElement('div');
 		div.innerHTML = this.html_1();
 		div.style.cssText = 'position: absolute; bottom: 30px;';
+		this.eventStop({div});	
 		
 		this.wrap.append(div);
 
 		this.initEventInputSizeCell();
 		this.initEventBtnSliders();
-		
+	}
+
+	initBtn()
+	{
 		this.btnToggleOffset({setAct: 0});
-		this.btnToggleLink({setAct: 0});
+		this.btnToggleLink({setAct: 0});		
 	}
 	
+	// блокируем действия на 3д сцене, когда курсор находится на div
+	eventStop({div})
+	{
+		const arrEvent = ['onmousedown', 'onwheel', 'onmousewheel', 'onmousemove', 'ontouchstart', 'ontouchend', 'ontouchmove'];
+
+		arrEvent.forEach((events) => 
+		{
+			div[events] = (e) => { e.stopPropagation(); }					
+		});			
+	}
 
 	
+	// назначаем событие после ввода и нажания Enter в inpute 
 	initEventInputSizeCell()
 	{
 		this.inputSizeCell = this.wrap.querySelector('[nameId="gridSizeCell"]');
@@ -43,7 +58,7 @@ class MyUiGridPanel
 		};
 	}
 
-
+	// назначаем событие после переключения кнопок 
 	initEventBtnSliders()
 	{		
 		const div1 = this.wrap.querySelector('[nameId="btnOffset"]');
@@ -124,7 +139,7 @@ class MyUiGridPanel
 		
 		const html =
 		`<div style="${style1}">
-			<div class="left-input-block-header">сетка пользователя</div>						
+			<div class="left-input-block-header" style="user-select: none;">сетка пользователя</div>						
 			
 			<div class="input-height">
 				<div class="text_1">ячейка (cм)</div>
@@ -168,6 +183,11 @@ class MyUiGridPanel
 		divTxt.innerHTML = txt;
 		divTxt.style.left = (ind === 0) ? '0' : 'auto';
 		divTxt.style.right = (ind === 0) ? 'auto' : '0';
+		
+		const dataGrid = myGridActivate.getActDataGrid();
+		if(!dataGrid) return;
+
+		dataGrid.grille.modeOffset = (ind === 0) ? false: true;
 	}
 	
 	// переключаем или устанавливаем btn в нужное положение

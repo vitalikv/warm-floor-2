@@ -1731,6 +1731,7 @@ let myGrids;
 let myGridPointMove;
 let myGridPointTool;
 let myGridMesh;
+let myGridMeshOffset;
 let myGridActivate;
 let myGridsSaveLoad;
 
@@ -1750,8 +1751,11 @@ $(document).ready(function ()
 	myGridPointMove = new MyGridPointMove();
 	myGridPointTool = new MyGridPointTool();
 	myGridMesh = new MyGridMesh();
+	myGridMeshOffset = new MyGridMeshOffset();
 	myGridActivate = new MyGridActivate();
-	myGridsSaveLoad = new MyGridsSaveLoad();	
+	myGridsSaveLoad = new MyGridsSaveLoad();
+
+	myUiGridPanel.initBtn();
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	

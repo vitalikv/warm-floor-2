@@ -269,7 +269,11 @@ function clickMouseActive(cdm)
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
 		else if( tag == 'gridPointToolWf' && camera == cameraTop ) { myGridPointTool.mousedown({event, obj}); }
 		else if( tag == 'gridPointWf' && camera == cameraTop ) { clickO.move = myGridPointMove.mousedown({event, obj}); }
-		else if( tag == 'dataGrid' && camera == cameraTop ) { myGridActivate.activateDataGrid({dataGrid: obj.dataGrid}); }
+		else if( tag == 'dataGrid' && camera == cameraTop ) 
+		{ 
+			myGridActivate.activateDataGrid({dataGrid: obj.dataGrid});
+			if(myGridMeshOffset.mousedown({event, dataGrid: obj.dataGrid})) { clickO.move = obj; }
+		}
 		else { flag = false; }
 	}
 	else if(cdm.type == 'up')
@@ -367,6 +371,7 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'obj' ) { moveObjectPop( event ); }
 		else if ( tag == 'gridPointToolWf' ) { myGridPointTool.mousemove( event ); }
 		else if ( tag == 'gridPointWf' ) { myGridPointMove.mousemove( event ); }
+		else if ( tag == 'dataGrid' ) { myGridMeshOffset.mousemove( event ); }
 	}
 	else 
 	{
@@ -429,6 +434,11 @@ function onDocumentMouseUp( event )
 			myGridPointMove.mouseup();
 			clickO.move = null;
 		}
+		else if(tag == 'dataGrid') 
+		{
+			myGridMeshOffset.mouseup();
+			clickO.move = null;
+		}		
 		else { clickO.move = null; }		
 	}
 
