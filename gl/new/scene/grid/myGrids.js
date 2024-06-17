@@ -68,7 +68,7 @@ class MyGrids
 
 	
 	// создание нового контура
-	crGrid({points})
+	crGrid({points, sizeCell = 0.2, offset = new THREE.Vector2(0, 0)})
 	{
 		this.setPointsClockWise({points});
 		
@@ -79,7 +79,7 @@ class MyGrids
 			points[i].visible = false;
 		}
 		
-		const grille = myGridMesh.upGridMeshes({dataGrid: {points, grille: {sizeCell: 0.3} } }); 
+		const grille = myGridMesh.upGridMeshes({dataGrid: {points, grille: {sizeCell, offset} } }); 
 		
 		console.log(points.map(p => p.userData.id));
 		
@@ -101,6 +101,7 @@ class MyGrids
 	}
 	
 
+	// обновляем линию контура
 	upGeometryLine({point})
 	{		
 		const line = point.userData.line;
