@@ -187,7 +187,7 @@ class MyUiGridPanel
 		const dataGrid = myGridActivate.getActDataGrid();
 		if(!dataGrid) return;
 
-		dataGrid.grille.modeOffset = (ind === 0) ? false: true;
+		myGrids.setModeOffset({dataGrid, act: (ind === 0) ? false: true});
 	}
 	
 	// переключаем или устанавливаем btn в нужное положение

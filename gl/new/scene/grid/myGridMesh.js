@@ -12,13 +12,14 @@ class MyGridMesh
 	
 	
 	// создание или обновление (через удаление старой) обрешетки
-	upGridMeshes({dataGrid, sizeCell, offset = new THREE.Vector2(0, 0), upCross = true})
+	upGridMeshes({dataGrid, sizeCell, offset = null, upCross = true})
 	{
 		const points = dataGrid.points;
 		let meshes = (dataGrid.grille.meshes) ? dataGrid.grille.meshes : null;
 		sizeCell = (sizeCell) ? sizeCell : dataGrid.grille.sizeCell;
-		if(dataGrid.grille.offset) offset = dataGrid.grille.offset;
-		const modeOffset = (dataGrid.grille.modeOffset) ? dataGrid.grille.modeOffset : false;
+		offset = (offset) ? offset : dataGrid.grille.offset;
+		const modeOffset = (myGrids.getModeOffset({dataGrid}) !== undefined) ? myGrids.getModeOffset({dataGrid}) : false;
+		const modeLink = false;	// флаг - привязка точки при построении трубы
 		
 		const arrPos = points.map(p => p.position.clone());
 		arrPos.push(arrPos[0]);
@@ -45,7 +46,7 @@ class MyGridMesh
 		
 		meshes = this.crGridMeshes({arrVectors, posY, material});
 			
-		return { meshes, v: arrVectors, crossP, sizeCell, offset, modeOffset };
+		return { meshes, v: arrVectors, crossP, sizeCell, offset, modeOffset, modeLink };
 	}
 	
 	

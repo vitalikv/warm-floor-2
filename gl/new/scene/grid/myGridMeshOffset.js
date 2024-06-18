@@ -11,18 +11,11 @@ class MyGridMeshOffset
 
 	mousedown = ({event, dataGrid}) =>
 	{
-		const meshes = dataGrid.grille.meshes;
+		const meshes = myGrids.getGridMeshes({dataGrid});
 		const points = dataGrid.points;		
 		if(meshes.length === 0) return;
 		
-		if(dataGrid.grille.modeOffset)
-		{
-			meshes[0].material.color = new THREE.Color(0x00ff00);
-		}
-		else
-		{
-			return;
-		}
+		if(!myGrids.getModeOffset({dataGrid})) return;
 		
 		this.isDown = false;
 		this.isMove = false;	
@@ -84,7 +77,6 @@ class MyGridMeshOffset
 		this.isDown = false;
 		this.isMove = false;
 	}
-
 }
 
 

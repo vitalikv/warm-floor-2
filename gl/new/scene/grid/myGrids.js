@@ -7,14 +7,16 @@ class MyGrids
 	dataGrids = [];
 	geomPoint;
 	matPoint;
-	colorPoint;
+	defColorPointNumber = 0x222222;
+	actColorPointNumber = 0xff0000;
+	defColorLineNumber = 0x222222;
+	actColorLineNumber = 0xff0000;	
 	posY = 0;
 	
 	constructor()
 	{
 		this.geomPoint = new THREE.SphereGeometry( 0.05, 16, 16 );
-		this.colorPoint = new THREE.Color(0x222222);
-		this.matPoint = new THREE.MeshLambertMaterial({ color: this.colorPoint, transparent: true, depthTest: false, lightMap: lightMap_1 });
+		this.matPoint = new THREE.MeshLambertMaterial({ color: new THREE.Color(this.defColorPointNumber), transparent: true, depthTest: false, lightMap: lightMap_1 });
 		
 		this.posY = infProject.settings.grid.pos.y;
 	}
@@ -49,7 +51,7 @@ class MyGrids
 			const geometry = new THREE.Geometry();
 			geometry.vertices = arrP;
 	
-			line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x222222}) );	
+			line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: this.defColorLineNumber}) );	
 			scene.add( line );					
 		}
 		else
@@ -104,7 +106,7 @@ class MyGrids
 	// обновляем линию контура
 	upGeometryLine({point})
 	{		
-		const line = point.userData.line;
+		const line = this.getLineFromPoint({point});
 		if(!line) return;
 		
 		const points = this.getPointsFromPoint({point});
@@ -207,6 +209,28 @@ class MyGrids
 		return point.userData.line;		
 	}
 	
+	
+	// получаем массив линий (обрешетка)
+	getGridMeshes({dataGrid})
+	{
+		return dataGrid.grille.meshes;
+	}	
+	
+	getModeOffset({dataGrid})
+	{
+		return dataGrid.grille.modeOffset;
+	}	
+
+
+	// вкл/выкл режим смещения сетки
+	setModeOffset({dataGrid, act = false})
+	{
+		dataGrid.grille.modeOffset = act;
+		
+		const meshes = this.getGridMeshes({dataGrid});
+		myGridActivate.setColorMeshGrid({mesh: meshes[0], act});
+	}
+	
 
 	// удаление одной точки
 	deletePoint({point})
@@ -224,7 +248,8 @@ class MyGrids
 			
 			const dataGrid = this.getDataGridFromPoint({point: points[0]});
 			
-			myGridMesh.deleteGridMeshes({meshes: dataGrid.grille.meshes});
+			const meshes = this.getGridMeshes({dataGrid});
+			myGridMesh.deleteGridMeshes({meshes});
 			
 			this.deleteDataGrid({dataGrid});
 			
