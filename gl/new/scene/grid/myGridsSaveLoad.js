@@ -13,8 +13,9 @@ class MyGridsSaveLoad
 			
 			const sizeCell = myGrids.dataGrids[i].grille.sizeCell;
 			const offset = myGrids.dataGrids[i].grille.offset;
+			const modeLink = myGrids.dataGrids[i].grille.modeLink;
 			
-			data.push({pos, sizeCell, offset});
+			data.push({pos, sizeCell, offset, modeLink});
 		}
 		
 		return data;
@@ -28,6 +29,7 @@ class MyGridsSaveLoad
 			const arrPos = data[i].pos;
 			const sizeCell = (data[i].sizeCell) ? data[i].sizeCell : undefined;
 			const offset = (data[i].offset) ? data[i].offset : undefined;
+			const modeLink = (data[i].modeLink) ? data[i].modeLink : undefined; 
 			
 			const points = [];
 			
@@ -41,7 +43,7 @@ class MyGridsSaveLoad
 			myGrids.crLine({points});
 			myGrids.upGeometryLine({point: points[0]});
 			
-			myGrids.crGrid({points, sizeCell, offset});
+			myGrids.crGrid({points, sizeCell, offset, modeLink});  
 		}
 		
 		return data;

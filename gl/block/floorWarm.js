@@ -74,7 +74,7 @@ function moveWFPoint(event, obj)
 	var pos = new THREE.Vector3().addVectors( intersects[0].point, clickO.offset );
 	
 	const dataGrid = myGrids.mouseDetectContour({event});
-	if(dataGrid)
+	if(dataGrid && myGrids.getModeLink({dataGrid}))
 	{
 		pos = myGridMesh.getClosestPos({pos, arrPos: dataGrid.grille.crossP});		
 	}

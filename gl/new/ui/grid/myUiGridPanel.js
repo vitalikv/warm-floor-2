@@ -206,7 +206,12 @@ class MyUiGridPanel
 		div.style.background = (ind === 0) ? '#736d6d': '#45a53a';						
 		divTxt.innerHTML = txt;
 		divTxt.style.left = (ind === 0) ? '0' : 'auto';
-		divTxt.style.right = (ind === 0) ? 'auto' : '0';		
+		divTxt.style.right = (ind === 0) ? 'auto' : '0';
+
+		const dataGrid = myGridActivate.getActDataGrid();
+		if(!dataGrid) return;
+
+		myGrids.setModeLink({dataGrid, act: (ind === 0) ? false: true});		
 	}
 	
 	setValueInputSizeCell(value)

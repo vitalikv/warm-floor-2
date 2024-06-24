@@ -70,7 +70,7 @@ class MyGrids
 
 	
 	// создание нового контура
-	crGrid({points, sizeCell = 0.2, offset = new THREE.Vector2(0, 0)})
+	crGrid({points, sizeCell = 0.2, offset = new THREE.Vector2(0, 0), modeLink = false})
 	{
 		this.setPointsClockWise({points});
 		
@@ -80,12 +80,15 @@ class MyGrids
 			points[i].userData.points = points;
 			points[i].visible = false;
 		}
-		
-		const grille = myGridMesh.upGridMeshes({dataGrid: {points, grille: {sizeCell, offset} } }); 
+		 
+		const grille = myGridMesh.upGridMeshes({dataGrid: {points, grille: {sizeCell, offset, modeLink}} }); 
 		
 		console.log(points.map(p => p.userData.id));
 		
-		this.dataGrids.push({id: this.indGrid, points, grille });
+		const dataGrid = {id: this.indGrid, points, grille};
+		this.dataGrids.push(dataGrid);
+		
+		myGridActivate.setColorMeshGrid({dataGrid});
 		
 		this.indGrid++;
 	}
@@ -144,7 +147,7 @@ class MyGrids
 	}
 	
 	
-	// определяем кликну ли контуру или ищем контур при перетаскивании точки трубы
+	// определяем кликнули контуру или ищем контур при перетаскивании точки трубы
 	mouseDetectContour({event, click = false})
 	{
 		let dataGrid = null;
@@ -173,9 +176,6 @@ class MyGrids
 
 		return dataGrid;
 	}	
-	
-	
-
 	
 	
 	// получаем сетку которая относится к этой точке
@@ -221,16 +221,27 @@ class MyGrids
 		return dataGrid.grille.modeOffset;
 	}	
 
+	
+	getModeLink({dataGrid})
+	{
+		return dataGrid.grille.modeLink;
+	}
 
 	// вкл/выкл режим смещения сетки
 	setModeOffset({dataGrid, act = false})
 	{
 		dataGrid.grille.modeOffset = act;
-		
-		const meshes = this.getGridMeshes({dataGrid});
-		myGridActivate.setColorMeshGrid({mesh: meshes[0], act});
+
+		myGridActivate.setColorMeshGrid({dataGrid, act});
 	}
-	
+
+	// вкл/выкл привязка точки трубы к сетке
+	setModeLink({dataGrid, act = false})
+	{
+		dataGrid.grille.modeLink = act;
+
+		myGridActivate.setColorMeshGrid({dataGrid});
+	}	
 
 	// удаление одной точки
 	deletePoint({point})

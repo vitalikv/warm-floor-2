@@ -17,11 +17,11 @@ class MyGridActivate
 		const meshes = myGrids.getGridMeshes({dataGrid});
 		const points = dataGrid.points;
 		const modeOffset = myGrids.getModeOffset({dataGrid});
+		const modeLink = myGrids.getModeLink({dataGrid});
 		if(meshes.length === 0) return;
 		
-		//meshes[0].material.color = new THREE.Color(myGridMesh.actColorNumber);
 		this.setColorContourLineGrid({point: points[0], act: true});
-		this.setColorMeshGrid({mesh: meshes[0], act: modeOffset});
+		this.setColorMeshGrid({dataGrid, act: modeOffset});
 		
 		for ( let i = 0; i < points.length; i++ )
 		{
@@ -30,7 +30,7 @@ class MyGridActivate
 		
 		myUiGridPanel.setValueInputSizeCell(dataGrid.grille.sizeCell * 100);
 		myUiGridPanel.btnToggleOffset({setAct: (modeOffset) ? 1 : 0});
-		myUiGridPanel.btnToggleLink({setAct: 0});		
+		myUiGridPanel.btnToggleLink({setAct: (modeLink) ? 1 : 0});		
 		
 		this.actDataGrid = dataGrid;
 	}
@@ -47,10 +47,9 @@ class MyGridActivate
 		const modeOffset = myGrids.getModeOffset({dataGrid});		
 		if(meshes.length === 0) return;
 
-		//meshes[0].material.color = new THREE.Color(myGridMesh.actColorNumber);
 		this.setColorContourLineGrid({point, act: true});
 		this.setColorPointGrid({point, act: true});
-		this.setColorMeshGrid({mesh: meshes[0], act: modeOffset});
+		this.setColorMeshGrid({dataGrid, act: modeOffset});
 		
 		for ( let i = 0; i < points.length; i++ )
 		{
@@ -68,9 +67,8 @@ class MyGridActivate
 		const points = dataGrid.points;
 		if(meshes.length === 0) return;
 		
-		//meshes[0].material.color = new THREE.Color(myGridMesh.defColorNumber);
 		this.setColorContourLineGrid({point: points[0], act: false});
-		this.setColorMeshGrid({mesh: meshes[0], act: false});
+		this.setColorMeshGrid({dataGrid, act: false});
 		
 		for ( let i = 0; i < points.length; i++ )
 		{
@@ -96,10 +94,9 @@ class MyGridActivate
 		const points = dataGrid.points;
 		if(meshes.length === 0) return;
 		
-		//meshes[0].material.color = new THREE.Color(myGridMesh.defColorNumber);
 		this.setColorContourLineGrid({point, act: false});		
 		this.setColorPointGrid({point, act: false});
-		this.setColorMeshGrid({mesh: meshes[0], act: false});
+		this.setColorMeshGrid({dataGrid, act: false});
 		
 		for ( let i = 0; i < points.length; i++ )
 		{
@@ -126,9 +123,21 @@ class MyGridActivate
 
 
 	// устанавливаем цвет контура обрешетки в зависимости от автивровано смещение или нет
-	setColorMeshGrid({mesh, act = false})
+	setColorMeshGrid({dataGrid, act = false})
 	{
-		mesh.material.color = (act) ? new THREE.Color(myGridMesh.actColorNumber) : new THREE.Color(myGridMesh.defColorNumber);
+		const meshes = myGrids.getGridMeshes({dataGrid});
+		const mesh = meshes[0];
+		
+		if(act)
+		{
+			mesh.material.color = new THREE.Color(myGridMesh.actColorMeshNumber);
+		}
+		else
+		{
+			const actLink = myGrids.getModeLink({dataGrid});
+			
+			mesh.material.color = (actLink) ? new THREE.Color(myGridMesh.linkColorMeshNumber) : new THREE.Color(myGridMesh.defColorMeshNumber);
+		}
 	}
 	
 	render()

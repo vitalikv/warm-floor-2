@@ -2,8 +2,9 @@
 // обрешетка
 class MyGridMesh 
 {
-	defColorNumber = 0x009dff;
-	actColorNumber = 0xff0000;
+	defColorMeshNumber = 0xcccccc;
+	actColorMeshNumber = 0xff0000;
+	linkColorMeshNumber = 0x009dff;
 	
 	constructor()
 	{
@@ -19,7 +20,7 @@ class MyGridMesh
 		sizeCell = (sizeCell) ? sizeCell : dataGrid.grille.sizeCell;
 		offset = (offset) ? offset : dataGrid.grille.offset;
 		const modeOffset = (myGrids.getModeOffset({dataGrid}) !== undefined) ? myGrids.getModeOffset({dataGrid}) : false;
-		const modeLink = false;	// флаг - привязка точки при построении трубы
+		const modeLink = myGrids.getModeLink({dataGrid});	// флаг - привязка точки при построении трубы
 		
 		const arrPos = points.map(p => p.position.clone());
 		arrPos.push(arrPos[0]);
@@ -54,7 +55,7 @@ class MyGridMesh
 	crGridMeshes({arrVectors, posY, material = null})
 	{
 		const meshes = [];
-		if(!material) material = new THREE.LineBasicMaterial({color: this.defColorNumber});
+		if(!material) material = new THREE.LineBasicMaterial({color: this.defColorMeshNumber});
 		
 		for ( let i = 0; i < arrVectors.length; i++ )
 		{	
