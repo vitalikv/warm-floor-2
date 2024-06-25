@@ -1,15 +1,6 @@
 
 
 
-function loadUrl(href) 
-{
-	var url = new URL(href); 
-	var url = url.searchParams.get('file');  
-	if(url) { loadFile(url); }
-}
-
-
-
 var resetPop =
 {
 	camera3D : 
@@ -365,18 +356,16 @@ async function saveFile(cdm)
 	// сохраняем в папку
 	if(cdm.local)
 	{
-		$.ajax
-		({
-			url: infProject.path+'saveJson.php',
-			type: 'POST',
-			data: {myarray: json},
-			dataType: 'json',
-			success: function(json)
-			{ 			
-				console.log(json); 
-			},
-			error: function(json){ console.log(json);  }
-		});			
+		const url = infProject.path+'saveJson.php';			
+		
+		const response = await fetch(url, 
+		{
+			method: 'POST',
+			body: 'myarray='+encodeURIComponent(json),
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },				
+		});
+		const data = await response.json();		
+		console.log(data);			
 	}
 	else // сохраняем в бд
 	{
@@ -599,42 +588,34 @@ function getJsonGeometry()
 
 
 
-function loadFile(cdm) 
+async function loadFile({id = undefined, local = undefined}) 
 {
-	if(cdm.id == 0) { resetScene(); return; }	 
+	resetScene();
+	let data = null;
 	
-	
-	if(1==1)	// загрузка json из папки
-	{
-		$.ajax
-		({
-			url: infProject.path+'t/fileJson.json',
-			type: 'POST',
-			dataType: 'json',
-			success: function(json)
-			{ 
-				resetScene();
-				loadFilePL(json); 	// загрузка json
-			},
-		});			
-	}
-	else	// загрузка json из бд
-	{
-		$.ajax
-		({
-			url: infProject.path+'components/loadSql.php',
-			type: 'POST',
-			data: {id: cdm.id},
-			dataType: 'json',
-			success: function(json)
-			{ 
-				resetScene();
-				loadFilePL(json); 	// загрузка json
-			},
+	if(local)	// загрузка json из папки
+	{		
+		const url = infProject.path + 't/fileJson.json';		
+		const response = await fetch(url, 
+		{
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },						
 		});		
-		
+		data = await response.json();					
+	}
+	else if(id)	// загрузка json из бд
+	{
+		const url = infProject.path + 'components/loadSql.php';		
+		const response = await fetch(url, 
+		{
+			method: 'POST',
+			body: 'id='+id,
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },						
+		});		
+		data = await response.json();		
 	}
 	
+	if(data) loadFilePL(data);
 }
 
 

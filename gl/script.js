@@ -1759,12 +1759,8 @@ $(document).ready(function ()
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	
-	loadFile('');
-	if(infProject.scene.load != '') { loadStartForm({form: infProject.scene.load}); }
-
-	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
-	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }		 
 	
+	loadFile({local: false});	
 });
 
 
