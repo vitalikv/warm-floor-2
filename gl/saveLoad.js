@@ -170,6 +170,8 @@ function resetScene()
 		scene.remove(obj[i]);
 	}	
 	
+	// удаленик пользовательских сеток
+	myGridsSaveLoad.resetGrids();
 	
 	// удаляем список материалов UI
 	for(var i = 0; i < infProject.ui.list_wf.length; i++)

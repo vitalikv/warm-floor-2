@@ -195,6 +195,14 @@ class MyGrids
 		
 		return data;		
 	}
+
+
+	// получаем массив точек из dataGrid
+	getPointsFromDataGrid({dataGrid})
+	{
+		return dataGrid.points;		
+	}
+	
 	
 	// получаем массив точек из точки
 	getPointsFromPoint({point})

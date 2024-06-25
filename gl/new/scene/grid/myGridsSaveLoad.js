@@ -1,19 +1,42 @@
 
 // 
 class MyGridsSaveLoad 
-{	
+{
+	
+	
+	resetGrids()
+	{ 
+		const dataGrids = myGrids.dataGrids;
+		
+		for ( let i = 0; i < dataGrids.length; i++ )
+		{
+			const points = myGrids.getPointsFromDataGrid({dataGrid: dataGrids[i]}); 
+			
+			const line = myGrids.getLineFromPoint({point: points[0]});
+			myGrids.deleteLine({line});
+
+			const meshes = myGrids.getGridMeshes({dataGrid: dataGrids[i]});
+			myGridMesh.deleteGridMeshes({meshes});			
+			
+			myGrids.deletePoints({points});
+		}
+		
+		myGrids.dataGrids = [];
+	}
+	
 	saveGrids()
 	{
 		const data = [];
+		const dataGrids = myGrids.dataGrids;
 		
-		const points = [];
-		for ( let i = 0; i < myGrids.dataGrids.length; i++ )
+		for ( let i = 0; i < dataGrids.length; i++ )
 		{
-			const pos = myGrids.dataGrids[i].points.map((p) => p.position);
+			const points = myGrids.getPointsFromDataGrid({dataGrid: dataGrids[i]});
+			const pos = points.map((p) => p.position);
 			
-			const sizeCell = myGrids.dataGrids[i].grille.sizeCell;
-			const offset = myGrids.dataGrids[i].grille.offset;
-			const modeLink = myGrids.dataGrids[i].grille.modeLink;
+			const sizeCell = dataGrids[i].grille.sizeCell;
+			const offset = dataGrids[i].grille.offset;
+			const modeLink = dataGrids[i].grille.modeLink;
 			
 			data.push({pos, sizeCell, offset, modeLink});
 		}
