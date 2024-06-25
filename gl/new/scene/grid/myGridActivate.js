@@ -44,7 +44,8 @@ class MyGridActivate
 		
 		const meshes = myGrids.getGridMeshes({dataGrid});
 		const points = dataGrid.points;
-		const modeOffset = myGrids.getModeOffset({dataGrid});		
+		const modeOffset = myGrids.getModeOffset({dataGrid});
+		const modeLink = myGrids.getModeLink({dataGrid});
 		if(meshes.length === 0) return;
 
 		this.setColorContourLineGrid({point, act: true});
@@ -54,7 +55,11 @@ class MyGridActivate
 		for ( let i = 0; i < points.length; i++ )
 		{
 			points[i].visible = true;
-		}		
+		}
+
+		myUiGridPanel.setValueInputSizeCell(dataGrid.grille.sizeCell * 100);
+		myUiGridPanel.btnToggleOffset({setAct: (modeOffset) ? 1 : 0});
+		myUiGridPanel.btnToggleLink({setAct: (modeLink) ? 1 : 0});			
 		
 		this.actDataGrid = dataGrid;
 	}

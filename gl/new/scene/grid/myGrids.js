@@ -165,7 +165,7 @@ class MyGrids
 		{
 			for ( let i = 0; i < this.dataGrids.length; i++ )
 			{
-				const inside = myMath.checkPointInsideForm({point: intersects[0].point, arrP: this.dataGrids[i].points});				
+				const inside = myMath.checkPointInsideForm({point: intersects[0].point, arrP: this.getPointsFromDataGrid({dataGrid: this.dataGrids[i]})});	
 				if(inside) 
 				{
 					dataGrid = this.dataGrids[i];
