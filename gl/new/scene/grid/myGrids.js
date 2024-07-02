@@ -200,7 +200,7 @@ class MyGrids
 	// получаем массив точек из dataGrid
 	getPointsFromDataGrid({dataGrid})
 	{
-		return dataGrid.points;		
+		return dataGrid.points ? dataGrid.points : [];		
 	}
 	
 	
@@ -260,6 +260,7 @@ class MyGrids
 		const index = points.indexOf(point);
 		if (index > -1) points.splice(index, 1);
 
+		// если в контуре стеки меньше 3 точек, то удаляем сетку
 		if(points.length < 3)
 		{
 			const line = this.getLineFromPoint({point: points[0]});
@@ -283,6 +284,30 @@ class MyGrids
 		}
 	}
 
+
+	// удаляем сетку (с обрешеткой, точками, линиями и из бд) по кнопке или по клавише delete
+	deleteGrid({dataGrid = null})
+	{
+		if(!dataGrid) dataGrid = myGridActivate.getActDataGrid();
+		if(!dataGrid) return;	 	
+		
+		//hideMenuObjUI_2D( clickO.last_obj );
+		
+		const points = myGrids.getPointsFromDataGrid({dataGrid}); 
+		
+		const line = myGrids.getLineFromPoint({point: points[0]});
+		myGrids.deleteLine({line});
+
+		const meshes = myGrids.getGridMeshes({dataGrid});
+		myGridMesh.deleteGridMeshes({meshes});			
+		
+		myGrids.deleteDataGrid({dataGrid});
+		
+		myGrids.deletePoints({points}); 
+		
+		renderCamera();
+	}
+	
 
 	// удаление всех точек одной сетки
 	deletePoints({points})
@@ -310,6 +335,8 @@ class MyGrids
 			const index = this.dataGrids.indexOf(dataGrid);
 			if (index > -1) 
 			{
+				myGridActivate.deActivateDataGrid({dataGrid});
+				
 				this.dataGrids.splice(index, 1);
 				break;
 			}

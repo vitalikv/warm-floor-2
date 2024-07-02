@@ -15,10 +15,12 @@ class MyGridActivate
 	activateDataGrid({dataGrid})
 	{
 		const meshes = myGrids.getGridMeshes({dataGrid});
-		const points = dataGrid.points;
+		const points = myGrids.getPointsFromDataGrid({dataGrid});
+		if(meshes.length === 0) return;
+		if(points.length === 0) return;
+		
 		const modeOffset = myGrids.getModeOffset({dataGrid});
 		const modeLink = myGrids.getModeLink({dataGrid});
-		if(meshes.length === 0) return;
 		
 		this.setColorContourLineGrid({point: points[0], act: true});
 		this.setColorMeshGrid({dataGrid, act: modeOffset});
@@ -43,10 +45,12 @@ class MyGridActivate
 		if(!dataGrid) return;
 		
 		const meshes = myGrids.getGridMeshes({dataGrid});
-		const points = dataGrid.points;
+		const points = myGrids.getPointsFromDataGrid({dataGrid});
+		if(meshes.length === 0) return;
+		if(points.length === 0) return;		
+		
 		const modeOffset = myGrids.getModeOffset({dataGrid});
 		const modeLink = myGrids.getModeLink({dataGrid});
-		if(meshes.length === 0) return;
 
 		this.setColorContourLineGrid({point, act: true});
 		this.setColorPointGrid({point, act: true});
@@ -69,8 +73,9 @@ class MyGridActivate
 	deActivateDataGrid({dataGrid})
 	{
 		const meshes = myGrids.getGridMeshes({dataGrid});
-		const points = dataGrid.points;
+		const points = myGrids.getPointsFromDataGrid({dataGrid});
 		if(meshes.length === 0) return;
+		if(points.length === 0) return;
 		
 		this.setColorContourLineGrid({point: points[0], act: false});
 		this.setColorMeshGrid({dataGrid, act: false});
@@ -96,8 +101,9 @@ class MyGridActivate
 		if(!dataGrid) return;
 		
 		const meshes = myGrids.getGridMeshes({dataGrid});
-		const points = dataGrid.points;
+		const points = myGrids.getPointsFromDataGrid({dataGrid});
 		if(meshes.length === 0) return;
+		if(points.length === 0) return;
 		
 		this.setColorContourLineGrid({point, act: false});		
 		this.setColorPointGrid({point, act: false});

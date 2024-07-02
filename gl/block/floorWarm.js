@@ -398,6 +398,7 @@ function upLineWF(point)
 	geometry.vertices = line.geometry.vertices;	
 	geometry.vertices.push(point_2.position);
 	
+	line.geometry.dispose();
 	line.geometry = geometry;
 	line.geometry.verticesNeedUpdate = true; 
 	line.geometry.elementsNeedUpdate = true;	
@@ -468,6 +469,7 @@ function clickPointToolsWF(obj)
 			geometry.vertices[i] = arrP[i].position;
 		}
 		
+		line.geometry.dispose();
 		line.geometry = geometry;	
 		line.geometry.verticesNeedUpdate = true; 
 		line.geometry.elementsNeedUpdate = true;
@@ -539,6 +541,12 @@ function clickPointToolsWF(obj)
 			updateListTubeUI_1({uuid: line_1.uuid, type: 'delete'});
 			
 			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line_1});
+			if(line_1.userData.wf_line.tube) 
+			{ 
+				line_1.userData.wf_line.tube.geometry.dispose();
+				scene.remove(line_1.userData.wf_line.tube);
+			}
+			line_1.geometry.dispose();
 			scene.remove(line_1);
 			scene.remove(obj);	
 			
@@ -555,6 +563,7 @@ function clickPointToolsWF(obj)
 			if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
 		}		
 		
+		line.geometry.dispose();
 		line.geometry = geometry;	
 		line.geometry.verticesNeedUpdate = true; 
 		line.geometry.elementsNeedUpdate = true;
@@ -664,6 +673,7 @@ function deletePointWF(obj)
 				geometry.vertices[i] = line.userData.wf_line.point[i].position;
 			}
 			
+			line.geometry.dispose();
 			line.geometry = geometry;
 			line.geometry.verticesNeedUpdate = true; 
 			line.geometry.elementsNeedUpdate = true;

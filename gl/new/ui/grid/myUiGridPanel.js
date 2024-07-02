@@ -24,6 +24,7 @@ class MyUiGridPanel
 
 		this.initEventInputSizeCell();
 		this.initEventBtnSliders();
+		this.initEventBtnDeleteGrid();
 	}
 
 	initBtn()
@@ -75,7 +76,14 @@ class MyUiGridPanel
 		
 		div1.onmousedown = () => { this.btnToggleOffset({}); }	//clickInterface({button:'grid_move_1'});
 		div2.onmousedown = () => { this.btnToggleLink({}); }		//clickInterface({button:'grid_link_1'});
-	}	
+	}
+
+
+	initEventBtnDeleteGrid()
+	{
+		const btn = this.wrap.querySelector('[nameId="btnDeleteGrid"]');
+		btn.onmousedown = () => { this.btnDeleteGrid(); }
+	}
 
 	
 	// 
@@ -159,7 +167,13 @@ class MyUiGridPanel
 				<div style="${cssBtnSlider} ${cssBtnSliderActive}" nameId="btnOffsetTxt">Вкл</div>
 				<div style="${cssItemDiv}">Выкл</div>
 				<div style="${cssItemDiv}">Вкл</div>
-			</div>			
+			</div>
+
+				<div style="display: flex; margin: 10px;">
+					<div class="button1" nameId="btnDeleteGrid">
+						<img src="${infProject.path}img/waste.png">
+					</div>
+				</div>				
 		</div>`;
 
 		return html;
@@ -249,7 +263,14 @@ class MyUiGridPanel
 		}
 		
 		renderCamera();
-	}	
+	}
+
+	
+	// удаляем сетку по кнопке 
+	btnDeleteGrid()
+	{
+		myGrids.deleteGrid({}); 
+	}
 }
 
 

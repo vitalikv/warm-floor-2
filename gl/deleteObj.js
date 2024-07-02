@@ -25,6 +25,7 @@ function detectDeleteObj()
 	else if ( tag == 'window' || tag == 'door' ) { deleteWinDoor( obj ); }
 	else if ( tag == 'obj' ) { deleteObjectPop(obj); }
 	else if ( tag == 'gridPointWf' ) { myGrids.deletePoint({point: obj}); }
+	else if ( tag == 'dataGrid' ) { myGrids.deleteGrid({dataGrid: obj.dataGrid}); }
 	
 	 renderCamera();
 }
