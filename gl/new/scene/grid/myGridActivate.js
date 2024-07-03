@@ -33,6 +33,7 @@ class MyGridActivate
 		myUiGridPanel.setValueInputSizeCell(dataGrid.grille.sizeCell * 100);
 		myUiGridPanel.btnToggleOffset({setAct: (modeOffset) ? 1 : 0});
 		myUiGridPanel.btnToggleLink({setAct: (modeLink) ? 1 : 0});		
+		myUiGridPanel.showGridPanel();
 		
 		this.actDataGrid = dataGrid;
 	}
@@ -64,6 +65,7 @@ class MyGridActivate
 		myUiGridPanel.setValueInputSizeCell(dataGrid.grille.sizeCell * 100);
 		myUiGridPanel.btnToggleOffset({setAct: (modeOffset) ? 1 : 0});
 		myUiGridPanel.btnToggleLink({setAct: (modeLink) ? 1 : 0});			
+		myUiGridPanel.showGridPanel();
 		
 		this.actDataGrid = dataGrid;
 	}
@@ -90,7 +92,8 @@ class MyGridActivate
 		this.actDataGrid = null;
 		
 		myUiGridPanel.btnToggleOffset({setAct: 0});
-		myUiGridPanel.btnToggleLink({setAct: 0});		
+		myUiGridPanel.btnToggleLink({setAct: 0});
+		myUiGridPanel.hideGridPanel();		
 	}
 	
 	
@@ -109,12 +112,19 @@ class MyGridActivate
 		this.setColorPointGrid({point, act: false});
 		this.setColorMeshGrid({dataGrid, act: false});
 		
+		
 		for ( let i = 0; i < points.length; i++ )
 		{
 			points[i].visible = false;
 		}		
 		
+		myUiGridPanel.setValueInputSizeCell('');		
+		
 		this.actDataGrid = null;
+		
+		myUiGridPanel.btnToggleOffset({setAct: 0});
+		myUiGridPanel.btnToggleLink({setAct: 0});
+		myUiGridPanel.hideGridPanel();
 	}	
 
 

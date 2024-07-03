@@ -2,11 +2,17 @@
 // кнопка для создания сетки для теплого пола 
 class MyBtnGrid 
 {
+	activated = false;
 	wrapBtn;
 	btnGrid;
 	
-	constructor()
+	
+	init()
 	{
+		if(this.activated) return; // уже активирована кнопка
+		
+		this.activated = true;
+		
 		const container = document.querySelector('[nameId="top_menu_b1"]');
 		this.wrapBtn = container.querySelector('[nameId="crGridWf"]');
 		

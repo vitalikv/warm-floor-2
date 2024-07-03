@@ -34,7 +34,12 @@ class MyUserActive
 			const days = subs.days;
 			wrap.innerHTML = this.html_2({days});
 			getListProject({id: infProject.user.id, typeInfo: 'load'});
-			
+
+			// вкл кнопку и панель для пользовательской сетки
+			myBtnGrid.init();
+			myUiGridPanel.init();
+	
+			// подписка заканчивается, показываем что можно оплатить (это не работает, специально отключено, потому что подписка закончилась)
 			if(days < 1)
 			{
 				const divTariff = this.windDivSubs.crDivSubsTariff({token});		

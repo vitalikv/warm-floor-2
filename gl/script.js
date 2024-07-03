@@ -1755,7 +1755,12 @@ $(document).ready(function ()
 	myGridActivate = new MyGridActivate();
 	myGridsSaveLoad = new MyGridsSaveLoad();
 
-	myUiGridPanel.initBtn();
+	// активация пользовательской сетки для теста (так она активруется при оплаченной подписке)
+	if(1===2)
+	{
+		myBtnGrid.init();
+		myUiGridPanel.init();		
+	}
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	

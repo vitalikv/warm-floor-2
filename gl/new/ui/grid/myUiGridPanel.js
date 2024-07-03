@@ -2,36 +2,45 @@
 // 
 class MyUiGridPanel 
 {
+	activated = false;
+	divGlobalGrid;	// div панель глобальной сетки
 	wrap;
+	divPanel;
 	inputSizeCell;
 	dataBtn = {};
 	
-	constructor()
+	init()
 	{
+		if(this.activated) return; // уже активированная панель
+		
+		this.activated = true;
+		
+		this.divGlobalGrid = document.querySelector('[data-action="left_panel_1"]');
 		this.wrap = document.querySelector('[nameId="bottom_panel_1"]');
 		this.crDivPanel();
+		this.hideGridPanel();
 		
+		this.btnToggleOffset({setAct: 0});
+		this.btnToggleLink({setAct: 0});		
 	}
 
 	crDivPanel()
 	{
-		const div = document.createElement('div');
-		div.innerHTML = this.html_1();
-		div.style.cssText = 'position: absolute; bottom: 30px;';
-		this.eventStop({div});	
+		this.divPanel = document.createElement('div');
+		this.divPanel.innerHTML = this.html_1();
+		//this.divPanel.style.cssText = 'position: absolute; bottom: 30px;';
+		this.divPanel.style.cssText = 'position: fixed; left: 0; top: 50%; transform: translateY(-50%);';
+
+		this.eventStop({div: this.divPanel});	
 		
-		this.wrap.append(div);
+		this.wrap.append(this.divPanel);
 
 		this.initEventInputSizeCell();
 		this.initEventBtnSliders();
 		this.initEventBtnDeleteGrid();
 	}
 
-	initBtn()
-	{
-		this.btnToggleOffset({setAct: 0});
-		this.btnToggleLink({setAct: 0});		
-	}
+
 	
 	// блокируем действия на 3д сцене, когда курсор находится на div
 	eventStop({div})
@@ -48,7 +57,7 @@ class MyUiGridPanel
 	// назначаем событие после ввода и нажания Enter в inpute 
 	initEventInputSizeCell()
 	{
-		this.inputSizeCell = this.wrap.querySelector('[nameId="gridSizeCell"]');
+		this.inputSizeCell = this.divPanel.querySelector('[nameId="gridSizeCell"]');
 
 		this.inputSizeCell.onkeydown = (e) => 
 		{			
@@ -62,10 +71,10 @@ class MyUiGridPanel
 	// назначаем событие после переключения кнопок 
 	initEventBtnSliders()
 	{		
-		const div1 = this.wrap.querySelector('[nameId="btnOffset"]');
+		const div1 = this.divPanel.querySelector('[nameId="btnOffset"]');
 		const divTxt1 = div1.querySelector('[nameId="btnOffsetTxt"]');
 		
-		const div2 = this.wrap.querySelector('[nameId="btnLink"]');
+		const div2 = this.divPanel.querySelector('[nameId="btnLink"]');
 		const divTxt2 = div2.querySelector('[nameId="btnLinkTxt"]');
 		
 		this.dataBtn = 
@@ -81,7 +90,7 @@ class MyUiGridPanel
 
 	initEventBtnDeleteGrid()
 	{
-		const btn = this.wrap.querySelector('[nameId="btnDeleteGrid"]');
+		const btn = this.divPanel.querySelector('[nameId="btnDeleteGrid"]');
 		btn.onmousedown = () => { this.btnDeleteGrid(); }
 	}
 
@@ -147,7 +156,7 @@ class MyUiGridPanel
 		
 		const html =
 		`<div style="${style1}">
-			<div class="left-input-block-header" style="user-select: none;">сетка пользователя</div>						
+			<div class="left-input-block-header" style="background: #fff; user-select: none;">сетка пользователя</div>						
 			
 			<div class="input-height">
 				<div class="text_1">ячейка (cм)</div>
@@ -180,9 +189,29 @@ class MyUiGridPanel
 	}
 	
 	
+	// показываем панель сетки
+	showGridPanel()
+	{
+		if(!this.activated) return;
+		
+		this.divPanel.style.display = '';
+		this.divGlobalGrid.style.display = 'none';
+	}
+	
+	// скрываем панель сетки
+	hideGridPanel()
+	{
+		if(!this.activated) return;
+		
+		this.divPanel.style.display = 'none';
+		this.divGlobalGrid.style.display = '';
+	}	
+	
 	// переключаем или устанавливаем btn в нужное положение 
 	btnToggleOffset({setAct = undefined})
 	{
+		if(!this.activated) return;
+		
 		const div = this.dataBtn.offset.div;
 		const divTxt = this.dataBtn.offset.divTxt;
 		const act = this.dataBtn.offset.act;
@@ -207,6 +236,8 @@ class MyUiGridPanel
 	// переключаем или устанавливаем btn в нужное положение
 	btnToggleLink({setAct = undefined})
 	{
+		if(!this.activated) return;
+		
 		const div = this.dataBtn.link.div;
 		const divTxt = this.dataBtn.link.divTxt;
 		const act = this.dataBtn.link.act;
@@ -230,6 +261,7 @@ class MyUiGridPanel
 	
 	setValueInputSizeCell(value)
 	{
+		if(!this.activated) return;
 		if(!this.inputSizeCell) return;
 		
 		this.inputSizeCell.value = value;
