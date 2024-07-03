@@ -3,7 +3,7 @@
 class MyUiGridPanel 
 {
 	activated = false;
-	divGlobalGrid;	// div панель глобальной сетки
+	
 	wrap;
 	divPanel;
 	inputSizeCell;
@@ -15,7 +15,6 @@ class MyUiGridPanel
 		
 		this.activated = true;
 		
-		this.divGlobalGrid = document.querySelector('[data-action="left_panel_1"]');
 		this.wrap = document.querySelector('[nameId="bottom_panel_1"]');
 		this.crDivPanel();
 		this.hideGridPanel();
@@ -195,7 +194,7 @@ class MyUiGridPanel
 		if(!this.activated) return;
 		
 		this.divPanel.style.display = '';
-		this.divGlobalGrid.style.display = 'none';
+		myLeftPanel.wrap.style.display = 'none';
 	}
 	
 	// скрываем панель сетки
@@ -204,7 +203,7 @@ class MyUiGridPanel
 		if(!this.activated) return;
 		
 		this.divPanel.style.display = 'none';
-		this.divGlobalGrid.style.display = '';
+		myLeftPanel.wrap.style.display = '';
 	}	
 	
 	// переключаем или устанавливаем btn в нужное положение 

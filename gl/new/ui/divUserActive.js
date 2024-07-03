@@ -36,7 +36,7 @@ class MyUserActive
 			getListProject({id: infProject.user.id, typeInfo: 'load'});
 
 			// вкл кнопку и панель для пользовательской сетки
-			myBtnGrid.init();
+			myUiBtnGrid.initEventForUser();
 			myUiGridPanel.init();
 	
 			// подписка заканчивается, показываем что можно оплатить (это не работает, специально отключено, потому что подписка закончилась)

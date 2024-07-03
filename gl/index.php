@@ -89,7 +89,8 @@
 	<script src="<?=$path?>new/ui/divUserActive.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/divSubs.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/myLeftPanel.js?<?=$vrs?>"></script>	
-	<script src="<?=$path?>new/ui/topPanel/myBtnGrid.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/topPanel/myUiBtnGrid.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/topPanel/myUiInfoModalWindGrid.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/grid/myUiGridPanel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/core/myMath.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGrids.js?<?=$vrs?>"></script>

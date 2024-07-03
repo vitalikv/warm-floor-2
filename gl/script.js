@@ -1724,7 +1724,8 @@ function checkNumberInput(cdm)
 
 
 let myLeftPanel;
-let myBtnGrid;
+let myUiBtnGrid;
+let myUiInfoModalWindGrid;
 let myUiGridPanel;
 let myMath;
 let myGrids;
@@ -1741,7 +1742,9 @@ $(document).ready(function ()
 { 
 	docReady = true;
 	myLeftPanel = new MyLeftPanel();
-	myBtnGrid = new MyBtnGrid();
+	myUiBtnGrid = new MyUiBtnGrid();
+	myUiInfoModalWindGrid = new MyUiInfoModalWindGrid();
+	
 	//myLeftPanel.crDefPanel(); бесплатная фейковая панель (сетка)
 	myLeftPanel.crUserPanel();
 	myUiGridPanel = new MyUiGridPanel();
@@ -1757,15 +1760,15 @@ $(document).ready(function ()
 
 	// активация пользовательской сетки для теста (так она активруется при оплаченной подписке)
 	if(1===2)
-	{
-		myBtnGrid.init();
+	{		
+		myUiBtnGrid.initEventForUser();		
 		myUiGridPanel.init();		
 	}
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	
 	
-	loadFile({local: false});	
+	loadFile({local: true});	
 });
 
 

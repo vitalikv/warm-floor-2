@@ -64,6 +64,8 @@ function updateGrid(cdm)
 {
 	var grid = infProject.scene.grid.obj;
 	
+	const visible = grid.visible;
+	
 	var size = checkNumberInput({ value: cdm.size, unit: 0.01, limit: {min: 0.05, max: 5} });
 	
 	if(!size) 
@@ -83,6 +85,7 @@ function updateGrid(cdm)
 	scene.remove( grid );
 	
 	infProject.scene.grid.obj = createGrid({pos: pos, color: color, size: size, uColor : uColor});
+	infProject.scene.grid.obj.visible = visible;
 	
 	renderCamera();
 }
