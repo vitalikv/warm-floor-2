@@ -4,6 +4,7 @@ class MyLeftPanel
 {
 	wrap;
 	inputGridSize;
+	btn1;
 	
 	constructor()
 	{
@@ -36,12 +37,12 @@ class MyLeftPanel
 	
 	initEventUserPanel()
 	{
-		const btn1 = this.wrap.querySelector('[data-action="grid_show_1"]');
+		this.btn1 = this.wrap.querySelector('[data-action="grid_show_1"]');
 		const btn2 = this.wrap.querySelector('[data-action="grid_move_1"]');
 		const btn3 = this.wrap.querySelector('[data-action="grid_link_1"]');
 		this.inputGridSize = this.wrap.querySelector('[nameId="size-grid-tube-xy-1"]');
 		
-		btn1.onmousedown = () => { clickInterface({button:'grid_show_1'}); }
+		this.btn1.onmousedown = () => { clickInterface({button:'grid_show_1'}); }
 		btn2.onmousedown = () => { clickInterface({button:'grid_move_1'}); }
 		btn3.onmousedown = () => { clickInterface({button:'grid_link_1'}); }
 
@@ -158,6 +159,12 @@ class MyLeftPanel
 		if(!this.inputGridSize) return;
 		
 		this.inputGridSize.value = value;
+	}
+	
+	toggleShowHideGrid()
+	{
+		this.btn1.click();
+		clickInterface({button:'grid_show_1'});		
 	}
 }
 

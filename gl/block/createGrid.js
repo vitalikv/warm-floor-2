@@ -191,5 +191,36 @@ function linkGrid()
 }
 
 
+function saveGridGlobal()
+{
+	const data = { pos: new THREE.Vector3(), count: 0, size: 20, visible: true };
+	
+	const grid = infProject.scene.grid.obj;	
+	
+	data.pos = grid.position.clone();
+	data.count = grid.userData.count;
+	data.size = grid.userData.size;
+	data.visible = grid.visible;
+	
+	return data;
+}
+
+
+function loadGridGlobal({data})
+{
+	const grid = infProject.scene.grid.obj;
+	
+	const pos = data.pos;
+	grid.position.set(pos.x, pos.y, pos.z);
+	
+	updateGrid({size: data.size * 100});
+	
+	if(grid.visible !== data.visible)
+	{
+		myLeftPanel.toggleShowHideGrid();
+	}
+	
+}
+
 
 

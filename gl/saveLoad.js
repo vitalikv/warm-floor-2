@@ -578,6 +578,7 @@ function getJsonGeometry()
 	json.floors[0].rooms = rooms;
 	json.furn = furn;
 	json.pipe = pipe;
+	json.gridGlobal = saveGridGlobal();
 	json.grids = myGridsSaveLoad.saveGrids();
 	
 	return json;
@@ -634,7 +635,8 @@ function loadFilePL(arr)
 	var rooms = arr.floors[0].rooms;
 	var furn = (arr.furn) ? arr.furn : [];
 	var pipe = (arr.pipe) ? arr.pipe : [];
-	const grids = arr.grids;
+	const gridGlobal = (arr.gridGlobal) ? arr.gridGlobal : null;
+	const grids = (arr.grids) ? arr.grids : null;
 	
 	var wall = [];
 	
@@ -816,6 +818,7 @@ function loadFilePL(arr)
 	countId++; 
 	// восстанавливаем countId
 	
+	if(gridGlobal) loadGridGlobal({data: gridGlobal});
 	
 	if(grids) myGridsSaveLoad.loadGrids({data: grids});
 	

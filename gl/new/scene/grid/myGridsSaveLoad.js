@@ -22,6 +22,8 @@ class MyGridsSaveLoad
 		}
 		
 		myGrids.dataGrids = [];
+		
+		myUiGridPanel.hideGridPanel();
 	}
 	
 	saveGrids()
