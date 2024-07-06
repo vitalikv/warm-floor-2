@@ -74,9 +74,7 @@ class MyGridActivate
 	// деактивируем сетку, после того когда она была активирована при клике на нее
 	deActivateDataGrid({dataGrid})
 	{
-		const meshes = myGrids.getGridMeshes({dataGrid});
 		const points = myGrids.getPointsFromDataGrid({dataGrid});
-		if(meshes.length === 0) return;
 		if(points.length === 0) return;
 		
 		this.setColorContourLineGrid({point: points[0], act: false});
@@ -103,9 +101,7 @@ class MyGridActivate
 		const dataGrid = myGrids.getDataGridFromPoint({point});		
 		if(!dataGrid) return;
 		
-		const meshes = myGrids.getGridMeshes({dataGrid});
 		const points = myGrids.getPointsFromDataGrid({dataGrid});
-		if(meshes.length === 0) return;
 		if(points.length === 0) return;
 		
 		this.setColorContourLineGrid({point, act: false});		
@@ -147,6 +143,7 @@ class MyGridActivate
 	setColorMeshGrid({dataGrid, act = false})
 	{
 		const meshes = myGrids.getGridMeshes({dataGrid});
+		if(meshes.length === 0) return;
 		const mesh = meshes[0];
 		
 		if(act)

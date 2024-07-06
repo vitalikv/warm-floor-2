@@ -204,12 +204,19 @@ class MyUiInfoModalWindGrid
 		this.wrapWind.style.display = '';
 		
 		this.divWindGrid.style.width = '900px';
-		this.divWindGrid.style.height = '550px';
+		this.divWindGrid.style.height = 'auto';
 		this.divH1.innerHTML = 'Видео: сетка';
 		
 		const ht = `https:/`;
 		const video = `${ht}/www.youtube.com/embed/1hV98LTygwk`;
-		this.divContent.innerHTML = `<iframe width="100%" height="100%" src="${video}" frameborder="0" allowfullscreen></iframe>`;
+		this.divContent.innerHTML = 
+		`<div style="margin: 20px;">
+			<div style="margin: 0 20px 20px 20px; text-align: center;">С помощью этого инструмента (сетка) можно создавать сетки для разных помещений нужной формы и размером ячейки.<br><br>В этом коротком видео показано, как с этим работать.
+			</div>
+			<div style="width: 100%; height: 450px;">
+				<iframe width="100%" height="100%" src="${video}" frameborder="0" allowfullscreen></iframe>
+			</div>
+		</div>`;
 		
 		this.divWindGrid.style.top = (rect1.bottom + 15) + 'px';
 		this.divWindGrid.style.left = (rect.left + rect.width/2 - this.divWindGrid.clientWidth/2)+'px';		

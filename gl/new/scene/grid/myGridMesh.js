@@ -167,7 +167,7 @@ class MyGridMesh
 	{
 		let offsetX = offset.x;
 		let offsetZ = offset.y;
-		
+				
 		if(x < (countX * size + offsetX))
 		{
 			let countZaLimit = Math.floor(((countX * size + offsetX) - x) / size);
@@ -182,7 +182,7 @@ class MyGridMesh
 			offsetX += dlinaOffset;			
 		}
 
-		if(z < (countX * size + offsetZ))
+		if(z < (countZ * size + offsetZ))
 		{
 			let countZaLimit = Math.floor(((countZ * size + offsetZ) - z) / size);
 			countZaLimit += 1;			

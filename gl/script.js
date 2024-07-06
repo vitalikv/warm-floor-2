@@ -1767,8 +1767,7 @@ $(document).ready(function ()
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	
-	
-	loadFile({local: true});	
+	loadFile({local: false});	
 });
 
 

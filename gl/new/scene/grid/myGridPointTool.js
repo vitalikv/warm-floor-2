@@ -32,25 +32,7 @@ class MyGridPointTool
 	
 	clickRight()
 	{
-		const points = this.arrPoints;
-		const line = (points[0].userData.line) ? points[0].userData.line : null;
-		
-		if(line)
-		{
-			line.geometry.dispose();
-			scene.remove(line);
-		}
-		
-		for ( let i = 0; i < points.length; i++ )
-		{
-			scene.remove(points[i]);
-		}		
-		
-		this.arrPoints = [];
-		
-		this.clearPoint();
-
-		//this.render();
+		this.deleteToolContour();
 	}	
 
 
@@ -59,18 +41,37 @@ class MyGridPointTool
 		this.isDown = false;
 		this.isMove = false;	
 
+		// нажали на кнопку создание сетки
 		if(!clickBtn)
 		{
 			// определяем с чем точка пересеклась и дальнейшие действия
 			const joint = this.checkJointToPoint({point: obj, points: this.arrPoints});
+			
+			// последнию точку замкнули на первой
 			if(joint) 
 			{
-				this.deletePoint({obj});
-				this.clearPoint();
-				console.log(this.arrPoints, [...obj.userData.points])
-				myGrids.crGrid({points: this.arrPoints});
+				let stop = false;				
 				
-				return null;
+				// контур из одной точки нельзя построить, поэтому удаляем
+				if(this.arrPoints.length === 2)
+				{					
+					this.deleteToolContour();
+					stop = true;
+				}
+				else if(this.arrPoints.length === 3)	// контур из 2-х точек нельзя построить, поэтому не даем закнуть и продолжаем построение
+				{					
+					stop = false;
+				}				
+				else	// замкнули контур, создаем grid
+				{
+					this.deletePoint({obj});
+					this.clearPoint();
+					
+					myGrids.crGrid({points: this.arrPoints});
+					stop = true;
+				}
+				
+				if(stop) return null;
 			}
 			else
 			{
@@ -115,18 +116,10 @@ class MyGridPointTool
 		
 		obj.position.add( offset );	
 		
-		const joint = this.checkJointToPoint({point: obj, points: this.arrPoints});
-		if(joint)
-		{
-			obj.position.copy(this.arrPoints[0].position.clone());
-			this.offset = obj.position.clone();
-		}
-		else
-		{
-			const newPos = myGridPointMove.pointAligning({point: obj});
-			this.offset.add(newPos.clone().sub(obj.position));
-			obj.position.copy(newPos);			
-		}
+		const newPos = myGridPointMove.pointAligning({point: obj});
+		this.offset.add(newPos.clone().sub(obj.position));
+		obj.position.copy(newPos);			
+
 
 		myGrids.upGeometryLine({point: obj});
 	}
@@ -142,7 +135,7 @@ class MyGridPointTool
 	{
 		let joint = false;
 		
-		if(points.length > 2)
+		if(points.length > 1)
 		{
 			const dist = point.position.distanceTo(points[0].position);
 			joint = (dist < 0.1 / camera.zoom) ? true : false;
@@ -151,8 +144,6 @@ class MyGridPointTool
 
 		return joint;
 	}	
-
-
 
 
 	clearPoint()
@@ -168,7 +159,37 @@ class MyGridPointTool
 		
 		const index = this.arrPoints.indexOf(obj);
 		if (index > -1) this.arrPoints.splice(index, 1);		
-	}	
+	}
+
+
+	// удаляем контур (который еще не замкнули и не превратили в сетку)
+	deleteToolContour()
+	{
+		const points = this.arrPoints;
+		const line = (points[0].userData.line) ? points[0].userData.line : null;
+		
+		if(line)
+		{
+			line.geometry.dispose();
+			scene.remove(line);
+		}
+		
+		for ( let i = 0; i < points.length; i++ )
+		{
+			scene.remove(points[i]);
+		}		
+		
+		this.arrPoints = [];
+		
+		this.clearPoint();
+
+		this.render();		
+	}
+	
+	render()
+	{
+		renderCamera();
+	}
 }
 
 
