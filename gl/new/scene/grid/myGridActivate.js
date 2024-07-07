@@ -135,7 +135,17 @@ class MyGridActivate
 	setColorContourLineGrid({point, act = false})
 	{
 		const line = myGrids.getLineFromPoint({point});
-		line.material.color = (act) ? new THREE.Color(myGrids.actColorLineNumber) : new THREE.Color(myGrids.defColorLineNumber);
+		
+		if(act)
+		{
+			line.material.color.set(new THREE.Color(myGrids.actColorLineNumber));
+			line.material.depthTest = false;
+		}
+		else
+		{
+			line.material.color = new THREE.Color(myGrids.defColorLineNumber);
+			line.material.depthTest = true;
+		}
 	}
 
 

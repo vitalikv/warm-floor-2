@@ -208,7 +208,7 @@ class MyUiInfoModalWindGrid
 		this.divH1.innerHTML = 'Видео: сетка';
 		
 		const ht = `https:/`;
-		const video = `${ht}/www.youtube.com/embed/1hV98LTygwk`;
+		const video = `${ht}/www.youtube.com/embed/6WIdSh-3_VA?si=T_R_yqIixJE6zyq9`;
 		this.divContent.innerHTML = 
 		`<div style="margin: 20px;">
 			<div style="margin: 0 20px 20px 20px; text-align: center;">С помощью этого инструмента (сетка) можно создавать сетки для разных помещений нужной формы и размером ячейки.<br><br>В этом коротком видео показано, как с этим работать.

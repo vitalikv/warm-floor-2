@@ -51,7 +51,7 @@ class MyGrids
 			const geometry = new THREE.Geometry();
 			geometry.vertices = arrP;
 	
-			line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: this.defColorLineNumber}) );	
+			line = new THREE.Line( geometry, new THREE.MeshLambertMaterial({color: this.defColorLineNumber, lightMap: lightMap_1}) );	
 			scene.add( line );					
 		}
 		else
