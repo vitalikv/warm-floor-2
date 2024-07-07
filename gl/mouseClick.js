@@ -160,7 +160,7 @@ function clickRayHit(event)
 		if(ray.length > 0) { rayhit = ray[0]; }		
 	}	
 	
-	if(!infProject.scene.block.click.tube)
+	if(!infProject.scene.block.click.tube && !myGridPointTool.getActGridPointTool())
 	{
 		var ray = hoverCursorLineWF(event);	
 		if(ray) { rayhit = ray; }		

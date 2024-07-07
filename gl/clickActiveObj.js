@@ -20,7 +20,7 @@ function activeHover2D( event )
 	var ray = rayIntersect( event, arrSize.cube, 'arr' );
 	if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }	
 		
-	if(!infProject.scene.block.hover.tube)
+	if(!infProject.scene.block.hover.tube && !myGridPointTool.getActGridPointTool())
 	{
 		var ray = hoverCursorLineWF(event);	
 		if(ray) { rayhit = ray; }		

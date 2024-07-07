@@ -24,7 +24,16 @@ class MyGridPointTool
 		
 		this.arrPoints.push(obj);		
 		
-		this.mousedown({event, obj, clickBtn: true});
+		planeMath.position.set( 0, obj.position.y, 0 );
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld();
+		
+		const intersects = rayIntersect(event, planeMath, 'one');
+		if (intersects.length === 0) return;
+		this.offset = intersects[0].point;		
+		
+		this.actObj = obj;
+		this.isDown = true;
 		
 		return obj;
 	}
@@ -41,50 +50,44 @@ class MyGridPointTool
 		this.isDown = false;
 		this.isMove = false;	
 
-		// нажали на кнопку создание сетки
-		if(!clickBtn)
+		// определяем с чем точка пересеклась и дальнейшие действия
+		const joint = this.checkJointToPoint({point: obj, points: this.arrPoints});
+		
+		// последнию точку замкнули на первой
+		if(joint) 
 		{
-			// определяем с чем точка пересеклась и дальнейшие действия
-			const joint = this.checkJointToPoint({point: obj, points: this.arrPoints});
+			let stop = false;				
 			
-			// последнию точку замкнули на первой
-			if(joint) 
-			{
-				let stop = false;				
-				
-				// контур из одной точки нельзя построить, поэтому удаляем
-				if(this.arrPoints.length === 2)
-				{					
-					this.deleteToolContour();
-					stop = true;
-				}
-				else if(this.arrPoints.length === 3)	// контур из 2-х точек нельзя построить, поэтому не даем закнуть и продолжаем построение
-				{					
-					stop = false;
-				}				
-				else	// замкнули контур, создаем grid
-				{
-					this.deletePoint({obj});
-					this.clearPoint();
-					
-					myGrids.crGrid({points: this.arrPoints});
-					stop = true;
-				}
-				
-				if(stop) return null;
+			// контур из одной точки нельзя построить, поэтому удаляем
+			if(this.arrPoints.length === 2)
+			{					
+				this.deleteToolContour();
+				stop = true;
 			}
-			else
+			else if(this.arrPoints.length === 3)	// контур из 2-х точек нельзя построить, поэтому не даем замкнуть и продолжаем построение
+			{					
+				stop = false;
+			}				
+			else	// замкнули контур, создаем grid
 			{
-				obj = myGrids.crPoint({pos: obj.position.clone()});
-				obj.userData.tag = 'gridPointToolWf';
+				this.deletePoint({obj});
+				this.clearPoint();
 				
-				this.arrPoints.push(obj);		
-				if(this.arrPoints.length > 1) myGrids.crLine({points: [...this.arrPoints]});				
+				myGrids.crGrid({points: this.arrPoints});
+				stop = true;
 			}
+			
+			if(stop) return null;
+		}
+		else
+		{
+			obj = myGrids.crPoint({pos: obj.position.clone()});
+			obj.userData.tag = 'gridPointToolWf';
+			
+			this.arrPoints.push(obj);		
+			if(this.arrPoints.length > 1) myGrids.crLine({points: [...this.arrPoints]});				
 		}
 
-		
-		this.actObj = obj;
 		
 		planeMath.position.set( 0, obj.position.y, 0 );
 		planeMath.rotation.set(-Math.PI/2, 0, 0);
@@ -94,6 +97,7 @@ class MyGridPointTool
 		if (intersects.length === 0) return;
 		this.offset = intersects[0].point;		
 		
+		this.actObj = obj;
 		this.isDown = true;
 
 		return this.actObj;
@@ -116,10 +120,18 @@ class MyGridPointTool
 		
 		obj.position.add( offset );	
 		
-		const newPos = myGridPointMove.pointAligning({point: obj});
-		this.offset.add(newPos.clone().sub(obj.position));
-		obj.position.copy(newPos);			
-
+		// одна tool точка без линии (только что создана)
+		if(!myGrids.getLineFromPoint({point: obj}))
+		{
+			// здесь сделать нахождение ближайшией линии уже построенных контуров ( также как hoverCursorLineWF() )
+			// чтобы было прилипание и при клике this.mousedown(), добавлялась новая точка на контур
+		}
+		else
+		{
+			const newPos = myGridPointMove.pointAligning({point: obj});
+			this.offset.add(newPos.clone().sub(obj.position));
+			obj.position.copy(newPos);			
+		}
 
 		myGrids.upGeometryLine({point: obj});
 	}
@@ -145,6 +157,11 @@ class MyGridPointTool
 		return joint;
 	}	
 
+	
+	getActGridPointTool()
+	{
+		return this.actObj;
+	}
 
 	clearPoint()
 	{
