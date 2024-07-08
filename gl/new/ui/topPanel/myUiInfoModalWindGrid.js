@@ -32,7 +32,7 @@ class MyUiInfoModalWindGrid
 		div.innerHTML = this.html_1();
 		div = div.children[0];	
 		
-		const container = document.querySelector('.top_panel_2');
+		const container = document.querySelector('[nameId="wrapModalInfoGrid"]');
 		container.append(div);
 		
 		return div;
@@ -190,7 +190,8 @@ class MyUiInfoModalWindGrid
 		btnLink.onmousedown = (e) => { this.clearHtmlTxt(); this.showWinVideo(); }
 		
 		this.divWindGrid.style.top = (rect1.bottom + 15) + 'px';
-		this.divWindGrid.style.left = (rect.left + rect.width/2 - this.divWindGrid.clientWidth/2)+'px';		
+		this.divWindGrid.style.left = (rect.left + rect.width/2 - this.divWindGrid.clientWidth/2)+'px';
+		this.divWindGrid.style.transform = 'none';
 	}
 
 	
@@ -218,8 +219,9 @@ class MyUiInfoModalWindGrid
 			</div>
 		</div>`;
 		
-		this.divWindGrid.style.top = (rect1.bottom + 15) + 'px';
-		this.divWindGrid.style.left = (rect.left + rect.width/2 - this.divWindGrid.clientWidth/2)+'px';		
+		this.divWindGrid.style.top = '50%';
+		this.divWindGrid.style.left = '50%';
+		this.divWindGrid.style.transform = 'translate(-50%, -50%)';		
 	}
 	
 	

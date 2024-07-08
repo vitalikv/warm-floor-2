@@ -6,6 +6,8 @@
 </div>
 
 <noindex>
+<div nameId="wrapModalInfoGrid"></div>
+
 <div class="top_panel_2" style="z-index: 1;">
 
 	<? if($interface['mode_1'] == 1){ ?>
