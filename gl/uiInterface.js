@@ -1,42 +1,7 @@
 
 
-createListInCatalogUI_1();
-
-// создаем объекты и добавляем их в каталог UI
-function createListInCatalogUI_1()
-{
-	var obj = [];
-	
-	var arr = [];
-	
-	arr[0] = {lotid: 1, name: 'насос'};
-	arr[1] = {lotid: 2, name: 'котел'};
-	arr[2] = {lotid: 3, name: 'радиатор'};
-	arr[3] = {lotid: 4, name: 'расширительный бак'};
-	arr[4] = {lotid: 5, name: 'коллектор'};
-	
-	addObjInCatalogUI_1({obj: arr});
-}
 
 
-
-// добавляем объекты в каталог UI
-function addObjInCatalogUI_1(cdm)
-{
-	
-	for(var i = 0; i < cdm.obj.length; i++)
-	{
-		var str = 
-		'<div class="right_panel_1_1_list_item" add_lotid="'+cdm.obj[i].lotid+'">\
-			<div class="right_panel_1_1_list_item_text">'
-			+cdm.obj[i].name+
-			'</div>\
-		</div>';
-		
-		$('[list_ui="catalog"]').append(str);
-	}
-	
-}
 
 
 // добавляем/обновляем/удаляем в список материалов новый объект, который добавляем в сцену UI

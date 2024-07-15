@@ -1176,6 +1176,10 @@ function clickButton( event )
 		else if(clickO.button == 'add_lotid')
 		{
 			loadObjServer({lotid: clickO.options, cursor: true});
+		}
+		else if(clickO.button == 'addNotes')
+		{
+			//loadObjServer({lotid: clickO.lotid, cursor: true});
 		}		
 	}
 	else if(camera == camera3D)
@@ -1726,6 +1730,7 @@ function checkNumberInput(cdm)
 let myLeftPanel;
 let myUiBtnGrid;
 let myUiInfoModalWindGrid;
+let myUiRightPanel;
 let myUiGridPanel;
 let myMath;
 let myGrids;
@@ -1738,13 +1743,14 @@ let myGridsSaveLoad;
 
 var docReady = false;
 
-$(document).ready(function () 
-{ 
+document.addEventListener("DOMContentLoaded", ()=>
+{
 	docReady = true;
 	myLeftPanel = new MyLeftPanel();
 	myUiBtnGrid = new MyUiBtnGrid();
 	myUiInfoModalWindGrid = new MyUiInfoModalWindGrid();
 	
+	myUiRightPanel = new MyUiRightPanel();
 	//myLeftPanel.crDefPanel(); бесплатная фейковая панель (сетка)
 	myLeftPanel.crUserPanel();
 	myUiGridPanel = new MyUiGridPanel();

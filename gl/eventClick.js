@@ -9,27 +9,6 @@ $('[data-action="left_panel_1"]').mousedown(function () { clickInterface(); });
 
 
 
-
-$('[nameId="button_wrap_catalog"]').mousedown(function () { changeRightMenuUI({el: this}); });
-$('[nameId="button_wrap_list_obj"]').mousedown(function () { changeRightMenuUI({el: this}); });
-
- 
-// переключаем меню (каталог/список)
-function changeRightMenuUI(cdm)
-{
-	if(cdm.el.attributes.nameId.value == "button_wrap_catalog") 
-	{
-		$('[nameId="wrap_catalog"]').show();
-		$('[nameId="wrap_list_obj"]').hide();
-	}
-	if(cdm.el.attributes.nameId.value == "button_wrap_list_obj") 
-	{
-		$('[nameId="wrap_catalog"]').hide();
-		$('[nameId="wrap_list_obj"]').show();
-	}	
-}
-
-
 $('[infcam]').on('mousedown', function(e) 
 {  
 	var value = $(this).attr('infcam');
@@ -78,7 +57,6 @@ $('[data-action="create_tube_1"]').mousedown(function () { return clickInterface
 $('[data-action="create_tube_box_1"]').mousedown(function () { return clickInterface({button:'create_tube_box_1'}); }); 
 $('[data-action="create_wd_2"]').mousedown(function () { return clickInterface({button:'create_wd_2'}); });
 $('[data-action="create_wd_3"]').mousedown(function () { return clickInterface({button:'create_wd_3'}); });
-$('[add_lotid]').mousedown(function () { return clickInterface({button: 'add_lotid', value: this.attributes.add_lotid.value}); });
 $('[data-action="screenshot"]').mousedown(function () { saveAsImage(); return false; }); 				
 
 

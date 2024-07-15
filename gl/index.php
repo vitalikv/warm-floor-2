@@ -40,7 +40,7 @@
 	
 	<noindex>		 
 	<? require_once("include/left_panel_1.php"); ?>	
-	<? require_once("include/right_panel_1.php"); ?>
+	<div class="right_panel_1" style="z-index: 1;"></div>
 	<? require_once("include/bottom_panel_1.php"); ?>	
 	<? require_once("include/modal_window_1.php"); ?>
 	<? require_once("include/modal_window_3.php"); ?>
@@ -91,6 +91,7 @@
 	<script src="<?=$path?>new/ui/myLeftPanel.js?<?=$vrs?>"></script>	
 	<script src="<?=$path?>new/ui/topPanel/myUiBtnGrid.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/topPanel/myUiInfoModalWindGrid.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/rightPanel/myUiRightPanel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/grid/myUiGridPanel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/core/myMath.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGrids.js?<?=$vrs?>"></script>
