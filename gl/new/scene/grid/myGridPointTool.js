@@ -45,7 +45,7 @@ class MyGridPointTool
 	}	
 
 
-	mousedown = ({event, obj, clickBtn = false}) =>
+	mousedown = ({event, obj}) =>
 	{
 		this.isDown = false;
 		this.isMove = false;	
@@ -183,7 +183,7 @@ class MyGridPointTool
 	deleteToolContour()
 	{
 		const points = this.arrPoints;
-		const line = (points[0].userData.line) ? points[0].userData.line : null;
+		const line = myGrids.getLineFromPoint({point: points[0]});;
 		
 		if(line)
 		{

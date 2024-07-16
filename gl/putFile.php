@@ -48,6 +48,11 @@ new/scene/grid/myGridMesh.js
 new/scene/grid/myGridMeshOffset.js
 new/scene/grid/myGridActivate.js
 new/scene/grid/myGridsSaveLoad.js
+new/scene/notes/myNotes.js
+new/scene/notes/myNoteRuler.js
+new/scene/notes/myNoteRulerTool.js
+new/scene/notes/myNoteRoulette.js
+new/scene/notes/myNoteRouletteTool.js
 uiInterface.js
 uiInterface_user_1.js
 ';

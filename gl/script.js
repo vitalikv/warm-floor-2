@@ -1179,7 +1179,7 @@ function clickButton( event )
 		}
 		else if(clickO.button == 'addNotes')
 		{
-			//loadObjServer({lotid: clickO.lotid, cursor: true});
+			clickO.move = myNotes.crNotesFromBtn({lotid: clickO.lotid, pos: intersects[0].point, event});
 		}		
 	}
 	else if(camera == camera3D)
@@ -1255,7 +1255,12 @@ function clickInterface(cdm)
 		{
 			clickO.button = 'add_lotid';
 			clickO.options = cdm.value;
-		}			
+		}
+		else if(cdm.button == 'addNotes')
+		{
+			clickO.button = cdm.button;
+			clickO.lotid = cdm.lotid;
+		}		
 		else if(cdm.button == 'grid_show_1')
 		{
 			showHideGrid(); 
@@ -1740,6 +1745,11 @@ let myGridMesh;
 let myGridMeshOffset;
 let myGridActivate;
 let myGridsSaveLoad;
+let myNotes;
+let myNoteRuler;
+let myNoteRulerTool;
+let myNoteRoulette;
+let myNoteRouletteTool;
 
 var docReady = false;
 
@@ -1763,7 +1773,13 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myGridMeshOffset = new MyGridMeshOffset();
 	myGridActivate = new MyGridActivate();
 	myGridsSaveLoad = new MyGridsSaveLoad();
-
+	
+	myNotes = new MyNotes();
+	myNoteRuler = new MyNoteRuler();
+	myNoteRulerTool = new MyNoteRulerTool();
+	myNoteRoulette = new MyNoteRoulette();
+	myNoteRouletteTool = new MyNoteRouletteTool();	
+	
 	// активация пользовательской сетки для теста (так она активруется при оплаченной подписке)
 	if(1===2)
 	{		

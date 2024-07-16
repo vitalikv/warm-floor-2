@@ -53,7 +53,15 @@ function mouseDownRight()
 		{
 			myGridPointTool.clickRight();
 		}		
-
+		else if(obj.userData.tag == 'noteRulerToolPoint')
+		{
+			myNoteRulerTool.clickRight();
+		}
+		else if(obj.userData.tag == 'noteRouletteToolPoint')
+		{
+			myNoteRouletteTool.clickRight();
+		}		
+		
 		clickO = resetPop.clickO();
 	}	
 	
@@ -115,7 +123,17 @@ function onDocumentMouseDown( event )
 		{
 			clickO.move = myGridPointTool.mousedown({event, obj: clickO.move}); 
 			return;
-		}		
+		}
+		if(clickO.move.userData.tag == 'noteRulerToolPoint')
+		{
+			clickO.move = clickO.move = myNoteRulerTool.mousedown({event, obj: clickO.move}); 
+			return;
+		}
+		if(clickO.move.userData.tag == 'noteRouletteToolPoint')
+		{
+			clickO.move = clickO.move = myNoteRouletteTool.mousedown({event, obj: clickO.move}); 
+			return;
+		}			
 	}
 	 
 	clickO.obj = null; 	
@@ -268,7 +286,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
 		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj, rayhit ); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
-		else if( tag == 'gridPointToolWf' && camera == cameraTop ) { myGridPointTool.mousedown({event, obj}); }
+		//else if( tag == 'gridPointToolWf' && camera == cameraTop ) { myGridPointTool.mousedown({event, obj}); }
 		else if( tag == 'gridPointWf' && camera == cameraTop ) { clickO.move = myGridPointMove.mousedown({event, obj}); }
 		else if( tag == 'dataGrid' && camera == cameraTop ) 
 		{ 
@@ -373,6 +391,8 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'gridPointToolWf' ) { myGridPointTool.mousemove( event ); }
 		else if ( tag == 'gridPointWf' ) { myGridPointMove.mousemove( event ); }
 		else if ( tag == 'dataGrid' ) { myGridMeshOffset.mousemove( event ); }
+		else if ( tag == 'noteRulerToolPoint' ) { myNoteRulerTool.mousemove( event ); }
+		else if ( tag == 'noteRouletteToolPoint' ) { myNoteRouletteTool.mousemove( event ); }
 	}
 	else 
 	{
@@ -439,7 +459,9 @@ function onDocumentMouseUp( event )
 		{
 			myGridMeshOffset.mouseup();
 			clickO.move = null;
-		}		
+		}
+		else if(tag == 'noteRulerToolPoint') {  }
+		else if(tag == 'noteRouletteToolPoint') {  }
 		else { clickO.move = null; }		
 	}
 
