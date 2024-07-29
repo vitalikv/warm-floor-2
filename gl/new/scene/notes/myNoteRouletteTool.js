@@ -15,7 +15,7 @@ class MyNoteRouletteTool
 	{
 		this.arrPoints = [];
 		
-		const obj = myNoteRuler.crPoint({pos: pos});
+		const obj = myNoteRoulette.crPoint({pos: pos});
 		obj.userData.tag = 'noteRouletteToolPoint';
 		
 		this.arrPoints.push(obj);		
@@ -47,11 +47,11 @@ class MyNoteRouletteTool
 		this.isMove = false;	
 
 		
-		obj = myNoteRuler.crPoint({pos: obj.position.clone()});
+		obj = myNoteRoulette.crPoint({pos: obj.position.clone()});
 		obj.userData.tag = 'noteRouletteToolPoint';
 		
 		this.arrPoints.push(obj);		
-		if(this.arrPoints.length > 1) myNoteRuler.crLine({points: [...this.arrPoints]});				
+		if(this.arrPoints.length > 1) myNoteRoulette.crLine({points: [...this.arrPoints]});				
 
 		
 		planeMath.position.set( 0, obj.position.y, 0 );
@@ -85,7 +85,7 @@ class MyNoteRouletteTool
 		
 		obj.position.add( offset );	
 
-		myNoteRuler.upGeometryLine({point: obj});
+		myNoteRoulette.upGeometryLine({point: obj});
 	}
 	
 	mouseup = () =>
@@ -119,7 +119,7 @@ class MyNoteRouletteTool
 	deleteRulerTool()
 	{
 		let points = this.arrPoints;
-		const line = myNoteRuler.getLineFromPoint({point: points[0]});
+		const line = myNoteRoulette.getLineFromPoint({point: points[0]});
 		
 		this.deletePoint({obj: points[points.length - 1]});
 		
@@ -141,7 +141,7 @@ class MyNoteRouletteTool
 			}		
 			else
 			{
-				myNoteRuler.upGeometryLine({point: points[0]});
+				myNoteRoulette.upGeometryLine({point: points[0]});
 			}
 		}
 		

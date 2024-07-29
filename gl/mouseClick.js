@@ -126,12 +126,13 @@ function onDocumentMouseDown( event )
 		}
 		if(clickO.move.userData.tag == 'noteRulerToolPoint')
 		{
-			clickO.move = clickO.move = myNoteRulerTool.mousedown({event, obj: clickO.move}); 
+			clickO.move = myNoteRulerTool.mousedown({event, obj: clickO.move});
+			if(!clickO.move) clickO = resetPop.clickO();			
 			return;
 		}
 		if(clickO.move.userData.tag == 'noteRouletteToolPoint')
 		{
-			clickO.move = clickO.move = myNoteRouletteTool.mousedown({event, obj: clickO.move}); 
+			clickO.move = myNoteRouletteTool.mousedown({event, obj: clickO.move}); 
 			return;
 		}			
 	}
@@ -178,13 +179,21 @@ function clickRayHit(event)
 		if(ray.length > 0) { rayhit = ray[0]; }		
 	}	
 	
-	let go1 = (myGridPointTool && myGridPointTool.getActGridPointTool()) ? false : true;
+	// чтобы подсветка работала, нужно чтобы не было активировано создание сетки, также проверяем существует ли класс myGridPointTool
+	let go1 = (myGridPointTool && myGridPointTool.getActGridPointTool()) ? false : true;	
 	if(!infProject.scene.block.click.tube && go1)
 	{
 		var ray = hoverCursorLineWF(event);	
 		if(ray) { rayhit = ray; }		
 	}
-	
+
+
+	// ищем линейки, рулетки
+	if(!rayhit) 
+	{
+		var ray = myNotes.clickRayhit({event})
+		if(ray) { rayhit = ray; return rayhit; }
+	}		
 	
 	// ищем точку контура сетки
 	if(!rayhit) 
@@ -293,6 +302,7 @@ function clickMouseActive(cdm)
 			myGridActivate.activateDataGrid({dataGrid: obj.dataGrid});
 			if(myGridMeshOffset.mousedown({event, dataGrid: obj.dataGrid})) { clickO.move = obj; }
 		}
+		else if( tag == 'noteRulerPoint' ) { clickO.move = myNoteRuler.mousedown({event, obj}); }
 		else { flag = false; }
 	}
 	else if(cdm.type == 'up')
@@ -393,6 +403,7 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'dataGrid' ) { myGridMeshOffset.mousemove( event ); }
 		else if ( tag == 'noteRulerToolPoint' ) { myNoteRulerTool.mousemove( event ); }
 		else if ( tag == 'noteRouletteToolPoint' ) { myNoteRouletteTool.mousemove( event ); }
+		else if ( tag == 'noteRulerPoint' ) { myNoteRuler.mousemove( event ); }
 	}
 	else 
 	{

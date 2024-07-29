@@ -169,6 +169,7 @@ function objDeActiveColor_2D()
 	}
 	else if(o.userData.tag == 'gridPointWf'){ myGridActivate.deActivatePointDataGrid({point: o}); }
 	else if(o.userData.tag == 'dataGrid'){ myGridActivate.deActivateDataGrid({dataGrid: o.dataGrid}); }
+	else if(o.userData.tag == 'noteRulerPoint'){ myNoteRuler.deActivateNoteRuler({obj: o}); }
 	
 	if(clickO.hover == clickO.last_obj) { clickO.hover = null; }
 } 

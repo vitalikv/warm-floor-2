@@ -1,5 +1,5 @@
 
-// 
+// инструмент для создании линейки через кнопку из интерфейса
 class MyNoteRulerTool
 {
 	arrPoints = [];
@@ -11,7 +11,7 @@ class MyNoteRulerTool
 
 	
 
-	crToolRulerPoint({pos, event})
+	crToolPoint({pos, event})
 	{
 		this.arrPoints = [];
 		
@@ -37,7 +37,7 @@ class MyNoteRulerTool
 	
 	clickRight()
 	{
-		this.deleteRulerTool();
+		this.deleteTool();
 	}	
 
 
@@ -46,6 +46,12 @@ class MyNoteRulerTool
 		this.isDown = false;
 		this.isMove = false;	
 
+		// закончили построение линейки
+		if(this.arrPoints.length === 2) 
+		{
+			this.addNoteRule();
+			return null;
+		}
 		
 		obj = myNoteRuler.crPoint({pos: obj.position.clone()});
 		obj.userData.tag = 'noteRulerToolPoint';
@@ -93,59 +99,52 @@ class MyNoteRulerTool
 				
 	}	
 
-	
-	getActGridPointTool()
-	{
-		return this.actObj;
-	}
 
 	clearPoint()
 	{
 		this.actObj = null;
 		this.isDown = false;
 		this.isMove = false;
+		
+		this.arrPoints = [];
 	}
+
 	
-	deletePoint({obj})
+	// после того как закончили построение, превращаем tool в объект линейка
+	addNoteRule()
 	{
-		scene.remove(obj);
-		
-		const index = this.arrPoints.indexOf(obj);
-		if (index > -1) this.arrPoints.splice(index, 1);
-	}
-
-
-	// удаляем последний участок рулетки (по правой кнопки мыши)
-	deleteRulerTool()
-	{
-		let points = this.arrPoints;
-		const line = myNoteRuler.getLineFromPoint({point: points[0]});
-		
-		this.deletePoint({obj: points[points.length - 1]});
-		
-		points = this.arrPoints;
+		const points = this.arrPoints;
 		
 		for ( let i = 0; i < points.length; i++ )
 		{
 			points[i].userData.tag = 'noteRulerPoint';
-			points[i].userData.points = points;
-		}		
+			//points[i].userData.points = points;
+		}
+		
+		this.clearPoint();
+		
+		const structureRuler = myNoteRuler.getStructure({obj: points[0]});
+		if(!structureRuler) return;
+		
+		myNotes.addDataNote({data: structureRuler});		
+	}
+
+	// удаляем линейку (по правой кнопки мыши)
+	deleteTool()
+	{
+		const points = this.arrPoints;
+		const line = myNoteRuler.getLineFromPoint({point: points[0]});
+				
+		for ( let i = 0; i < points.length; i++ )
+		{
+			scene.remove(points[i]);
+		}						
 		
 		if(line)
 		{
-			if(points.length < 2)
-			{
-				scene.remove(points[0]);
-				line.geometry.dispose();
-				scene.remove(line);
-			}		
-			else
-			{
-				myNoteRuler.upGeometryLine({point: points[0]});
-			}
+			line.geometry.dispose();
+			scene.remove(line);
 		}
-		
-		this.arrPoints = [];
 		
 		this.clearPoint();
 
