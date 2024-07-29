@@ -11,7 +11,7 @@ class MyNoteRouletteTool
 
 	
 
-	crToolRulerPoint({pos, event})
+	crToolPoint({pos, event})
 	{
 		this.arrPoints = [];
 		
@@ -37,7 +37,7 @@ class MyNoteRouletteTool
 	
 	clickRight()
 	{
-		this.deleteRulerTool();
+		this.deleteTool();
 	}	
 
 
@@ -94,16 +94,13 @@ class MyNoteRouletteTool
 	}	
 
 	
-	getActGridPointTool()
-	{
-		return this.actObj;
-	}
-
 	clearPoint()
 	{
 		this.actObj = null;
 		this.isDown = false;
 		this.isMove = false;
+		
+		this.arrPoints = [];
 	}
 	
 	deletePoint({obj})
@@ -116,20 +113,12 @@ class MyNoteRouletteTool
 
 
 	// удаляем последний участок рулетки (по правой кнопки мыши)
-	deleteRulerTool()
+	deleteTool()
 	{
-		let points = this.arrPoints;
+		const points = this.arrPoints;
 		const line = myNoteRoulette.getLineFromPoint({point: points[0]});
 		
 		this.deletePoint({obj: points[points.length - 1]});
-		
-		points = this.arrPoints;
-		
-		for ( let i = 0; i < points.length; i++ )
-		{
-			points[i].userData.tag = 'noteRoulettePoint';
-			points[i].userData.points = points;
-		}		
 		
 		if(line)
 		{
@@ -141,16 +130,30 @@ class MyNoteRouletteTool
 			}		
 			else
 			{
+				myNoteRoulette.setPointsForPoint({points});							
 				myNoteRoulette.upGeometryLine({point: points[0]});
+				this.addNoteRoulette();
 			}
 		}
-		
-		this.arrPoints = [];
 		
 		this.clearPoint();
 
 		this.render();		
 	}
+	
+	
+	// после того как закончили построение, превращаем tool в объект рулетка
+	addNoteRoulette()
+	{
+		const points = this.arrPoints;
+		
+		myNoteRoulette.setPointsRouletteTag({points});
+		
+		const structureRuler = myNoteRoulette.getStructure({obj: points[0]});
+		if(!structureRuler) return;
+		
+		myNotes.addDataNote({data: structureRuler});		
+	}	
 	
 	render()
 	{

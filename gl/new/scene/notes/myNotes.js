@@ -11,7 +11,7 @@ class MyNotes
 		let obj = null;
 		
 		if(lotid === 1) obj = myNoteRulerTool.crToolPoint({pos, event});
-		if(lotid === 2) obj = myNoteRouletteTool.crToolRulerPoint({pos, event});
+		if(lotid === 2) obj = myNoteRouletteTool.crToolPoint({pos, event});
 		
 		return obj;
 	}

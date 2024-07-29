@@ -303,6 +303,7 @@ function clickMouseActive(cdm)
 			if(myGridMeshOffset.mousedown({event, dataGrid: obj.dataGrid})) { clickO.move = obj; }
 		}
 		else if( tag == 'noteRulerPoint' ) { clickO.move = myNoteRuler.mousedown({event, obj}); }
+		else if ( tag == 'noteRoulettePoint' ) { clickO.move = myNoteRoulette.mousedown({event, obj}); }
 		else { flag = false; }
 	}
 	else if(cdm.type == 'up')
@@ -404,6 +405,7 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'noteRulerToolPoint' ) { myNoteRulerTool.mousemove( event ); }
 		else if ( tag == 'noteRouletteToolPoint' ) { myNoteRouletteTool.mousemove( event ); }
 		else if ( tag == 'noteRulerPoint' ) { myNoteRuler.mousemove( event ); }
+		else if ( tag == 'noteRoulettePoint' ) { myNoteRoulette.mousemove( event ); }
 	}
 	else 
 	{

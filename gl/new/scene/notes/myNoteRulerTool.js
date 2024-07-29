@@ -115,11 +115,7 @@ class MyNoteRulerTool
 	{
 		const points = this.arrPoints;
 		
-		for ( let i = 0; i < points.length; i++ )
-		{
-			points[i].userData.tag = 'noteRulerPoint';
-			//points[i].userData.points = points;
-		}
+		myNoteRuler.setPointsRulerTag({points});
 		
 		this.clearPoint();
 		

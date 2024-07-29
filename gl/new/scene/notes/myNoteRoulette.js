@@ -10,30 +10,25 @@ class MyNoteRoulette
 
 	indPoint = 0;
 	geomPoint;
-	matPoint;
-	defColorPointNumber = 0x222222;
-	defColorLineNumber = 0x000000;
+	matDef;
+	defColor = 0x000000;
+	actColor = 0xff0000;
 	posY = 0;
 
 	constructor()
 	{
 		this.geomPoint = new THREE.SphereGeometry( 0.02, 16, 16 );
-		this.matPoint = new THREE.MeshLambertMaterial({ color: new THREE.Color(this.defColorPointNumber), transparent: true, depthTest: false, lightMap: lightMap_1 });
+		this.matDef = new THREE.MeshLambertMaterial({ color: new THREE.Color(this.defColor), transparent: true, depthTest: false, lightMap: lightMap_1 });
 		
 		this.posY = infProject.settings.grid.pos.y;
 	}	
 	
-	crObj({pos})
-	{
-		this.crPoint({pos: pos[0]});
-		this.crPoint({pos: pos[1]});
-	}
 	
 
 	// точка
 	crPoint({pos})
 	{
-		const obj = new THREE.Mesh( this.geomPoint, this.matPoint.clone() ); 
+		const obj = new THREE.Mesh( this.geomPoint, this.matDef.clone() ); 
 
 		obj.userData.tag = 'noteRoulettePoint';
 		obj.userData.id = this.indPoint;
@@ -60,7 +55,7 @@ class MyNoteRoulette
 			const geometry = new THREE.Geometry();
 			geometry.vertices = arrP;
 	
-			line = new THREE.Line( geometry, new THREE.MeshLambertMaterial({color: this.defColorLineNumber, lightMap: lightMap_1}) );	
+			line = new THREE.Line( geometry, this.matDef.clone() );	
 			scene.add( line );					
 		}
 		else
@@ -111,38 +106,56 @@ class MyNoteRoulette
 		return point.userData.line;		
 	}	
 
-	mousedown = ({event, dataGrid}) =>
+
+	// назначаем все точкам рулетки, массив точек
+	setPointsForPoint({points})
 	{
-		const meshes = myGrids.getGridMeshes({dataGrid});
-		const points = dataGrid.points;		
-		if(meshes.length === 0) return;
+		for ( let i = 0; i < points.length; i++ )
+		{
+			points[i].userData.points = points;
+		}		
+	}
+
+
+	// назначаем tag для точек, когда превращаем их из tool в линейку
+	setPointsRouletteTag({points})
+	{
+		for ( let i = 0; i < points.length; i++ )
+		{
+			points[i].userData.tag = 'noteRoulettePoint';
+		}		
+	}
 		
-		if(!myGrids.getModeOffset({dataGrid})) return;
 		
+	mousedown = ({event, obj}) =>
+	{
 		this.isDown = false;
 		this.isMove = false;	
 		
-		this.actObj = dataGrid;
+		this.actObj = obj;
 		
-		planeMath.position.set( 0, points[0].position.y, 0 );
+		planeMath.position.set( 0, obj.position.y, 0 );
 		planeMath.rotation.set(-Math.PI/2, 0, 0);
 		planeMath.updateMatrixWorld();
 		
 		const intersects = rayIntersect(event, planeMath, 'one');
 		if (intersects.length === 0) return;
 		this.offset = intersects[0].point;		
+
+		this.activateNoteRoulette({obj});
 		
 		this.isDown = true;
 
 		return this.actObj;
 	}
 	
+	
 	mousemove = (event) =>
 	{
 		if (!this.isDown) return;
 		this.isMove = true;
 		
-		const dataGrid = this.actObj;	
+		const obj = this.actObj;	
 		
 		const intersects = rayIntersect(event, planeMath, 'one');
 		if (intersects.length === 0) return;
@@ -152,22 +165,16 @@ class MyNoteRoulette
 		
 		offset.y = 0;		
 		
-		myGridMesh.offsetGridMeshes({dataGrid, offset: new THREE.Vector2(offset.x, offset.z), upCross: false});
-		//obj.position.add(offset);		
+		obj.position.add( offset );
 
-		//myGrids.upGeometryLine({point: obj});
-		
-		// обновление обрешетки
-		//myGridMesh.upGridMeshFromPoint({point: obj, upCross: false});
+		this.upGeometryLine({point: obj});
 	}
 	
 	mouseup = () =>
 	{
-		const dataGrid = this.actObj;
+		const obj = this.actObj;
 		const isDown = this.isDown;
 		const isMove = this.isMove;
-		
-		if(dataGrid) myGridMesh.offsetGridMeshes({dataGrid, offset: new THREE.Vector2(0, 0), upCross: true});
 		
 		this.clearPoint();		
 	}
@@ -179,6 +186,74 @@ class MyNoteRoulette
 		this.isDown = false;
 		this.isMove = false;
 	}
+
+
+	activateNoteRoulette({obj})
+	{
+		this.setColorNoteRoulette({obj, color: this.actColor});
+	}
+	
+	deActivateNoteRoulette({obj})
+	{
+		this.setColorNoteRoulette({obj, color: this.defColor});
+	}	
+	
+
+	// получаем структуру data (для создания, удаления, выделения) рулетки
+	getStructure({obj})
+	{
+		let detect = false;
+		const structureRuler = { tag: 'noteRoulette', points: [], line: null };
+		
+		if(obj.userData.tag === 'noteRoulettePoint')
+		{
+			detect = true;
+			structureRuler.points = this.getPointsFromPoint({point: obj});
+			structureRuler.line = this.getLineFromPoint({point: obj});
+		}
+
+		return (!detect) ? null : structureRuler;
+	}
+	
+
+	// ставим цвет для линейки
+	setColorNoteRoulette({obj, color})
+	{
+		const structure = this.getStructure({obj});		
+		if(!structure) return;
+		
+		const points = structure.points;
+		
+		for ( let i = 0; i < points.length; i++ )
+		{				
+			points[i].material.color = new THREE.Color(color);
+		}
+		
+		structure.line.material.color = new THREE.Color(color);
+	}
+	
+
+	deleteNoteRoulette({obj})
+	{
+		const structure = this.getStructure({obj});
+		if(!structure) return;
+		
+		myNotes.deleteDataNote({data: structure});
+		
+		const points = structure.points;
+		const line = structure.line;
+		
+		for ( let i = 0; i < points.length; i++ )
+		{				
+			scene.remove(points[i]);
+		}
+		
+		if(line)
+		{
+			line.geometry.dispose();
+			scene.remove(line);
+		}
+	}	
 }
 
 

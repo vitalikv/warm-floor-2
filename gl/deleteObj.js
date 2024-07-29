@@ -27,6 +27,7 @@ function detectDeleteObj()
 	else if ( tag == 'gridPointWf' ) { myGrids.deletePoint({point: obj}); }
 	else if ( tag == 'dataGrid' ) { myGrids.deleteGrid({dataGrid: obj.dataGrid}); }
 	else if ( tag == 'noteRulerPoint' ) { myNoteRuler.deleteNoteRuler({obj}); }
+	else if ( tag == 'noteRoulettePoint' ) { myNoteRoulette.deleteNoteRoulette({obj}); }
 	
 	clickO = resetPop.clickO();
 	

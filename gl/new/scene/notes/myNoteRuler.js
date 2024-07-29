@@ -103,6 +103,14 @@ class MyNoteRuler
 		return point.userData.line;		
 	}	
 
+	// назначаем tag для точек, когда превращаем их из tool в линейку
+	setPointsRulerTag({points})
+	{
+		for ( let i = 0; i < points.length; i++ )
+		{
+			points[i].userData.tag = 'noteRulerPoint';
+		}		
+	}
 	
 	mousedown = ({event, obj}) =>
 	{
@@ -196,29 +204,29 @@ class MyNoteRuler
 	// ставим цвет для линейки
 	setColorNoteRuler({obj, color})
 	{
-		const structureRuler = this.getStructure({obj});		
-		if(!structureRuler) return;
+		const structure = this.getStructure({obj});		
+		if(!structure) return;
 		
-		const points = structureRuler.points;
+		const points = structure.points;
 		
 		for ( let i = 0; i < points.length; i++ )
 		{				
 			points[i].material.color = new THREE.Color(color);
 		}
 		
-		structureRuler.line.material.color = new THREE.Color(color);
+		structure.line.material.color = new THREE.Color(color);
 	}
 	
 
 	deleteNoteRuler({obj})
 	{
-		const structureRuler = this.getStructure({obj});
-		if(!structureRuler) return;
+		const structure = this.getStructure({obj});
+		if(!structure) return;
 		
-		myNotes.deleteDataNote({data: structureRuler});
+		myNotes.deleteDataNote({data: structure});
 		
-		const points = structureRuler.points;
-		const line = structureRuler.line;
+		const points = structure.points;
+		const line = structure.line;
 		
 		for ( let i = 0; i < points.length; i++ )
 		{				
