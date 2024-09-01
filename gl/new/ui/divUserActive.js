@@ -105,7 +105,7 @@ class MyUserActive
 		const html =
 		`<div>
 			<div style="${css1}">
-				<div style="margin-top: 20px;">Сохранение и загрузка проектов доступна после оформлении подписки.</div>
+				<div style="width: 400px; padding: 20px; font-size: 18px; border: solid 1px #b3b3b3;">сохранение и загрузка проектов доступна после оформлении подписки</div>
 				<div nameId="divSubsTariff"></div>
 			</div>
 		</div>`;

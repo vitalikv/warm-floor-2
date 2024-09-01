@@ -1787,6 +1787,9 @@ document.addEventListener("DOMContentLoaded", ()=>
 		myUiGridPanel.init();		
 	}
 	
+	changeMainMenuUI({el: infProject.elem.mainMenu.m6});	// показываем стартовое меню с видеоинструкцией
+	
+	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	
 	loadFile({local: false});	

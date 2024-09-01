@@ -41,7 +41,8 @@ class MyUiRightPanel
 		this.addListCatalog();
 		this.addListNotes();
 		
-		this.toggleTabs({act: 'notes'});
+		//this.toggleTabs({act: 'notes'});
+		this.divTabs.notes.style.display = 'none';
 	}
 
 	crDivPanel()
