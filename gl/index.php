@@ -47,9 +47,8 @@
 		
 	
 	<div class="help" style=" z-index: 1;">
-		<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube button_gradient_1" data-action ='top_panel_1' target="_blank">
-			<img src="<?=$path?>/img/button_youtube.png">
-			<div style="padding-left:10px;">видеоинструкция</div>
+		<a href="https://rutube.ru/video/c0dfef93a75bb585db6d8533d81fa99c/" class="button_youtube button_gradient_1" data-action ='top_panel_1' target="_blank">
+			<div>видеоинструкция</div>
 		</a>
 	</div>	
 	</noindex>
