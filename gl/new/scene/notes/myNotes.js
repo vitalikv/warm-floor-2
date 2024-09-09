@@ -39,7 +39,7 @@ class MyNotes
 		
 		const ray = rayIntersect( event, arr, 'arr' );
 		if(ray.length > 0) { rayhit = ray[0]; }
-console.log(777, rayhit)
+
 		return rayhit;
 	}
 

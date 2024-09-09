@@ -36,7 +36,6 @@
 	
 	
 	<? require_once("include/top_1.php"); ?>
-	<? //require_once("include/modal_window_2.php"); ?>
 	
 	<noindex>		 
 	<? require_once("include/left_panel_1.php"); ?>	
