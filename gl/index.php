@@ -84,8 +84,11 @@
 	<script src="<?=$path?>clickActiveObj.js?<?=$vrs?>"></script>    
     <script src="<?=$path?>saveLoad.js?<?=$vrs?>"></script>
 	
-	<script src="<?=$path?>new/ui/divUserActive.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/ui/divSubs.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/mainMenu/myUiMainMenu.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/mainMenu/myUiPanelRegister.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/mainMenu/myUiListProjects.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/mainMenu/divUserActive.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/mainMenu/divSubs.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/myLeftPanel.js?<?=$vrs?>"></script>	
 	<script src="<?=$path?>new/ui/topPanel/myUiBtnGrid.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/topPanel/myUiInfoModalWindGrid.js?<?=$vrs?>"></script>
@@ -105,8 +108,7 @@
 	<script src="<?=$path?>new/scene/notes/myNoteRoulette.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNoteRouletteTool.js?<?=$vrs?>"></script>
 	
-	<script src="<?=$path?>uiInterface.js?<?=$vrs?>"></script>	
-	<script src="<?=$path?>uiInterface_user_1.js?<?=$vrs?>"></script>      		
+	<script src="<?=$path?>uiInterface.js?<?=$vrs?>"></script>	     		
 	
 	<?if($url == '/calculator/warm_floor'){?> <script src="<?=$path?>block/floorWarm.js?<?=$vrs?>"></script> <?}?>
 	

@@ -33,7 +33,7 @@ class MyUserActive
 		{
 			const days = subs.days;
 			wrap.innerHTML = this.html_2({days});
-			getListProject({id: infProject.user.id, typeInfo: 'load'});
+			myUiListProjects.getListProject({id: infProject.user.id, typeInfo: 'load'});
 
 			// вкл кнопку и панель для пользовательской сетки
 			myUiBtnGrid.initEventForUser();

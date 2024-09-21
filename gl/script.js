@@ -1731,7 +1731,9 @@ function checkNumberInput(cdm)
 
 
 
-
+let myUiMainMenu;
+let myUiPanelRegister;
+let myUiListProjects;
 let myLeftPanel;
 let myUiBtnGrid;
 let myUiInfoModalWindGrid;
@@ -1756,6 +1758,9 @@ var docReady = false;
 document.addEventListener("DOMContentLoaded", ()=>
 {
 	docReady = true;
+	myUiMainMenu = new MyUiMainMenu();
+	myUiPanelRegister = new MyUiPanelRegister();
+	myUiListProjects = new MyUiListProjects();
 	myLeftPanel = new MyLeftPanel();
 	myUiBtnGrid = new MyUiBtnGrid();
 	myUiInfoModalWindGrid = new MyUiInfoModalWindGrid();
@@ -1786,9 +1791,10 @@ document.addEventListener("DOMContentLoaded", ()=>
 		myUiBtnGrid.initEventForUser();		
 		myUiGridPanel.init();		
 	}
-	
-	changeMainMenuUI({el: infProject.elem.mainMenu.m6});	// показываем стартовое меню с видеоинструкцией
-	
+
+	// скрываем главное меню
+	//if (window.location.hostname === 'warm-floor-2') { myUiMainMenu.hideMenu(); } 	
+
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	

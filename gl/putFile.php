@@ -33,8 +33,11 @@ clickObj.js
 clickMoveGizmo.js
 scaleBox.js
 loadObj.js
-new/ui/divUserActive.js
-new/ui/divSubs.js
+new/ui/mainMenu/myUiMainMenu.js
+new/ui/mainMenu/myUiPanelRegister.js
+new/ui/mainMenu/myUiListProjects.js
+new/ui/mainMenu/divUserActive.js
+new/ui/mainMenu/divSubs.js
 new/ui/myLeftPanel.js
 new/ui/topPanel/myUiBtnGrid.js
 new/ui/topPanel/myUiInfoModalWindGrid.js
@@ -54,7 +57,6 @@ new/scene/notes/myNoteRulerTool.js
 new/scene/notes/myNoteRoulette.js
 new/scene/notes/myNoteRouletteTool.js
 uiInterface.js
-uiInterface_user_1.js
 ';
 
 
