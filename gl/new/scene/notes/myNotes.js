@@ -66,6 +66,12 @@ class MyNotes
 		}
 		console.log(555, this.dataNotes);
 	}
+
+
+	getDataNotes()
+	{
+		return this.dataNotes;
+	}
 }
 
 

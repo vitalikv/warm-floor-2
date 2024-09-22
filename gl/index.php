@@ -107,6 +107,7 @@
 	<script src="<?=$path?>new/scene/notes/myNoteRulerTool.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNoteRoulette.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNoteRouletteTool.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/myNotesSaveLoad.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>uiInterface.js?<?=$vrs?>"></script>	     		
 	

@@ -56,6 +56,7 @@ new/scene/notes/myNoteRuler.js
 new/scene/notes/myNoteRulerTool.js
 new/scene/notes/myNoteRoulette.js
 new/scene/notes/myNoteRouletteTool.js
+new/scene/notes/myNotesSaveLoad.js
 uiInterface.js
 ';
 

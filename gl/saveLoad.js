@@ -164,6 +164,8 @@ function resetScene()
 	// удаленик пользовательских сеток
 	myGridsSaveLoad.resetGrids();
 	
+	myNotesSaveLoad.resetNotes();
+	
 	// удаляем список материалов UI
 	for(var i = 0; i < infProject.ui.list_wf.length; i++)
 	{
@@ -580,6 +582,7 @@ function getJsonGeometry()
 	json.pipe = pipe;
 	json.gridGlobal = saveGridGlobal();
 	json.grids = myGridsSaveLoad.saveGrids();
+	json.notes = myNotesSaveLoad.saveNotes();
 	
 	return json;
 }
@@ -637,6 +640,7 @@ function loadFilePL(arr)
 	var pipe = (arr.pipe) ? arr.pipe : [];
 	const gridGlobal = (arr.gridGlobal) ? arr.gridGlobal : null;
 	const grids = (arr.grids) ? arr.grids : null;
+	const notes = (arr.notes) ? arr.notes : null;
 	
 	var wall = [];
 	
@@ -821,6 +825,8 @@ function loadFilePL(arr)
 	if(gridGlobal) loadGridGlobal({data: gridGlobal});
 	
 	if(grids) myGridsSaveLoad.loadGrids({data: grids});
+	
+	if(notes) myNotesSaveLoad.loadNotes({data: notes});
 	
 	calculationAreaFundament_2();
 	

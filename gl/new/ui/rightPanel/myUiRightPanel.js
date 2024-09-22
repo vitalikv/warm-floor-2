@@ -40,9 +40,6 @@ class MyUiRightPanel
 		
 		this.addListCatalog();
 		this.addListNotes();
-		
-		//this.toggleTabs({act: 'notes'});
-		this.divTabs.notes.style.display = 'none';
 	}
 
 	crDivPanel()
@@ -141,7 +138,7 @@ class MyUiRightPanel
 							каталог
 						</div>	
 					</div>
-					<div class="right_panel_1_item_block" nameId="tabNotes">
+					<div class="right_panel_1_item_block" nameId="tabNotes" style="display: none;">
 						<div class="right_panel_1_item_block_text">
 							выноски
 						</div>	
@@ -178,7 +175,7 @@ class MyUiRightPanel
 	}
 
 	
-	// кнопка показа панели
+	// кнопка показа панели (когда панель скрыта)
 	html_2()
 	{
 		const style1 =
@@ -300,6 +297,13 @@ class MyUiRightPanel
 			div.onmousedown = () => { clickInterface({button: 'addNotes', lotid: arr[i].lotid}); }
 		}		
 	}	
+
+
+	// показываем Tab выноски
+	showTabNotes()
+	{
+		this.divTabs.notes.style.display = '';		
+	}
 }
 
 

@@ -48,7 +48,7 @@ class MyGridsSaveLoad
 	
 	loadGrids({data})
 	{
-		const points = [];
+		
 		for ( let i = 0; i < data.length; i++ )
 		{
 			const arrPos = data[i].pos;
@@ -70,8 +70,6 @@ class MyGridsSaveLoad
 			
 			myGrids.crGrid({points, sizeCell, offset, modeLink});  
 		}
-		
-		return data;
 	}	
 }
 

@@ -1752,6 +1752,7 @@ let myNoteRuler;
 let myNoteRulerTool;
 let myNoteRoulette;
 let myNoteRouletteTool;
+let myNotesSaveLoad;
 
 var docReady = false;
 
@@ -1784,6 +1785,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myNoteRulerTool = new MyNoteRulerTool();
 	myNoteRoulette = new MyNoteRoulette();
 	myNoteRouletteTool = new MyNoteRouletteTool();	
+	myNotesSaveLoad = new MyNotesSaveLoad();
 	
 	// активация пользовательской сетки для теста (так она активруется при оплаченной подписке)
 	if(1===2)
@@ -1791,14 +1793,22 @@ document.addEventListener("DOMContentLoaded", ()=>
 		myUiBtnGrid.initEventForUser();		
 		myUiGridPanel.init();		
 	}
+	
+	// показываем в правой панеле Tab выноски
+	if (window.location.hostname === 'warm-floor-2')
+	{
+		myUiRightPanel.showTabNotes();
+		myUiRightPanel.toggleTabs({act: 'notes'});
+	}
+	
 
-	// скрываем главное меню
-	//if (window.location.hostname === 'warm-floor-2') { myUiMainMenu.hideMenu(); } 	
+	// скрываем главное меню в локальной версии
+	if (window.location.hostname === 'warm-floor-2') { myUiMainMenu.hideMenu(); } 	
 
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	
-	loadFile({local: false});	
+	loadFile({local: true});	
 });
 
 
