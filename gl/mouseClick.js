@@ -142,8 +142,8 @@ function onDocumentMouseDown( event )
 	clickO.rayhit = clickRayHit(event); 
 
 	if ( camera == cameraTop ) { hideMenuObjUI_2D( clickO.last_obj ); }
-	else if ( camera == camera3D ) { hideMenuObjUI_3D( clickO.last_obj ); }
-	else if ( camera == cameraWall ) { hideMenuObjUI_Wall(clickO.last_obj); }
+	//else if ( camera == camera3D ) { hideMenuObjUI_3D( clickO.last_obj ); }
+	//else if ( camera == cameraWall ) { hideMenuObjUI_Wall(clickO.last_obj); }
 	
 	clickMouseActive({type: 'down'});
 	
@@ -425,9 +425,15 @@ function onDocumentMouseMove( event )
 
 function onDocumentMouseUp( event )  
 {
+	if(camera == camera3D)
+	{
+		if(!long_click) 
+		{ 	
+			hideMenuObjUI_3D( clickO.last_obj );
+			clickMouseActive({type: 'up'}); 
+		}
+	}
 
-	if(!long_click && camera == camera3D) { clickMouseActive({type: 'up'}); }
-	
 	
 	var obj = clickO.move;	
 	
