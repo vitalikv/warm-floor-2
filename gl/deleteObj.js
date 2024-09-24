@@ -31,6 +31,8 @@ function detectDeleteObj()
 	
 	clickO = resetPop.clickO();
 	
+	hidePivotGizmo();
+	
 	renderCamera();
 }
 

@@ -127,9 +127,9 @@ function deleteObjectPop(obj)
 // скрываем Pivot/Gizmo
 function hidePivotGizmo(obj)
 {
-	if(!obj) return;
-	if(!obj.userData.tag) return;
-	if(obj.userData.tag != 'obj') return;
+	//if(!obj) return;
+	//if(!obj.userData.tag) return;
+	//if(obj.userData.tag != 'obj') return;
 	
 	var pivot = infProject.tools.pivot;
 	var gizmo = infProject.tools.gizmo;

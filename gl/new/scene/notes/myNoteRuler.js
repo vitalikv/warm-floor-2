@@ -13,14 +13,12 @@ class MyNoteRuler
 	matDef;
 	defColor = 0x000000;
 	actColor = 0xff0000;
-	posY = 0;
+	
 
 	constructor()
 	{
 		this.geomPoint = new THREE.SphereGeometry( 0.02, 16, 16 );
-		this.matDef = new THREE.MeshLambertMaterial({ color: new THREE.Color(this.defColor), transparent: true, depthTest: false, lightMap: lightMap_1 });
-		
-		this.posY = infProject.settings.grid.pos.y;
+		this.matDef = new THREE.MeshLambertMaterial({ color: new THREE.Color(this.defColor), transparent: true, lightMap: lightMap_1 });
 	}	
 	
 
@@ -33,7 +31,7 @@ class MyNoteRuler
 		obj.userData.id = this.indPoint;
 		obj.userData.line = null;
 		obj.userData.points = [];
-		obj.position.set(pos.x, this.posY, pos.z);		
+		obj.position.set(pos.x, pos.y, pos.z);		
 		scene.add( obj );
 		
 		this.indPoint++;

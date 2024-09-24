@@ -230,7 +230,22 @@ function movePivot( event )
 	var pos2 = new THREE.Vector3().subVectors( pos, pivot.position );
 	pivot.position.add( pos2 );
 	
-	if(pivot.userData.pivot.obj) { pivot.userData.pivot.obj.position.add( pos2 ); }
+	const obj = pivot.userData.pivot.obj;
+	
+	if(obj) 
+	{ 
+		obj.position.add( pos2 ); 
+		
+		if(obj.userData.tag === 'noteRulerPoint')
+		{
+			myNoteRuler.upGeometryLine({point: obj});
+		}
+		
+		if(obj.userData.tag === 'noteRoulettePoint')
+		{
+			myNoteRoulette.upGeometryLine({point: obj});
+		}		
+	}
 		
 	//gizmo.position.add( pos2 );
 
@@ -276,4 +291,30 @@ function setScalePivotGizmo()
 }
 
 
+// ставим pivot
+function setPivotOnObj({obj})
+{	
+	obj.updateMatrixWorld();
+	const pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );
+	
+	const pivot = infProject.tools.pivot;	
+	pivot.visible = true;	
+	pivot.userData.pivot.obj = obj;
+	pivot.position.copy(pos);
+
+	if(camera == cameraTop)
+	{
+		pivot.children[1].visible = false;
+		pivot.children[7].visible = false;
+	}
+	else
+	{
+		pivot.children[1].visible = true;
+		pivot.children[7].visible = true;
+	}
+	
+	setScalePivotGizmo();
+	
+	return pivot;
+}
 

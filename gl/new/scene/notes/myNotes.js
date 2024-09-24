@@ -3,12 +3,19 @@
 class MyNotes
 {
 	dataNotes = [];
+	posY = 0;
 	
-
+	constructor()
+	{
+		this.posY = infProject.settings.grid.pos.y;
+	}
+	
+	
 	crNotesFromBtn({lotid, pos, event})
 	{
 		console.log(lotid);
 		let obj = null;
+		pos = new THREE.Vector3(pos.x, this.posY, pos.z);
 		
 		if(lotid === 1) obj = myNoteRulerTool.crToolPoint({pos, event});
 		if(lotid === 2) obj = myNoteRouletteTool.crToolPoint({pos, event});
