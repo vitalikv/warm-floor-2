@@ -1,0 +1,233 @@
+
+
+
+
+<style type="text/css">
+body
+{
+	width: 95%;
+	height: 90%;
+
+	font-family: arial,sans-serif;
+	font-size: 18px;
+	color: #666;	
+}
+
+.block_1
+{
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	
+	display: flex;
+	flex-direction: column;
+	
+	width: 950px;			
+	
+	border: 1px solid #b3b3b3; 
+	border-radius: 3px;
+
+	background-image: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
+	background-image: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
+	background-image: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
+	background-image: -ms-linear-gradient(top, #ffffff 0% ,#e3e3e3 100%); 
+	background-image: linear-gradient(top, #ffffff 0% ,#e3e3e3 100%);    
+	box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;
+}
+
+
+
+
+</style>
+
+
+<div nameId="wrap" class="block_1">
+	<div style="margin: 20px;">
+        <div style="display: flex; justify-content: center; align-items: center; margin: 10px;">
+          <input type="text" value="" nameId="inputMail" style="width: 300px; height: 25px; margin-right: 10px; border: 1px solid #D1D1D1; outline: none;">
+        </div>	
+	
+		<div style="display: flex; flex-direction: column; margin-top: 20px;">
+			<div style="margin: auto;">User:</div>
+			<div nameId="infoUser" style="display: flex; justify-content: space-between; margin: 20px 20px 0 20px;"></div>
+		</div>
+		
+		<div style="display: flex; flex-direction: column; margin-top: 20px;">
+			<div style="margin: auto;">Subs:</div>
+			<div nameId="infoSubs" style="display: flex; justify-content: space-between; margin: 20px 20px 0px 20px;"></div>
+		</div>
+
+		<div style="display: flex; flex-direction: column; margin-top: 20px;">
+			<div style="margin: auto;">Payments:</div>
+			<div nameId="infoPayments" style="display: flex; flex-direction: column; justify-content: space-between; margin: 20px 20px 0px 20px;"></div>
+		</div>
+
+		<div style="display: flex; flex-direction: column; margin-top: 20px;">
+			<div style="margin: auto;">Projects:</div>
+			<div nameId="infoProjects" style="display: flex; flex-direction: column; justify-content: space-between; margin: 20px 20px 0px 20px;"></div>
+		</div>		
+	</div>
+</div>
+
+
+
+<script>
+
+class MyInitUserInfo
+{
+	dataUser;
+	dataSubs;
+	dataPayments;
+	dataProjects;
+	
+	async init({mail})
+	{
+		const data = await this.post({mail});
+		console.log(mail, data);
+		this.dataUser = data.dataUser;
+		this.dataSubs = data.dataSubs;
+		this.dataPayments = data.dataPayments;
+		this.dataProjects = data.dataProjects;
+		
+		divInfoUser.innerHTML = this.htmlUser();
+		divInfoSubs.innerHTML = this.htmlSubs();
+		divInfoPayments.innerHTML = this.htmlPayments();
+		divInfoProjects.innerHTML = this.htmlProjects();
+	}
+
+	async post({mail})
+	{
+		const url = 'user.php';				
+		const response = await fetch(url, 
+		{
+			method: 'POST',
+			body: 'mail='+mail,
+			headers: 
+			{	
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
+			},				
+		});	
+
+		if(!response.ok) return;
+		const json = await response.json();	
+		
+		
+		return json;
+	}
+	
+	htmlUser()
+	{
+		let html = '';
+		
+		for (let key in this.dataUser) 
+		{
+			html += '<div style="display: flex; flex-direction: column; width: 100%; background: #fff;">';
+			html += '<div style="display: flex; justify-content: center; padding: 5px 10px; border: 1px solid #b3b3b3;">'+key+'</div>';			
+			html += '<div style="display: flex; justify-content: center; padding: 5px 10px; border: 1px solid #b3b3b3;">'+this.dataUser[key]+'</div>';
+			html += '</div>';
+		}
+
+		let div = document.createElement('div');
+		div.innerHTML = html;
+		//div = div.children[0];
+		
+		return html;
+	}
+	
+	
+	htmlSubs()
+	{
+		let html = '';
+		
+		for (let key in this.dataSubs) 
+		{
+			html += '<div style="display: flex; flex-direction: column; width: 100%; background: #fff;">';
+			html += '<div style="display: flex; justify-content: center; padding: 5px 10px; border: 1px solid #b3b3b3;">'+key+'</div>';			
+			html += '<div style="display: flex; justify-content: center; padding: 5px 10px; border: 1px solid #b3b3b3;">'+this.dataSubs[key]+'</div>';
+			html += '</div>';
+		}
+
+		let div = document.createElement('div');
+		div.innerHTML = html;
+		//div = div.children[0];
+		
+		return html;		
+	}
+	
+
+	htmlPayments()
+	{
+		let html = '';
+
+		for(let i = 0; i < this.dataPayments.length; i++)
+		{
+			const amount = this.dataPayments[i].amount;
+			const date = this.dataPayments[i].date;
+			
+			html += '<div style="display: flex; background: #fff;">';
+			html += '<div style="display: flex; justify-content: center; width: 100%; padding: 5px 10px; border: 1px solid #b3b3b3;">'+amount+'</div>';			
+			html += '<div style="display: flex; justify-content: center; width: 100%; padding: 5px 10px; border: 1px solid #b3b3b3;">'+date+'</div>';
+			html += '</div>';
+		}
+
+		let div = document.createElement('div');
+		div.innerHTML = html;
+		//div = div.children[0];
+		
+		return html;		
+	}
+
+
+	htmlProjects()
+	{
+		let html = '';
+
+		for(let i = 0; i < this.dataProjects.length; i++)
+		{
+			const id = this.dataProjects[i].id;
+			const name = this.dataProjects[i].name;
+			const preview = this.dataProjects[i].preview;
+			const json = this.dataProjects[i].json;
+			
+			html += '<div style="display: flex; background: #fff;">';
+			html += '<div style="display: flex; justify-content: center; width: 100%; padding: 5px 10px; border: 1px solid #b3b3b3;">'+id+'</div>';			
+			html += '<div style="display: flex; justify-content: center; width: 100%; padding: 5px 10px; border: 1px solid #b3b3b3;">'+name+'</div>';
+			html += '<div style="display: flex; justify-content: center; width: 100%; padding: 5px 10px; border: 1px solid #b3b3b3; cursor: pointer;">json</div>';
+			html += '<div style="display: flex; justify-content: center; width: 100%; padding: 5px 10px; border: 1px solid #b3b3b3; cursor: pointer;">preview</div>';
+			html += '</div>';
+		}
+
+		let div = document.createElement('div');
+		div.innerHTML = html;
+		//div = div.children[0];
+		
+		return html;		
+	}	
+}
+
+
+const myInitUserInfo = new MyInitUserInfo();
+	
+
+const inputMail = document.querySelector('[nameId="inputMail"]');
+const divInfoUser = document.querySelector('[nameId="infoUser"]');
+const divInfoSubs = document.querySelector('[nameId="infoSubs"]');
+const divInfoPayments = document.querySelector('[nameId="infoPayments"]');
+const divInfoProjects = document.querySelector('[nameId="infoProjects"]');
+
+
+inputMail.onkeydown = (e) => 
+{
+	if (e.code === 'Enter') 
+	{
+		myInitUserInfo.init({mail: inputMail.value});
+	}
+};
+
+</script>
+
+
+								
+								
+								
