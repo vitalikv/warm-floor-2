@@ -1753,6 +1753,8 @@ let myNoteRulerTool;
 let myNoteRoulette;
 let myNoteRouletteTool;
 let myNotesSaveLoad;
+let myGeneratorWF;
+let myGeneratorWFToolP;
 
 var docReady = false;
 
@@ -1787,8 +1789,11 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myNoteRouletteTool = new MyNoteRouletteTool();	
 	myNotesSaveLoad = new MyNotesSaveLoad();
 	
+	myGeneratorWF = new MyGeneratorWF();
+	myGeneratorWFToolP = new MyGeneratorWFToolP();
+	
 	// активация пользовательской сетки для теста (так она активруется при оплаченной подписке)
-	if(1===2)
+	if(window.location.hostname === 'warm-floor-2')
 	{		
 		myUiBtnGrid.initEventForUser();		
 		myUiGridPanel.init();		

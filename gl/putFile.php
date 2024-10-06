@@ -57,6 +57,8 @@ new/scene/notes/myNoteRulerTool.js
 new/scene/notes/myNoteRoulette.js
 new/scene/notes/myNoteRouletteTool.js
 new/scene/notes/myNotesSaveLoad.js
+new/scene/generatorWF/myGeneratorWF.js
+new/scene/generatorWF/myGeneratorWFToolP.js
 uiInterface.js
 ';
 

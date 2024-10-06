@@ -250,6 +250,12 @@ function clickRayHit(event)
 			}
 		}			
 	}
+
+	if(!rayhit) 
+	{
+		rayhit = myGeneratorWFToolP.clickRayhit({event});
+		if(rayhit) return rayhit;		
+	}
 	
 
 	// ищем контур
@@ -304,6 +310,7 @@ function clickMouseActive(cdm)
 		}
 		else if( tag == 'noteRulerPoint' && camera == cameraTop  ) { clickO.move = myNoteRuler.mousedown({event, obj}); }
 		else if ( tag == 'noteRoulettePoint' && camera == cameraTop  ) { clickO.move = myNoteRoulette.mousedown({event, obj}); }
+		else if( tag == 'arrowContourWf' && camera == cameraTop ) { clickO.move = myGeneratorWFToolP.mousedown({event, obj}); }
 		else { flag = false; }
 	}
 	else if(cdm.type == 'up')
@@ -408,6 +415,7 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'noteRouletteToolPoint' ) { myNoteRouletteTool.mousemove( event ); }
 		else if ( tag == 'noteRulerPoint' ) { myNoteRuler.mousemove( event ); }
 		else if ( tag == 'noteRoulettePoint' ) { myNoteRoulette.mousemove( event ); }
+		else if ( tag == 'arrowContourWf' ) { myGeneratorWFToolP.mousemove(event); }
 	}
 	else 
 	{
@@ -483,6 +491,7 @@ function onDocumentMouseUp( event )
 		}
 		else if(tag == 'noteRulerToolPoint') {  }
 		else if(tag == 'noteRouletteToolPoint') {  }
+		else if(tag == 'arrowContourWf') { myGeneratorWFToolP.mouseup(); }
 		else { clickO.move = null; }		
 	}
 

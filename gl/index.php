@@ -31,6 +31,7 @@
 	<script src="<?=$path?>js/OBJLoader.js"></script>
 	<script src="<?=$path?>js/MTLLoader.js"></script>   
 	
+	<script src="<?=$path?>js/clipper_unminified.js"></script>
 	<script src="<?=$path?>js/loader/inflate.min.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>js/loader/FBXLoader.js?<?=$vrs?>"></script>
 	
@@ -108,6 +109,9 @@
 	<script src="<?=$path?>new/scene/notes/myNoteRoulette.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNoteRouletteTool.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNotesSaveLoad.js?<?=$vrs?>"></script>
+	
+	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWF.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFToolP.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>uiInterface.js?<?=$vrs?>"></script>	     		
 	
