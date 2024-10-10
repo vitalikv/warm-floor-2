@@ -9,6 +9,9 @@ class MyGeneratorWFToolP
 	
 	helpLines = [];	// временное, потом удалить
 	
+	dataForms = null;
+	actDataGrid = null;
+	
 	
 	constructor()
 	{
@@ -151,9 +154,10 @@ class MyGeneratorWFToolP
 	}
 	
 	// ставим стрелку на контур в зависимости от ближайшей грани 
-	setToolObj({startPos, actDataGrid = null})
-	{
+	setToolObj({startPos, actDataGrid = null, dataForms = null})
+	{		
 		if(actDataGrid) this.actDataGrid = actDataGrid;
+		if(dataForms) this.dataForms = dataForms;
 		
 		let newPos = new THREE.Vector3();
 		let dir = null;
@@ -163,17 +167,24 @@ class MyGeneratorWFToolP
 		let v = this.getActContourPointsPos();
 		v = [...v];
 		v.push(v[0]);
+		
+		
+		for ( let i = 0; i < v.length - 1; i++ )
+		{
+			const dist = v[i].distanceTo(startPos);
+			const normal = v[i].clone().sub(startPos).normalize();
+			arrP.push({pos: v[i], dist, normal});					
+		}
+		
 		for ( let i = 0; i < v.length - 1; i++ )
 		{
 			const pos = myMath.mathProjectPointOnLine2D({A: v[i], B: v[i + 1], C: startPos});
-			const onLine = this.checkPointOnLine(v[i], v[i + 1], startPos);
+			const onLine = myMath.checkPointOnLine(v[i], v[i + 1], startPos);
+			if(!onLine) continue;
 			
-			if(onLine)
-			{
-				const dist = pos.distanceTo(startPos);
-				const normal = this.calcNormal2D({p1: v[i], p2: v[i + 1], reverse: true});
-				arrP.push({pos, dist, normal});				
-			}
+			const dist = pos.distanceTo(startPos);
+			const normal = myMath.calcNormal2D({p1: v[i], p2: v[i + 1], reverse: true});
+			arrP.push({pos, dist, normal});				
 		}
 		
 		if(arrP.length > 0)
@@ -188,6 +199,13 @@ class MyGeneratorWFToolP
 		
 		obj.position.copy(newPos);
 		
+		let posF = newPos.clone();
+		let del = true;
+		for ( let i = 0; i < this.dataForms.length; i++ )
+		{
+			posF = myGeneratorWFExits.crExits({startPos: posF, formStep: this.dataForms[i], del});
+			del = false;
+		}
 		
 
 		return { newPos, dir };
@@ -223,59 +241,9 @@ class MyGeneratorWFToolP
 	}
 
 
-	// опредяляем, надодится точка D за пределами прямой или нет (точка D пересекает прямую АВ, идущая перпендикулярна от точки С)  
-	checkPointOnLine(A,B,C)
-	{	
-		let AB = { x : B.x - A.x, y : B.z - A.z };
-		let CD = { x : C.x - A.x, y : C.z - A.z };
-		const r1 = AB.x * CD.x + AB.y * CD.y;				// скалярное произведение векторов
-
-		AB = { x : A.x - B.x, y : A.z - B.z };
-		CD = { x : C.x - B.x, y : C.z - B.z };
-		const r2 = AB.x * CD.x + AB.y * CD.y;
-
-		const cross = (r1 < 0 | r2 < 0) ? false : true;	// если true , то точка D находится на отрезке AB	
-		
-		return cross;
-	}
 
 
-	// перпендикуляр линии (2D)
-	calcNormal2D({p1, p2, reverse = false})
-	{
-		let x = p1.z - p2.z;
-		let z = p2.x - p1.x;
-
-		// нормаль вывернуть в обратное напрвление
-		if(reverse)
-		{
-			x *= -1;
-			z *= -1;
-		}
-		
-		return new THREE.Vector3(x, 0, z).normalize();								
-	}	
-	
-	// проекция точки(С) на прямую (A,B) (2D)
-	mathProjectPointOnLine2D({A,B,C})
-	{
-		const x1 = A.x;
-		const y1 = A.z; 
-		const x2 = B.x; 
-		const y2 = B.z; 
-		const x3 = C.x; 
-		const y3 = C.z;
-		
-		const px = x2 - x1;
-		const py = y2 - y1; 
-		const dAB = px * px + py * py;
-		
-		const u = ((x3 - x1) * px + (y3 - y1) * py) / dAB;
-		const x = x1 + u * px;
-		const z = y1 + u * py;
-		
-		return new THREE.Vector3(x, 0, z); 
-	} 	
+ 	
 }
 
 

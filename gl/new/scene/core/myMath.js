@@ -3,6 +3,37 @@
 
 class MyMath
 {
+	// сдвиг всего массива, так чтобы выбранный index оказался самым первым 
+	// пример: myMath.offsetArrayToFirstElem({arr: [1,2,3,45,8,9,7,10], index: 5})
+	// было arr = [1,2,3,45,8,9,7,10], index: 5
+	// стало arr = [ 9, 7, 10, 1, 2, 3, 45, 8 ] 	
+	offsetArrayToFirstElem({arr, index})
+	{
+		// index - выбранный id элемента, который будет самым первым после смещения
+		const offsetInd = arr.length - index;
+		
+		arr = arr.map((el, i, array) => { return i < offsetInd ? array[array.length + i - offsetInd] : array[i - offsetInd] });
+
+		return arr;
+	}
+
+	
+	// перпендикуляр линии (2D)
+	calcNormal2D({p1, p2, reverse = false})
+	{
+		let x = p1.z - p2.z;
+		let z = p2.x - p1.x;
+
+		// нормаль вывернуть в обратное напрвление
+		if(reverse)
+		{
+			x *= -1;
+			z *= -1;
+		}
+		
+		return new THREE.Vector3(x, 0, z).normalize();								
+	}
+
 	
 	// проекция точки(С) на прямую (A,B) (2D)
 	mathProjectPointOnLine2D({A,B,C})
@@ -25,6 +56,22 @@ class MyMath
 		return new THREE.Vector3(x, 0, z); 
 	} 
 
+
+	// опредяляем, надодится точка D за пределами прямой или нет (точка D пересекает прямую АВ, идущая перпендикулярна от точки С)  
+	checkPointOnLine(A,B,C)
+	{	
+		let AB = { x : B.x - A.x, y : B.z - A.z };
+		let CD = { x : C.x - A.x, y : C.z - A.z };
+		const r1 = AB.x * CD.x + AB.y * CD.y;				// скалярное произведение векторов
+
+		AB = { x : A.x - B.x, y : A.z - B.z };
+		CD = { x : C.x - B.x, y : C.z - B.z };
+		const r2 = AB.x * CD.x + AB.y * CD.y;
+
+		const cross = (r1 < 0 | r2 < 0) ? false : true;	// если true , то точка D находится на отрезке AB	
+		
+		return cross;
+	}
 
 	//прорека находится ли точка внутри многоугольника
 	checkPointInsideForm({point, arrP})

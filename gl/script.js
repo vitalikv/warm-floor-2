@@ -1791,6 +1791,8 @@ document.addEventListener("DOMContentLoaded", ()=>
 	
 	myGeneratorWF = new MyGeneratorWF();
 	myGeneratorWFToolP = new MyGeneratorWFToolP();
+	myGeneratorWFJoinForms = new MyGeneratorWFJoinForms();
+	myGeneratorWFExits = new MyGeneratorWFExits();
 	
 	// активация пользовательской сетки для теста (так она активруется при оплаченной подписке)
 	if(window.location.hostname === 'warm-floor-2')

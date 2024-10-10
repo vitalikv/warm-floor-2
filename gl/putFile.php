@@ -59,6 +59,8 @@ new/scene/notes/myNoteRouletteTool.js
 new/scene/notes/myNotesSaveLoad.js
 new/scene/generatorWF/myGeneratorWF.js
 new/scene/generatorWF/myGeneratorWFToolP.js
+new/scene/generatorWF/myGeneratorWFJoinForms.js
+new/scene/generatorWF/myGeneratorWFExits.js
 uiInterface.js
 ';
 
