@@ -199,13 +199,19 @@ class MyGeneratorWFToolP
 		
 		obj.position.copy(newPos);
 		
+		const dataExits = [];
 		let posF = newPos.clone();
 		let del = true;
 		for ( let i = 0; i < this.dataForms.length; i++ )
 		{
-			posF = myGeneratorWFExits.crExits({startPos: posF, formStep: this.dataForms[i], del});
+			const posExits = myGeneratorWFExits.crExits({startPos: posF, formStep: this.dataForms[i], del});
+			posF = posExits.c;
 			del = false;
+			
+			dataExits.push(posExits);
 		}
+		
+		if(dataExits.length > 0) this.upForms({dataExits, dataForms: this.dataForms});
 		
 
 		return { newPos, dir };
@@ -241,8 +247,45 @@ class MyGeneratorWFToolP
 	}
 
 
+	//-------
+	
+	
+	upForms({dataExits, dataForms})
+	{
+		for ( let i = 0; i < dataForms.length; i++ )
+		{
+			//console.log(dataForms[i][0].paths, dataExits[i]);
+			
+			
+			const pos1 = dataExits[i].a;
+			const pos2 = dataExits[i].b;
+			
+			let v = [...dataForms[i][0].paths];
 
-
+			if(dataExits[i].ind === v.length - 1)
+			{
+				v.splice(dataExits[i].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
+				v.splice(0, 0, pos1);				
+			}
+			else
+			{
+				v.splice(dataExits[i].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
+				v.splice(dataExits[i].ind + 2, 0, pos1);	
+				
+				v = myMath.offsetArrayToFirstElem({arr: v, index: dataExits[i].ind + 2});				
+			}
+			
+			
+			const line = dataForms[i][0].line;
+			
+			const geometry = new THREE.Geometry();
+			geometry.vertices = v;
+			//geometry.verticesNeedUpdate = true;
+			
+			line.geometry.dispose();
+			line.geometry = geometry;				
+		}	
+	}
  	
 }
 

@@ -37,7 +37,7 @@ class MyGeneratorWF
 			for ( let i = 0; i < this.forms.length; i++ )
 			{
 				formSteps[i] = [];
-				;
+				
 				for ( let i2 = 0; i2 < this.forms[i].length; i2++ )
 				{
 					console.log(this.forms[i][i2])
@@ -49,7 +49,7 @@ class MyGeneratorWF
 
 			const n = 1;
 			const startPos = p[0].clone().sub(p[n + 0]).divideScalar( 2 ).add(p[n + 0]);
-			const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos, actDataGrid: myGridActivate.actDataGrid, dataForms: formSteps});
+			const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos, actDataGrid: myGridActivate.actDataGrid, dataForms: this.forms});
 			
 			//myGeneratorWFJoinForms.crExits({startPos: newPos.clone(), formSteps});
 			//myGeneratorWFJoinForms.joinForms({startPos: newPos.clone(), dir, formSteps});
@@ -100,8 +100,8 @@ class MyGeneratorWF
 		{
 			if(arrPos[i].length > 0) 
 			{
-				const lines = this.crForm({arrPos: arrPos[i]});
-				this.forms[round].push({ paths: arrPos[i], lines });
+				const line = this.crForm({arrPos: arrPos[i]});
+				this.forms[round].push({ paths: arrPos[i], line });
 			}
 		} 
 		
@@ -116,24 +116,16 @@ class MyGeneratorWF
 		return arrPos;
 	}
 	
-	// рисуем линии
+	// рисуем линию
 	crForm({arrPos})
 	{
-		let lines = [];
+		const geometry = new THREE.Geometry();
+		geometry.vertices = [...arrPos, arrPos[0]];
 		
-		arrPos.push(arrPos[0]);
-		for ( let i2 = 0; i2 < arrPos.length - 1; i2++ )
-		{
-			const geometry = new THREE.Geometry();
-			geometry.vertices = [arrPos[i2], arrPos[i2+1]];
-			
-			const line = new THREE.Line( geometry, new THREE.MeshLambertMaterial({color: 0x0000ff, lightMap: lightMap_1}) );	
-			scene.add( line );
-
-			lines.push(line);
-		}
+		const line = new THREE.Line( geometry, new THREE.MeshLambertMaterial({color: 0x0000ff, lightMap: lightMap_1}) );	
+		scene.add( line );
 		
-		return lines;		
+		return line;		
 	}
 
 
@@ -143,13 +135,10 @@ class MyGeneratorWF
 		{						
 			for ( let i2 = 0; i2 < this.forms[i].length; i2++ )
 			{
-				const lines = this.forms[i][i2].lines;
+				const line = this.forms[i][i2].line;
 				
-				for ( let i3 = 0; i3 < lines.length; i3++ )
-				{
-					lines[i3].geometry.dispose();
-					scene.remove(lines[i3]);							
-				}				
+				line.geometry.dispose();
+				scene.remove(line);										
 			}			
 		}
 		

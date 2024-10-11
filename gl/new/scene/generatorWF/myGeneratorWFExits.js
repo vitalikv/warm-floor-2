@@ -15,12 +15,11 @@ class MyGeneratorWFExits
 	{
 		if(del) this.delete();
 		
-		let newPos = null;
+		let posExits = {a: null, b: null, c: null, ind: -1};
 		
 		const arrP = [];
-		const formPoints = formStep[0];
-		const v = [...formPoints];
-		//v.push(v[0]);
+		const formPoints = formStep[0].paths;
+		const v = [...formPoints, formPoints[0]];
 
 		for ( let i = 0; i < v.length - 1; i++ )
 		{
@@ -47,8 +46,10 @@ class MyGeneratorWFExits
 		{
 			arrP.sort((a, b) => { return a.dist - b.dist; }); 
 			
+			posExits.ind = arrP[0].ind;
+			
 			const pos = arrP[0].pos;
-			newPos = pos;
+			posExits.c = pos;
 			
 			const pCenter = this.crHelpBox({pos, color:  0x00ff00});
 			this.pointsObj.push(pCenter);
@@ -68,10 +69,13 @@ class MyGeneratorWFExits
 			this.pointsObj.push(p1);
 
 			const p2 = this.crHelpBox({pos: pos2, color:  0x0000ff});
-			this.pointsObj.push(p2);			
+			this.pointsObj.push(p2);
+
+			posExits.a = pos1;
+			posExits.b = pos2;
 		}
 
-		return newPos;
+		return posExits;
 	}
 	
 
