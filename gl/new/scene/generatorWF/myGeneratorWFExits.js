@@ -18,7 +18,7 @@ class MyGeneratorWFExits
 		let posExits = {a: null, b: null, c: null, ind: -1};
 		
 		const arrP = [];
-		const formPoints = formStep[0].paths;
+		const formPoints = formStep.paths;
 		const v = [...formPoints, formPoints[0]];
 
 		for ( let i = 0; i < v.length - 1; i++ )

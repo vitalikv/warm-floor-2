@@ -260,7 +260,7 @@ class MyGeneratorWFToolP
 			const pos1 = dataExits[i].a;
 			const pos2 = dataExits[i].b;
 			
-			let v = [...dataForms[i][0].paths];
+			let v = [...dataForms[i].paths];
 
 			if(dataExits[i].ind === v.length - 1)
 			{
@@ -276,7 +276,7 @@ class MyGeneratorWFToolP
 			}
 			
 			
-			const line = dataForms[i][0].line;
+			const line = dataForms[i].line;
 			
 			const geometry = new THREE.Geometry();
 			geometry.vertices = v;
