@@ -2,194 +2,133 @@
 // класс объединение всех конуров в один
 class MyGeneratorWFJoinForms
 {
-	lineWf = null;
-	pointsObj = [];
-	
-	constructor()
-	{
-		
-	}
 
 	
-	//---
-	
-	joinForms({startPos, dir, formSteps})
+	// объединяем в единый контур один ряд (потому что в одном ряду может быть больше одного контура)
+	jointCirclesForm({forms})
 	{
-		this.delete();
-		
-		const pointsPos = [];
-		console.log(9999, formSteps);
-		for ( let i = 0; i < formSteps.length; i++ )
+		const contours = [];
+	
+
+		for ( let i = 0; i < forms.length; i++ )
 		{
-			const result = this.testCutForm({startPos, dir, formPoints: formSteps[i][0]});
-			
-			if(result.newPos)
+			if(forms[i].length === 1)
 			{
-				startPos = result.newPos;			
-				pointsPos.push(...result.formPoints2);				
+				contours.push({path: [...forms[i][0].paths]});
+			}			
+			
+			if(forms[i].length === 2)
+			{
+				const result = this.nearestPoint({points1: forms[i][0].paths, points2: forms[i][1].paths});
+				
+				const arrP1 = this.offsetPoints({ind: result.ind1, points: forms[i][0].paths});
+				const arrP2 = this.offsetPoints({ind: result.ind2, points: forms[i][1].paths});
+				
+				let path1 = this.addPointsInForm({arrP: arrP1, points: forms[i][0].paths});
+				let path2 = this.addPointsInForm({arrP: arrP2, points: forms[i][1].paths});
+				
+				const index1 = path1.findIndex((p) => p.length() === result.pos1.length());
+				const index2 = path2.findIndex((p) => p.length() === result.pos2.length());
+				
+				// 2 ближайшие точки разных контуров, делаем в каждом массиве первыми (чтобы удобнее было объединять 2 контура)
+				path1 = myMath.offsetArrayToFirstElem({arr: path1, index: index1});
+				path2 = myMath.offsetArrayToFirstElem({arr: path2, index: index2});
+				
+				path1.splice(0, 1);		// удаляем первую точку в каждом контуре (она не нужна, у нас теперь есть раздвиные точки)
+				path2.splice(0, 1);
+				
+				contours.push({path: [...path1, ...path2]});
+				//contours.push({path: path1});
+				//contours.push({path: path2});
+			}
+							
+		}				
+
+		return contours;
+	}
+
+
+	// находим 2 ближайшие точки в 2-х массивах (чтобы по ним можно было объединить формы на одном уровне)
+	nearestPoint({points1, points2})
+	{
+		const arr = [];
+		
+		for ( let i = 0; i < points1.length; i++ )
+		{
+			for ( let i2 = 0; i2 < points2.length; i2++ )
+			{
+				const dist = points1[i].distanceTo(points2[i2]);
+				
+				arr.push({dist, ind1: i, ind2: i2, pos1: points1[i], pos2: points2[i2]});
+			}
+		}
+		
+		arr.sort((a, b) => { return a.dist - b.dist; });
+		
+		this.crHelpBox({pos: points1[arr[0].ind1], color:  0x00ff00});
+		this.crHelpBox({pos: points2[arr[0].ind2], color:  0x00ff00});
+		
+		return arr[0];
+	}
+
+
+	// отсупаем от точки расстояние и делаем раздвоение
+	offsetPoints({ind, points, offset = 0.1})
+	{
+		const ind1 = ind === 0 ? points.length - 1 : ind - 1;
+		const ind2 = ind === points.length - 1 ? 0 : ind + 1;
+		
+		const dir1 = points[ind1].clone().sub(points[ind]).normalize();
+		const pos1 = new THREE.Vector3().addScaledVector( dir1, offset ).add(points[ind]);
+		this.crHelpBox({pos: pos1, color:  0x0000ff});
+		
+		const dir2 = points[ind2].clone().sub(points[ind]).normalize();
+		const pos2 = new THREE.Vector3().addScaledVector( dir2, offset ).add(points[ind]);
+		this.crHelpBox({pos: pos2, color:  0xff0000});
+
+		const result = [{ind, pos: pos1, sng: -1}, {ind, pos: pos2, sng: 0}];
+		
+		return result;
+	}
+
+
+	// раздвоеные точки вставляем в контур
+	addPointsInForm({arrP, points})
+	{
+		let v = [...points];
+				
+		for ( let i = 0; i < arrP.length; i++ )
+		{
+			let ind = 0;
+			if((arrP[i].ind + arrP[i].sng) > points.length - 1)
+			{
+				ind = 0;
+			}
+			else if((arrP[i].ind + arrP[i].sng) < 0)
+			{
+				ind = points.length - 1;
 			}
 			else
 			{
-				break;
+				ind = arrP[i].ind + arrP[i].sng;
 			}
-			//break;
+			
+			
+			arrP[i].ind = ind;
 		}
-
-		this.crLine({pointsPos});
+		
+		arrP.sort((a, b) => { return b.ind - a.ind; }); 	// от большого к меньшему (чтобы правильно вставить методом splice)
+		
+		for ( let i = 0; i < arrP.length; i++ )
+		{								
+			v.splice(arrP[i].ind + 1, 0, arrP[i].pos);
+		}			
+		
+		return v;
 	}
-	
-	
-	
-	testCutForm({startPos, dir, formPoints, stepOffset = 0.3})
-	{
-		let newPos = null;
-		
-		const arrP = [];
-		const v = [...formPoints];
-		v.push(v[0]);
-		for ( let i = 0; i < v.length - 1; i++ )
-		{
-			const line = {start: v[i], end: v[i + 1]};
-			const line2 = {start: startPos, end: startPos.clone().add(dir)};
-			
-			//const posCross = myMath.intersectionTwoLines_1(v[i], v[i + 1], startPos, startPos.clone().add(dir));
-			//if(!posCross) continue;
-			
-			const posCross = myMath.mathProjectPointOnLine2D({A: v[i], B: v[i + 1], C: startPos});
-			if(!posCross) continue;
-			const onLine = myMath.checkPointOnLine(v[i], v[i + 1], posCross);
-			//const onLine = true;
-			if(onLine)
-			{
-				//const dist = posCross.distanceTo(startPos);
-				const normal = myMath.calcNormal2D({p1: v[i], p2: v[i + 1], reverse: true});
-				
-				const dir = v[i + 1].clone().sub(v[i]).normalize();
-				dir.x *= stepOffset/2;
-				dir.z *= stepOffset/2;
-				
-				let pos1 = posCross.clone().add(dir);
-				let pos2 = posCross.clone().sub(dir);
-				
-				const newPos1 = this.getPosLimitOnLine({pos: pos1, line});
-				const newPos2 = this.getPosLimitOnLine({pos: pos2, line});
-				
-				const flag1 = (pos1.length() === newPos1.length());
-				const flag2 = (pos2.length() === newPos2.length());
 
-				if(!flag1 && flag2)
-				{
-					pos1 = newPos1;
-					pos2 = pos1.clone().sub(dir).sub(dir);
-				}
-				if(flag1 && !flag2)
-				{
-					pos2 = newPos2;
-					pos1 = pos2.clone().add(dir).add(dir);
-				}
 
-				if(!flag1 && !flag2)
-				{
-					const dir1 = pos1.clone().sub(line.start);
-					const dir2 = v[i + 1].clone().sub(v[i]);
-					
-					const dot = dir1.dot(dir2);
-					
-					if(dot < 0)
-					{
-						pos2 = newPos2;
-						pos1 = pos2.clone().add(dir).add(dir);											
-					}
-					else
-					{
-						pos1 = newPos1;
-						pos2 = pos1.clone().sub(dir).sub(dir);						
-					}
-					//console.log(i, i+1);
-				}
-				
-				const dist = pos2.clone().sub(pos1).divideScalar( 2 ).add(pos1).distanceTo(startPos);
-				
-				arrP.push({ind: i, dist, pos1, pos2, normal});				
-			}
-		}
-		
-		let formPoints2 = [];
-		
-		
-		if(arrP.length > 0)
-		{
-			arrP.sort((a, b) => { return a.dist - b.dist; }); 
-			
-			const pos1 = arrP[0].pos1.clone();
-			const pos2 = arrP[0].pos2.clone();
-			newPos = arrP[0].pos2.clone();
-			
-			const helpVisible = true;
-			
-			if(helpVisible)
-			{
-				const p1 = this.crHelpBox({pos: pos1, color:  0xff0000});
-				this.pointsObj.push(p1);
-										
-				const p2 = this.crHelpBox({pos: pos2, color:  0x0000ff});
-				this.pointsObj.push(p2);			
-			}
-			
-			let v = [...formPoints];
-
-			if(arrP[0].ind === v.length - 1)
-			{
-				v.splice(arrP[0].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
-				v.splice(0, 0, pos1);				
-			}
-			else
-			{
-				v.splice(arrP[0].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
-				v.splice(arrP[0].ind + 2, 0, pos1);	
-				
-				v = myMath.offsetArrayToFirstElem({arr: v, index: arrP[0].ind + 2});				
-			}
-			
-			formPoints2 = v;
-		}
-
-		return { newPos, formPoints2 };
-	}	
-	
-	
-	// если точка находится за пределами отрезка, то назначаем pos точки самый край отрезка
-	getPosLimitOnLine({pos, line})
-	{
-		const onLine = myMath.checkPointOnLine(line.start, line.end, pos);
-		
-		if(!onLine)
-		{
-			const dist1 = pos.distanceTo(line.start);
-			const dist2 = pos.distanceTo(line.end);
-			
-			pos = (dist1 < dist2) ? line.start : line.end;
-		}
-		
-		return pos;
-	}
-	
-	
-	crLine({pointsPos})
-	{
-		const geometry = new THREE.Geometry();
-		geometry.vertices = pointsPos;		
-		const material = new THREE.LineBasicMaterial({ color:  0x0000ff });		
-		const line = new THREE.Line( geometry, material );
-		scene.add( line );
-
-		this.lineWf = line;
-		
-		this.render();
-	}
-	
-
-	crHelpBox({pos, size = 0.04, color = 0x0000ff})
+	crHelpBox({pos, size = 0.04, color = 0x00ff00})
 	{
 		const geometry = new THREE.BoxGeometry( size, size, size );
 		const material = new THREE.MeshBasicMaterial({color});
@@ -198,29 +137,8 @@ class MyGeneratorWFJoinForms
 		scene.add( mesh );
 
 		return mesh;
-	}	
-
-
-	delete()
-	{
-		const points = this.pointsObj;
-		
-		for ( let i = 0; i < points.length; i++ )
-		{
-			scene.remove(points[i]);
-		}
-		
-		this.pointsObj = [];
-		
-		if(this.lineWf)
-		{
-			this.lineWf.geometry.dispose();
-			scene.remove(this.lineWf);			
-		}
-
-		this.lineWf = null;
 	}
-	
+
 	
 	render()
 	{

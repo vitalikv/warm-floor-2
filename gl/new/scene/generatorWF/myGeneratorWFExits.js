@@ -10,15 +10,33 @@ class MyGeneratorWFExits
 		
 	}
 	
+
+	crExits({newPos, contours})
+	{
+		const dataExits = [];
+		let posF = newPos.clone();
+		let del = true;
+		
+		for ( let i = 0; i < contours.length; i++ )
+		{
+			const posExits = this.calcExits({startPos: posF, contour: contours[i], del});
+			posF = posExits.c;
+			del = false;
+			
+			dataExits.push(posExits);
+		}
+		
+		if(dataExits.length > 0) this.upForms({dataExits, contours});		
+	}
 	
-	crExits({startPos, formStep, stepOffset = 0.3, del = false})
+	calcExits({startPos, contour, stepOffset = 0.3, del = false})
 	{
 		if(del) this.delete();
 		
 		let posExits = {a: null, b: null, c: null, ind: -1};
 		
 		const arrP = [];
-		const formPoints = formStep.paths;
+		const formPoints = contour.path;
 		const v = [...formPoints, formPoints[0]];
 
 		for ( let i = 0; i < v.length - 1; i++ )
@@ -95,7 +113,41 @@ class MyGeneratorWFExits
 		return pos;
 	}
 	
-	
+
+	// обновляем форму конутров (вставляем точки входа/выхода и создаем в этом месте разрыв линии)
+	upForms({dataExits, contours})
+	{
+		for ( let i = 0; i < contours.length; i++ )
+		{
+			const pos1 = dataExits[i].a;
+			const pos2 = dataExits[i].b;
+			
+			let v = [...contours[i].path];
+
+			if(dataExits[i].ind === v.length - 1)
+			{
+				v.splice(dataExits[i].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
+				v.splice(0, 0, pos1);				
+			}
+			else
+			{
+				v.splice(dataExits[i].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
+				v.splice(dataExits[i].ind + 2, 0, pos1);	
+				
+				v = myMath.offsetArrayToFirstElem({arr: v, index: dataExits[i].ind + 2});				
+			}
+			
+			
+			const line = contours[i].line;
+			
+			const geometry = new THREE.Geometry();
+			geometry.vertices = v;
+			//geometry.verticesNeedUpdate = true;
+			
+			line.geometry.dispose();
+			line.geometry = geometry;				
+		}	
+	}	
 
 	crHelpBox({pos, size = 0.04, color = 0x0000ff})
 	{

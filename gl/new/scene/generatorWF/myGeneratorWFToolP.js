@@ -7,9 +7,9 @@ class MyGeneratorWFToolP
 	toolObj = null;	
 	actObj = null;
 	
-	helpLines = [];	// временное, потом удалить
+	dirLine = null;
 	
-	dataForms = null;
+	contours = null;
 	actDataGrid = null;
 	
 	
@@ -17,7 +17,7 @@ class MyGeneratorWFToolP
 	{
 		this.toolObj = this.crPoint({pos: new THREE.Vector3()});
 		
-		this.helpLines = this.testLines();
+		this.dirLine = this.crDirLine();
 	}
 	
 	crPoint({pos})
@@ -34,42 +34,30 @@ class MyGeneratorWFToolP
 	}
 	
 	
-	
-	testLines()
-	{
-		const lines = [];
+	// линия для показа направления куда повернута точка
+	crDirLine()
+	{		
+		const geometry = new THREE.Geometry();
+		geometry.vertices = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)];
 		
-		for ( let i = 0; i < 2; i++ )
-		{
-			const geometry = new THREE.Geometry();
-			geometry.vertices = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)];
-			
-			const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
-			
-			const line = new THREE.Line( geometry, material );
-			scene.add(line);
-
-			lines.push(line);
-		}
+		const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
 		
-		return lines;
+		const line = new THREE.Line( geometry, material );
+		scene.add(line);
+		
+		return line;
 	}
 	
-	testGeometryLines({pos, normal})
+	dirLineGeometry({pos, normal})
 	{
-		const lines = this.helpLines;
+		const line = this.dirLine;
 		
-		for ( let i = 0; i < lines.length; i++ )
-		{
-			lines[i].geometry.dispose();
-			
-			const geometry = new THREE.Geometry();
-			geometry.vertices = [pos.clone(), pos.clone().add(normal)];
-			
-			lines[i].geometry = geometry;
-		}
+		line.geometry.dispose();
 		
-		return lines;
+		const geometry = new THREE.Geometry();
+		geometry.vertices = [pos.clone(), pos.clone().add(normal)];
+		
+		line.geometry = geometry;
 	}	
 	
 	
@@ -129,10 +117,6 @@ class MyGeneratorWFToolP
 		//obj.position.add( offset );
 
 		const { newPos, dir } = this.setToolObj({startPos: intersects[0].point});
-		
-		//const arrP = myWarmFloor.myGridContourWf.getActContourPointsPos();		
-		//const formSteps = myWarmFloor.myUlitkaWf.drawFrom({points: arrP, offsetStart: -0.2, offsetNext: -0.3});				
-		//myWarmFloor.myJoinContourWf.joinForms({startPos: newPos.clone(), dir, formSteps});
 	}
 	
 	mouseup = () =>
@@ -154,10 +138,10 @@ class MyGeneratorWFToolP
 	}
 	
 	// ставим стрелку на контур в зависимости от ближайшей грани 
-	setToolObj({startPos, actDataGrid = null, dataForms = null})
+	setToolObj({startPos, actDataGrid = null, contours = null})
 	{		
 		if(actDataGrid) this.actDataGrid = actDataGrid;
-		if(dataForms) this.dataForms = dataForms;
+		if(contours) this.contours = contours;
 		
 		let newPos = new THREE.Vector3();
 		let dir = null;
@@ -194,24 +178,13 @@ class MyGeneratorWFToolP
 			newPos = arrP[0].pos.clone();
 			dir = arrP[0].normal;
 			
-			this.testGeometryLines({pos: arrP[0].pos, normal: arrP[0].normal});
+			this.dirLineGeometry({pos: arrP[0].pos, normal: arrP[0].normal});
 		}
 		
 		obj.position.copy(newPos);
 		
-		const dataExits = [];
-		let posF = newPos.clone();
-		let del = true;
-		for ( let i = 0; i < this.dataForms.length; i++ )
-		{
-			const posExits = myGeneratorWFExits.crExits({startPos: posF, formStep: this.dataForms[i], del});
-			posF = posExits.c;
-			del = false;
-			
-			dataExits.push(posExits);
-		}
 		
-		if(dataExits.length > 0) this.upForms({dataExits, dataForms: this.dataForms});
+		myGeneratorWFExits.crExits({newPos: newPos.clone(), contours: this.contours});	// точки выхода и разрыв линий контуров
 		
 
 		return { newPos, dir };
@@ -238,7 +211,7 @@ class MyGeneratorWFToolP
 	{
 		if(!this.actDataGrid) return;
 		
-		const points = this.actDataGrid.points;
+		const points = myGrids.getPointsFromDataGrid({dataGrid: this.actDataGrid});
 				
 		const arrPos = [];		
 		for ( let i = 0; i < points.length; i++ ) arrPos.push(points[i].position.clone());
@@ -247,45 +220,7 @@ class MyGeneratorWFToolP
 	}
 
 
-	//-------
-	
-	
-	upForms({dataExits, dataForms})
-	{
-		for ( let i = 0; i < dataForms.length; i++ )
-		{
-			//console.log(dataForms[i][0].paths, dataExits[i]);
-			
-			
-			const pos1 = dataExits[i].a;
-			const pos2 = dataExits[i].b;
-			
-			let v = [...dataForms[i].paths];
 
-			if(dataExits[i].ind === v.length - 1)
-			{
-				v.splice(dataExits[i].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
-				v.splice(0, 0, pos1);				
-			}
-			else
-			{
-				v.splice(dataExits[i].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
-				v.splice(dataExits[i].ind + 2, 0, pos1);	
-				
-				v = myMath.offsetArrayToFirstElem({arr: v, index: dataExits[i].ind + 2});				
-			}
-			
-			
-			const line = dataForms[i].line;
-			
-			const geometry = new THREE.Geometry();
-			geometry.vertices = v;
-			//geometry.verticesNeedUpdate = true;
-			
-			line.geometry.dispose();
-			line.geometry = geometry;				
-		}	
-	}
  	
 }
 
