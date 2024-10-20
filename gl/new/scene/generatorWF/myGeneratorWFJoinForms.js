@@ -8,8 +8,8 @@ class MyGeneratorWFJoinForms
 	jointCirclesForm({forms})
 	{
 		const contours = [];
-	
-
+		const furcation = { act: false, contour1: [], contour2: [] };	// произошло развоение контура или нет
+		
 		for ( let i = 0; i < forms.length; i++ )
 		{
 			if(forms[i].length === 1)
@@ -19,6 +19,8 @@ class MyGeneratorWFJoinForms
 			
 			if(forms[i].length === 2)
 			{
+				const offset = (forms.length - i) * 0.1;
+				
 				const result = this.nearestPoint({points1: forms[i][0].paths, points2: forms[i][1].paths});
 				
 				const arrP1 = this.offsetPoints({ind: result.ind1, points: forms[i][0].paths});
@@ -34,12 +36,46 @@ class MyGeneratorWFJoinForms
 				path1 = myMath.offsetArrayToFirstElem({arr: path1, index: index1});
 				path2 = myMath.offsetArrayToFirstElem({arr: path2, index: index2});
 				
-				path1.splice(0, 1);		// удаляем первую точку в каждом контуре (она не нужна, у нас теперь есть раздвиные точки)
+				path1.splice(0, 1);		// удаляем первую точку в каждом контуре (она не нужна, у нас теперь есть раздвоеные точки)
 				path2.splice(0, 1);
 				
-				contours.push({path: [...path1, ...path2]});
-				//contours.push({path: path1});
-				//contours.push({path: path2});
+				let path = [...path1, ...path2];
+				
+				if(furcation.act)
+				{
+					const p1 = furcation.contour1.map((item)=> item.p1.clone());
+					const p2 = furcation.contour1.map((item)=> item.p2.clone());
+					const p3 = furcation.contour2.map((item)=> item.p1.clone());
+					const p4 = furcation.contour2.map((item)=> item.p2.clone());
+					
+					const offsetK = (forms.length - i) * 3;
+					
+					for ( let i = 0; i < p1.length; i++ )
+					{
+						const dir = p1[i].clone().sub(p2[i]).normalize();
+						const dist = p1[i].distanceTo(p2[i]) / offsetK;
+						p1[i] = dir.clone().multiplyScalar( -dist ).add(p1[i]);
+						p2[i] = dir.clone().multiplyScalar( dist ).add(p2[i]);						
+					}
+
+					for ( let i = 0; i < p3.length; i++ )
+					{
+						const dir = p3[i].clone().sub(p4[i]).normalize();
+						const dist = p3[i].distanceTo(p4[i]) / offsetK;
+						p3[i] = dir.clone().multiplyScalar( -dist ).add(p3[i]);
+						p4[i] = dir.clone().multiplyScalar( dist ).add(p4[i]);						
+					}					
+					
+					path = [...p1, ...path1, ...p2.reverse(), ...p3, ...path2, ...p4.reverse()];
+				}
+				
+				contours.push({path});
+				
+				furcation.act = true;
+				
+
+				furcation.contour1.push({p1: path1[0].clone(), p2: path1[path1.length - 1].clone()});
+				furcation.contour2.push({p1: path2[0].clone(), p2: path2[path2.length - 1].clone()});
 			}
 							
 		}				
@@ -130,6 +166,7 @@ class MyGeneratorWFJoinForms
 
 	crHelpBox({pos, size = 0.04, color = 0x00ff00})
 	{
+		return
 		const geometry = new THREE.BoxGeometry( size, size, size );
 		const material = new THREE.MeshBasicMaterial({color});
 		const mesh = new THREE.Mesh( geometry, material );
