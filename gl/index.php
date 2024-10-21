@@ -95,6 +95,7 @@
 	<script src="<?=$path?>new/ui/topPanel/myUiInfoModalWindGrid.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/rightPanel/myUiRightPanel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/grid/myUiGridPanel.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/generatorWF/myUiGeneratorWFPanel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/core/myMath.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGrids.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridPointMove.js?<?=$vrs?>"></script>

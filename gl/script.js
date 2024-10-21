@@ -1739,6 +1739,7 @@ let myUiBtnGrid;
 let myUiInfoModalWindGrid;
 let myUiRightPanel;
 let myUiGridPanel;
+let myUiGeneratorWFPanel;
 let myMath;
 let myGrids;
 let myGridPointMove;
@@ -1772,6 +1773,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	//myLeftPanel.crDefPanel(); бесплатная фейковая панель (сетка)
 	myLeftPanel.crUserPanel();
 	myUiGridPanel = new MyUiGridPanel();
+	myUiGeneratorWFPanel = new MyUiGeneratorWFPanel();
 	
 	myMath = new MyMath();
 	myGrids = new MyGrids();
@@ -1798,7 +1800,8 @@ document.addEventListener("DOMContentLoaded", ()=>
 	if(window.location.hostname === 'warm-floor-2')
 	{		
 		myUiBtnGrid.initEventForUser();		
-		myUiGridPanel.init();		
+		myUiGridPanel.init();
+		myUiGeneratorWFPanel.init();
 	}
 	
 	// показываем в правой панеле Tab выноски

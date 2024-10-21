@@ -43,6 +43,7 @@ new/ui/topPanel/myUiBtnGrid.js
 new/ui/topPanel/myUiInfoModalWindGrid.js
 new/ui/rightPanel/myUiRightPanel.js
 new/ui/grid/myUiGridPanel.js
+new/ui/generatorWF/myUiGeneratorWFPanel.js
 new/scene/core/myMath.js
 new/scene/grid/myGrids.js
 new/scene/grid/myGridPointMove.js

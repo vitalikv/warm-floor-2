@@ -9,6 +9,9 @@ class MyUiGridPanel
 	inputSizeCell;
 	dataBtn = {};
 	
+	wrapBtnShowPanelGenerWF = null;
+	
+	
 	init()
 	{
 		if(this.activated) return; // уже активированная панель
@@ -20,7 +23,9 @@ class MyUiGridPanel
 		this.hideGridPanel();
 		
 		this.btnToggleOffset({setAct: 0});
-		this.btnToggleLink({setAct: 0});		
+		this.btnToggleLink({setAct: 0});
+
+		this.wrapBtnShowPanelGenerWF = document.querySelector('[nameId="wrapBtnShowPanelGenerWF"]');	
 	}
 
 	crDivPanel()
@@ -154,34 +159,38 @@ class MyUiGridPanel
 		const cssBtnSliderActive = `left: auto; right: 0;`;		
 		
 		const html =
-		`<div style="${style1}">
-			<div class="left-input-block-header" style="background: #fff; user-select: none;">сетка пользователя</div>						
+		`<div style="display: flex;">
+			<div style="${style1}">
+				<div class="left-input-block-header" style="background: #fff; user-select: none;">сетка пользователя</div>						
+				
+				<div class="input-height">
+					<div class="text_1">ячейка (cм)</div>
+					<input type="text" nameId="gridSizeCell" style="${cssInput_1}" value="">
+				</div> 	
+								
+				
+				<div class="text_1">привязка</div>
+				<div style="${cssWrapItem} ${cssWrapItemActive}" nameId="btnLink">
+					<div style="${cssBtnSlider} ${cssBtnSliderActive}" nameId="btnLinkTxt">Вкл</div>
+					<div style="${cssItemDiv}">Выкл</div>
+					<div style="${cssItemDiv}">Вкл</div>
+				</div>		
 			
-			<div class="input-height">
-				<div class="text_1">ячейка (cм)</div>
-				<input type="text" nameId="gridSizeCell" style="${cssInput_1}" value="">
-			</div> 	
-							
-			
-			<div class="text_1">привязка</div>
-			<div style="${cssWrapItem} ${cssWrapItemActive}" nameId="btnLink">
-				<div style="${cssBtnSlider} ${cssBtnSliderActive}" nameId="btnLinkTxt">Вкл</div>
-				<div style="${cssItemDiv}">Выкл</div>
-				<div style="${cssItemDiv}">Вкл</div>
-			</div>		
-		
-			<div class="text_1">перемещение</div>
-			<div style="${cssWrapItem} ${cssWrapItemActive}" nameId="btnOffset">
-				<div style="${cssBtnSlider} ${cssBtnSliderActive}" nameId="btnOffsetTxt">Вкл</div>
-				<div style="${cssItemDiv}">Выкл</div>
-				<div style="${cssItemDiv}">Вкл</div>
-			</div>
+				<div class="text_1">перемещение</div>
+				<div style="${cssWrapItem} ${cssWrapItemActive}" nameId="btnOffset">
+					<div style="${cssBtnSlider} ${cssBtnSliderActive}" nameId="btnOffsetTxt">Вкл</div>
+					<div style="${cssItemDiv}">Выкл</div>
+					<div style="${cssItemDiv}">Вкл</div>
+				</div>
 
-				<div style="display: flex; margin: 10px;">
-					<div class="button1" nameId="btnDeleteGrid">
-						<img src="${infProject.path}img/waste.png">
-					</div>
-				</div>				
+					<div style="display: flex; margin: 10px;">
+						<div class="button1" nameId="btnDeleteGrid">
+							<img src="${infProject.path}img/waste.png">
+						</div>
+					</div>				
+			</div>
+			
+			<div style="display: flex;" nameId="wrapBtnShowPanelGenerWF"></div>
 		</div>`;
 
 		return html;
@@ -195,6 +204,8 @@ class MyUiGridPanel
 		
 		this.divPanel.style.display = '';
 		myLeftPanel.wrap.style.display = 'none';
+		
+		myUiGeneratorWFPanel.showGridPanel();
 	}
 	
 	// скрываем панель сетки
@@ -204,6 +215,8 @@ class MyUiGridPanel
 		
 		this.divPanel.style.display = 'none';
 		myLeftPanel.wrap.style.display = '';
+		
+		myUiGeneratorWFPanel.hideGridPanel();
 	}	
 	
 	// переключаем или устанавливаем btn в нужное положение 

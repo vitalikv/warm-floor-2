@@ -38,8 +38,11 @@ class MyGeneratorWF
 				const line = this.crForm({arrPos: contours[i].path});
 				contours[i].line = line;									
 			}
+			
 
 			this.contours = contours;
+			
+			
 
 			// ставим выходы труб у тепл.пола
 			const n = 1;
@@ -49,8 +52,44 @@ class MyGeneratorWF
 			
 			this.render();
 		}
+		
+		
+		if (event.code === 'KeyT')
+		{
+			this.crTube();
+			this.render();
+		}
 	};
 	
+	
+	// создаем трубы 
+	crTube()
+	{
+		const contours = this.contours;
+		
+		if(contours.length === 0) return;
+				
+		
+		for ( let i = 0; i < contours.length; i++ )
+		{
+			const p = [];
+			for ( let i2 = 0; i2 < contours[i].path.length; i2++ )
+			{
+				p[p.length] = createPointWF({pos: contours[i].path[i2]});
+			}
+			
+			const line = createLineWF({point: p, diameter: infProject.settings.wf_tube.d}); 
+			
+			geometryTubeWF({line, createLine: true});
+			
+			if(line.userData.wf_line.tube)
+			{	
+				const tube = line.userData.wf_line.tube;
+				tube.userData.wf_tube.color = new THREE.Color(line.userData.wf_line.color);
+			}		
+		}			
+		
+	}
 	
 	// на вход контур сетки
 	calc({forms, points, offset = -0.2, round = 0})
