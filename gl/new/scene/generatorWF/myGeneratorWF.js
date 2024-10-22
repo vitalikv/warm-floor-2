@@ -1,6 +1,6 @@
 
 // автоматическое построение теплого пола
-class MyGeneratorWF 
+class MyGeneratorWF
 {
 	contours = [];
 	
@@ -13,46 +13,8 @@ class MyGeneratorWF
 	{
 		if (event.code === 'KeyM') 
 		{
-			if(!myGridActivate.actDataGrid) return;
-			
-			const p = [];
-			const points = myGrids.getPointsFromDataGrid({dataGrid: myGridActivate.actDataGrid});
-			
-			for ( let i = 0; i < points.length; i++ )
-			{
-				p.push(points[i].position.clone());
-			}
-			
-			this.clearForms({contours: this.contours});
-			
-			// расчитываем контуры
-			const forms = myGeneratorWF.calc({forms: [], points: p, offset: -myGridActivate.actDataGrid.grille.sizeCell});
-
-			// объединяем контуры одного уровня в единые контур
-			const contours = myGeneratorWFJoinForms.jointCirclesForm({forms});
-
-
-			// рисуем линии контуров
-			for ( let i = 0; i < contours.length; i++ )
-			{
-				const line = this.crForm({arrPos: contours[i].path});
-				contours[i].line = line;									
-			}
-			
-
-			this.contours = contours;
-			
-			
-
-			// ставим выходы труб у тепл.пола
-			const n = 1;
-			const startPos = p[0].clone().sub(p[n + 0]).divideScalar( 2 ).add(p[n + 0]);
-			const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos, actDataGrid: myGridActivate.actDataGrid, contours});
-			
-			
-			this.render();
-		}
-		
+			this.crUlitka();
+		}		
 		
 		if (event.code === 'KeyT')
 		{
@@ -60,6 +22,47 @@ class MyGeneratorWF
 			this.render();
 		}
 	};
+	
+	
+	// создаем улитку
+	crUlitka()
+	{
+		if(!myGridActivate.actDataGrid) return;
+		
+		const p = [];
+		const points = myGrids.getPointsFromDataGrid({dataGrid: myGridActivate.actDataGrid});
+		
+		for ( let i = 0; i < points.length; i++ )
+		{
+			p.push(points[i].position.clone());
+		}
+		
+		this.clearForms({contours: this.contours});
+		
+		// расчитываем контуры
+		const forms = myGeneratorWF.calc({forms: [], points: p, offset: -myGridActivate.actDataGrid.grille.sizeCell});
+
+		// объединяем контуры одного уровня в единые контур
+		const contours = myGeneratorWFJoinForms.jointCirclesForm({forms});
+
+
+		// рисуем линии контуров
+		for ( let i = 0; i < contours.length; i++ )
+		{
+			const line = this.crForm({arrPos: contours[i].path});
+			contours[i].line = line;									
+		}
+		
+		this.contours = contours;
+
+		// ставим выходы труб у тепл.пола
+		const n = 1;
+		const startPos = p[0].clone().sub(p[n + 0]).divideScalar( 2 ).add(p[n + 0]);
+		const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos, actDataGrid: myGridActivate.actDataGrid, contours});
+		
+		
+		this.render();		
+	}
 	
 	
 	// создаем трубы 

@@ -20,7 +20,6 @@ class MyUiGeneratorWFPanel
 		
 		this.wrap = document.querySelector('[nameId="bottom_panel_1"]');
 		this.crDivPanel();
-		this.hideGridPanel();
 
 		this.crDivBtnShowPanel(); // кнопка для показа основной панели
 	}
@@ -30,7 +29,7 @@ class MyUiGeneratorWFPanel
 		this.divPanel = document.createElement('div');
 		this.divPanel.innerHTML = this.html_1();
 		//this.divPanel.style.cssText = 'position: absolute; bottom: 30px;';
-		this.divPanel.style.cssText = 'position: fixed; left: 220px; top: 50%; transform: translateY(-50%);';
+		this.divPanel.style.cssText = 'display: none; position: fixed; left: 0px; top: 50%; transform: translateY(-50%);';
 
 		this.eventStop({div: this.divPanel});	
 		
@@ -41,7 +40,7 @@ class MyUiGeneratorWFPanel
 	}
 
 
-	// кнопка для показа основной панели
+	// кнопка для показа основной панели + события
 	crDivBtnShowPanel()
 	{
 		const wrapBtnShowPanelGenerWF = myUiGridPanel.wrapBtnShowPanelGenerWF;
@@ -52,6 +51,12 @@ class MyUiGeneratorWFPanel
 		this.divBtnShowPanel = div.children[0];
 
 		wrapBtnShowPanelGenerWF.append(this.divBtnShowPanel);
+		
+		this.divBtnShowPanel.onmousedown = () => 
+		{ 
+			this.showGeneratorWFPanel();
+			myUiGridPanel.divPanel.style.display = 'none';			
+		}				
 	}
 
 	
@@ -85,11 +90,25 @@ class MyUiGeneratorWFPanel
 
 	initEventBtn()
 	{
+		const btnCrUlitka = this.divPanel.querySelector('[nameId="btnCrUlitkaWF"]');
+		btnCrUlitka.onmousedown = () => 
+		{ 
+			myGeneratorWF.crUlitka();
+		}			
+		
 		const btn1 = this.divPanel.querySelector('[nameId="btnSaveWF"]');
-		btn1.onmousedown = () => { console.log(1111); }
+		btn1.onmousedown = () => 
+		{ 
+			this.hideGeneratorWFPanel();
+			myUiGridPanel.divPanel.style.display = '';
+		}		
 		
 		const btn2 = this.divPanel.querySelector('[nameId="btnCancelWF"]');
-		btn2.onmousedown = () => { console.log(2222); }
+		btn2.onmousedown = () => 
+		{ 
+			this.hideGeneratorWFPanel();
+			myUiGridPanel.divPanel.style.display = '';
+		}
 	}
 
 	
@@ -176,21 +195,19 @@ class MyUiGeneratorWFPanel
 		
 	
 	// показываем панель сетки
-	showGridPanel()
+	showGeneratorWFPanel()
 	{
 		if(!this.activated) return;
 		
-		this.divPanel.style.display = '';
-		myLeftPanel.wrap.style.display = 'none';
+		this.divPanel.style.display = '';		
 	}
 	
 	// скрываем панель сетки
-	hideGridPanel()
+	hideGeneratorWFPanel()
 	{
 		if(!this.activated) return;
 		
-		this.divPanel.style.display = 'none';
-		myLeftPanel.wrap.style.display = '';
+		this.divPanel.style.display = 'none';		
 	}	
 	
 

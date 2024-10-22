@@ -205,7 +205,7 @@ class MyUiGridPanel
 		this.divPanel.style.display = '';
 		myLeftPanel.wrap.style.display = 'none';
 		
-		myUiGeneratorWFPanel.showGridPanel();
+		//myUiGeneratorWFPanel.showGeneratorWFPanel();
 	}
 	
 	// скрываем панель сетки
@@ -216,7 +216,7 @@ class MyUiGridPanel
 		this.divPanel.style.display = 'none';
 		myLeftPanel.wrap.style.display = '';
 		
-		myUiGeneratorWFPanel.hideGridPanel();
+		//myUiGeneratorWFPanel.hideGeneratorWFPanel();
 	}	
 	
 	// переключаем или устанавливаем btn в нужное положение 
