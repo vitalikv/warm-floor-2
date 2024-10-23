@@ -141,6 +141,8 @@ function onDocumentMouseDown( event )
 	clickO.actMove = false;	
 	clickO.rayhit = clickRayHit(event); 
 
+	if(clickO.rayhit) clickO.obj = clickO.rayhit.object;
+	
 	if ( camera == cameraTop ) { hideMenuObjUI_2D( clickO.last_obj ); }
 	//else if ( camera == camera3D ) { hideMenuObjUI_3D( clickO.last_obj ); }
 	//else if ( camera == cameraWall ) { hideMenuObjUI_Wall(clickO.last_obj); }
@@ -265,7 +267,7 @@ function clickRayHit(event)
 		
 		if(dataGrid) 
 		{ 
-			rayhit = {object: { dataGrid, userData: {tag: 'dataGrid'} }};
+			rayhit = myGrids.getDataGridForRyahit(dataGrid);
 			return rayhit;
 		}
 	}	
@@ -359,7 +361,8 @@ function clickMouseActive(cdm)
 		}
 		
 		
-		clickO.last_obj = obj;
+		
+		setLastSelectObj({obj});
 		
 		consoleInfo( obj );
 	}
@@ -512,7 +515,13 @@ function onDocumentMouseUp( event )
 }
 
 
-
+// нужен только для того чтобы потом при down клик понять, чтобы было последнее активарованно
+// также нужно при удалении
+// т.к. перетаскиваемый объект может отличаться от выбраннаого (например точки для изменения размера окна) 
+function setLastSelectObj({obj = null})
+{
+	clickO.last_obj = obj;
+}
 
 
 function hideMenuObjUI_2D( o )
@@ -534,7 +543,7 @@ function hideMenuObjUI_2D( o )
 		}
 	}
 	
-	clickO.last_obj = null;
+	setLastSelectObj({obj: null});
 }
 
 

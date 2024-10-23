@@ -93,7 +93,7 @@ class MyUiGeneratorWFPanel
 		const btnCrUlitka = this.divPanel.querySelector('[nameId="btnCrUlitkaWF"]');
 		btnCrUlitka.onmousedown = () => 
 		{ 
-			myGeneratorWF.crUlitka();
+			myGeneratorWF.initUlitka();
 		}			
 		
 		const btn1 = this.divPanel.querySelector('[nameId="btnSaveWF"]');
@@ -101,13 +101,28 @@ class MyUiGeneratorWFPanel
 		{ 
 			this.hideGeneratorWFPanel();
 			myUiGridPanel.divPanel.style.display = '';
+			myGeneratorWF.crTubeGeneratorWF();
 		}		
 		
 		const btn2 = this.divPanel.querySelector('[nameId="btnCancelWF"]');
 		btn2.onmousedown = () => 
 		{ 
+			const dataGrid = myGeneratorWF.dataGrid;
+			
 			this.hideGeneratorWFPanel();
-			myUiGridPanel.divPanel.style.display = '';
+			myGeneratorWF.clearFormsGeneratorWF();
+			
+			if(dataGrid)
+			{
+				myGridActivate.activateDataGrid({dataGrid});
+				const rayhit = myGrids.getDataGridForRyahit(dataGrid);
+				
+				setLastSelectObj({obj: rayhit.object});				
+			}
+			else
+			{
+				myUiGridPanel.showGridPanel();
+			}
 		}
 	}
 

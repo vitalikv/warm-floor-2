@@ -178,6 +178,13 @@ class MyGrids
 	}	
 	
 	
+	// заворачиваем dataGrid в объект (нужно для выделения)
+	getDataGridForRyahit(dataGrid)
+	{
+		return {object: { dataGrid, userData: {tag: 'dataGrid'} }};
+	}
+
+	
 	// получаем сетку которая относится к этой точке
 	getDataGridFromPoint({point})
 	{
@@ -290,8 +297,6 @@ class MyGrids
 	{
 		if(!dataGrid) dataGrid = myGridActivate.getActDataGrid();
 		if(!dataGrid) return;	 	
-		
-		//hideMenuObjUI_2D( clickO.last_obj );
 		
 		const points = myGrids.getPointsFromDataGrid({dataGrid}); 
 		

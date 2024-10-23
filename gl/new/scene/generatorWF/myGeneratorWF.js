@@ -3,6 +3,7 @@
 class MyGeneratorWF
 {
 	contours = [];
+	dataGrid = null;
 	
 	constructor()
 	{
@@ -13,34 +14,48 @@ class MyGeneratorWF
 	{
 		if (event.code === 'KeyM') 
 		{
-			this.crUlitka();
+			this.initUlitka();
 		}		
 		
 		if (event.code === 'KeyT')
 		{
-			this.crTube();
+			this.crTubeGeneratorWF();
 			this.render();
 		}
 	};
 	
 	
-	// создаем улитку
-	crUlitka()
+	initUlitka()
 	{
+		this.clearFormsGeneratorWF();
+		
 		if(!myGridActivate.actDataGrid) return;
 		
+		const dataGrid = myGridActivate.actDataGrid;
+		this.dataGrid = dataGrid;
+		deActiveSelected();
+		
+		this.crUlitka({dataGrid});
+		
+		myUiGeneratorWFPanel.showGeneratorWFPanel();
+
+		setLastSelectObj({obj: myGeneratorWFToolP.toolObj});
+	}
+	
+	
+	// создаем улитку
+	crUlitka({dataGrid})
+	{
 		const p = [];
-		const points = myGrids.getPointsFromDataGrid({dataGrid: myGridActivate.actDataGrid});
+		const points = myGrids.getPointsFromDataGrid({dataGrid});
 		
 		for ( let i = 0; i < points.length; i++ )
 		{
 			p.push(points[i].position.clone());
 		}
 		
-		this.clearForms({contours: this.contours});
-		
 		// расчитываем контуры
-		const forms = myGeneratorWF.calc({forms: [], points: p, offset: -myGridActivate.actDataGrid.grille.sizeCell});
+		const forms = myGeneratorWF.calc({forms: [], points: p, offset: -dataGrid.grille.sizeCell});
 
 		// объединяем контуры одного уровня в единые контур
 		const contours = myGeneratorWFJoinForms.jointCirclesForm({forms});
@@ -58,7 +73,7 @@ class MyGeneratorWF
 		// ставим выходы труб у тепл.пола
 		const n = 1;
 		const startPos = p[0].clone().sub(p[n + 0]).divideScalar( 2 ).add(p[n + 0]);
-		const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos, actDataGrid: myGridActivate.actDataGrid, contours});
+		const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos, actDataGrid: dataGrid, contours});
 		
 		
 		this.render();		
@@ -66,7 +81,7 @@ class MyGeneratorWF
 	
 	
 	// создаем трубы 
-	crTube()
+	crTubeGeneratorWF()
 	{
 		const contours = this.contours;
 		
@@ -161,17 +176,19 @@ class MyGeneratorWF
 	}
 	
 
-	clearForms({contours})
+	clearFormsGeneratorWF()
 	{
-		for ( let i = 0; i < contours.length; i++ )
+		for ( let i = 0; i < this.contours.length; i++ )
 		{						
-			const line = contours[i].line;
+			const line = this.contours[i].line;
 			
 			line.geometry.dispose();
 			scene.remove(line);													
 		}
 		
-		contours = [];
+		this.contours = [];
+		
+		this.dataGrid = null;
 	}
 	
 	render()

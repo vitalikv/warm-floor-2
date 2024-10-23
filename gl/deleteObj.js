@@ -39,8 +39,6 @@ function detectDeleteObj()
 
 function deleteWall_1( wall )
 {	
-	//hideMenuObjUI_2D(wall);
-//calculationZoneFundament_1(wall)
 	hideMenuUI(wall);
 	
 	var points = wall.userData.wall.p;

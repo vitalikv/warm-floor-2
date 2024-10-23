@@ -168,8 +168,21 @@ function objDeActiveColor_2D()
 		var tube = o.userData.wf_line.tube;
 		if(tube) { tube.material.color = tube.userData.wf_tube.color; }
 	}
-	else if(o.userData.tag == 'gridPointWf'){ myGridActivate.deActivatePointDataGrid({point: o}); myUiGeneratorWFPanel.hideGeneratorWFPanel(); }
-	else if(o.userData.tag == 'dataGrid'){ myGridActivate.deActivateDataGrid({dataGrid: o.dataGrid}); myUiGeneratorWFPanel.hideGeneratorWFPanel(); }
+	else if(o.userData.tag == 'gridPointWf')
+	{ 
+		myGridActivate.deActivatePointDataGrid({point: o}); 
+		myUiGeneratorWFPanel.hideGeneratorWFPanel(); 
+	}
+	else if(o.userData.tag == 'dataGrid')
+	{ 
+		myGridActivate.deActivateDataGrid({dataGrid: o.dataGrid}); 
+		myUiGeneratorWFPanel.hideGeneratorWFPanel(); 
+	}
+	else if(o.userData.tag == 'arrowContourWf')
+	{ 
+		myUiGeneratorWFPanel.hideGeneratorWFPanel();
+		myGeneratorWF.clearFormsGeneratorWF();
+	}	
 	else if(o.userData.tag == 'noteRulerPoint'){ myNoteRuler.deActivateNoteRuler({obj: o}); }
 	else if(o.userData.tag == 'noteRoulettePoint'){ myNoteRoulette.deActivateNoteRoulette({obj: o}); }
 	
