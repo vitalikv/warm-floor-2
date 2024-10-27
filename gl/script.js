@@ -1261,10 +1261,6 @@ function clickInterface(cdm)
 			clickO.button = cdm.button;
 			clickO.lotid = cdm.lotid;
 		}		
-		else if(cdm.button == 'grid_show_1')
-		{
-			showHideGrid(); 
-		}
 		else if(cdm.button == 'grid_move_1')
 		{
 			startEndMoveGrid(); 
@@ -1770,8 +1766,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myUiInfoModalWindGrid = new MyUiInfoModalWindGrid();
 	
 	myUiRightPanel = new MyUiRightPanel();
-	//myLeftPanel.crDefPanel(); бесплатная фейковая панель (сетка)
-	myLeftPanel.crUserPanel();
+	myLeftPanel.init();
 	myUiGridPanel = new MyUiGridPanel();
 	myUiGeneratorWFPanel = new MyUiGeneratorWFPanel();
 	

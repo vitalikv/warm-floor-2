@@ -92,22 +92,22 @@ function updateGrid(cdm)
 
 
 // показываем скрываем сетку
-function showHideGrid()
+function showHideGrid({visible})
 {
 	var grid = infProject.scene.grid.obj;
 	
-	if(grid.visible)
+	if(visible)
 	{
-		grid.visible = false;
+		grid.visible = true;
 		
 		if(infProject.scene.grid.active) { startEndMoveGrid(); }
 		
-		infProject.scene.grid.show = false;
+		infProject.scene.grid.show = true;
 	}
 	else
 	{
-		grid.visible = true;
-		infProject.scene.grid.show = true;
+		grid.visible = false;
+		infProject.scene.grid.show = false;
 	}
 }
 
@@ -215,10 +215,18 @@ function loadGridGlobal({data})
 	
 	updateGrid({size: data.size * 100});
 	
-	if(grid.visible !== data.visible)
+	if(data.visible)
 	{
-		myLeftPanel.toggleShowHideGrid();
+		myLeftPanel.showGridPanel();
+		myLeftPanel.hideBtnPanel();
+		showHideGrid({visible: true});
 	}
+	else
+	{
+		myLeftPanel.hideGridPanel();
+		myLeftPanel.showBtnPanel();
+		showHideGrid({visible: false});
+	}	
 	
 }
 

@@ -203,7 +203,9 @@ class MyUiGridPanel
 		if(!this.activated) return;
 		
 		this.divPanel.style.display = '';
-		myLeftPanel.wrap.style.display = 'none';
+
+		if(myLeftPanel.getActiveType() === 'panelGridGlobal') { myLeftPanel.hideGridPanel(); }
+		else { myLeftPanel.hideBtnPanel(); } 
 	}
 	
 	// скрываем панель сетки
@@ -212,7 +214,9 @@ class MyUiGridPanel
 		if(!this.activated) return;
 		
 		this.divPanel.style.display = 'none';
-		myLeftPanel.wrap.style.display = '';
+		
+		if(myLeftPanel.getActiveType() === 'panelGridGlobal') { myLeftPanel.showGridPanel(); }
+		else { myLeftPanel.showBtnPanel(); } 
 	}	
 	
 	// переключаем или устанавливаем btn в нужное положение 
