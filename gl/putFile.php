@@ -38,12 +38,12 @@ new/ui/mainMenu/myUiPanelRegister.js
 new/ui/mainMenu/myUiListProjects.js
 new/ui/mainMenu/divUserActive.js
 new/ui/mainMenu/divSubs.js
-new/ui/myLeftPanel.js
 new/ui/topPanel/myUiBtnGrid.js
 new/ui/topPanel/myUiInfoModalWindGrid.js
 new/ui/rightPanel/myUiRightPanel.js
-new/ui/grid/myUiGridPanel.js
-new/ui/generatorWF/myUiGeneratorWFPanel.js
+new/ui/leftPanel/myUiGridGlobalPanel.js
+new/ui/leftPanel/myUiGridUserPanel.js
+new/ui/leftPanel/myUiGeneratorWFPanel.js
 new/scene/core/myMath.js
 new/scene/grid/myGrids.js
 new/scene/grid/myGridPointMove.js

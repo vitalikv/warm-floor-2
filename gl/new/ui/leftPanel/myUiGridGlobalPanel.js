@@ -1,6 +1,6 @@
 
-// показываем учетную запись, когда пользователь автоизовался 
-class MyLeftPanel 
+// панель для глобальной сетки
+class MyUiGridGlobalPanel 
 {
 	wrap;
 	btnShowPanel;

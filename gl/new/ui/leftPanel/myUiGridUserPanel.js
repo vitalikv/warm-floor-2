@@ -1,6 +1,6 @@
 
-// 
-class MyUiGridPanel 
+// панель для пользовательской сетки
+class MyUiGridUserPanel 
 {
 	activated = false;
 	
@@ -204,8 +204,8 @@ class MyUiGridPanel
 		
 		this.divPanel.style.display = '';
 
-		if(myLeftPanel.getActiveType() === 'panelGridGlobal') { myLeftPanel.hideGridPanel(); }
-		else { myLeftPanel.hideBtnPanel(); } 
+		if(myUiGridGlobalPanel.getActiveType() === 'panelGridGlobal') { myUiGridGlobalPanel.hideGridPanel(); }
+		else { myUiGridGlobalPanel.hideBtnPanel(); } 
 	}
 	
 	// скрываем панель сетки
@@ -215,8 +215,8 @@ class MyUiGridPanel
 		
 		this.divPanel.style.display = 'none';
 		
-		if(myLeftPanel.getActiveType() === 'panelGridGlobal') { myLeftPanel.showGridPanel(); }
-		else { myLeftPanel.showBtnPanel(); } 
+		if(myUiGridGlobalPanel.getActiveType() === 'panelGridGlobal') { myUiGridGlobalPanel.showGridPanel(); }
+		else { myUiGridGlobalPanel.showBtnPanel(); } 
 	}	
 	
 	// переключаем или устанавливаем btn в нужное положение 

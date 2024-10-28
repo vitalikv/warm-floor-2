@@ -46,7 +46,7 @@ function createGrid(cdm)
 	lineGrid.userData.count = count;
 	lineGrid.userData.color = (cdm.uColor) ? cdm.uColor : lineGrid.children[0].material.color.clone();
 	
-	myLeftPanel.setValueInputGridSize(Math.round(size * 100));	// перводим в см
+	myUiGridGlobalPanel.setValueInputGridSize(Math.round(size * 100));	// перводим в см
 	
 	if(cdm.pos)
 	{
@@ -71,7 +71,7 @@ function updateGrid(cdm)
 	if(!size) 
 	{
 		var size = grid.userData.size * 100; // перводим в см
-		myLeftPanel.setValueInputGridSize(size);
+		myUiGridGlobalPanel.setValueInputGridSize(size);
 		
 		return;
 	}
@@ -217,14 +217,14 @@ function loadGridGlobal({data})
 	
 	if(data.visible)
 	{
-		myLeftPanel.showGridPanel();
-		myLeftPanel.hideBtnPanel();
+		myUiGridGlobalPanel.showGridPanel();
+		myUiGridGlobalPanel.hideBtnPanel();
 		showHideGrid({visible: true});
 	}
 	else
 	{
-		myLeftPanel.hideGridPanel();
-		myLeftPanel.showBtnPanel();
+		myUiGridGlobalPanel.hideGridPanel();
+		myUiGridGlobalPanel.showBtnPanel();
 		showHideGrid({visible: false});
 	}	
 	

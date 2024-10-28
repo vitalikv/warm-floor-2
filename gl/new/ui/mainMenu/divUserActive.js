@@ -37,7 +37,7 @@ class MyUserActive
 
 			// вкл кнопку и панель для пользовательской сетки
 			myUiBtnGrid.initEventForUser();
-			myUiGridPanel.init();
+			myUiGridUserPanel.init();
 	
 			// подписка заканчивается, показываем что можно оплатить (это не работает, специально отключено, потому что подписка закончилась)
 			if(days < 1)

@@ -43,7 +43,7 @@ class MyUiGeneratorWFPanel
 	// кнопка для показа основной панели + события
 	crDivBtnShowPanel()
 	{
-		const wrapBtnShowPanelGenerWF = myUiGridPanel.wrapBtnShowPanelGenerWF;
+		const wrapBtnShowPanelGenerWF = myUiGridUserPanel.wrapBtnShowPanelGenerWF;
 		if(!wrapBtnShowPanelGenerWF) return;
 		
 		const div = document.createElement('div');
@@ -55,7 +55,7 @@ class MyUiGeneratorWFPanel
 		this.divBtnShowPanel.onmousedown = () => 
 		{ 
 			this.showGeneratorWFPanel();
-			myUiGridPanel.divPanel.style.display = 'none';			
+			myUiGridUserPanel.divPanel.style.display = 'none';			
 		}				
 	}
 
@@ -100,7 +100,7 @@ class MyUiGeneratorWFPanel
 		btn1.onmousedown = () => 
 		{ 
 			this.hideGeneratorWFPanel();
-			myUiGridPanel.divPanel.style.display = '';
+			myUiGridUserPanel.divPanel.style.display = '';
 			myGeneratorWF.crTubeGeneratorWF();
 		}		
 		
@@ -121,7 +121,7 @@ class MyUiGeneratorWFPanel
 			}
 			else
 			{
-				myUiGridPanel.showGridPanel();
+				myUiGridUserPanel.showGridPanel();
 			}
 		}
 	}

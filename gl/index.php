@@ -89,13 +89,13 @@
 	<script src="<?=$path?>new/ui/mainMenu/myUiPanelRegister.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/mainMenu/myUiListProjects.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/mainMenu/divUserActive.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/ui/mainMenu/divSubs.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/ui/myLeftPanel.js?<?=$vrs?>"></script>	
+	<script src="<?=$path?>new/ui/mainMenu/divSubs.js?<?=$vrs?>"></script>		
 	<script src="<?=$path?>new/ui/topPanel/myUiBtnGrid.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/topPanel/myUiInfoModalWindGrid.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/rightPanel/myUiRightPanel.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/ui/grid/myUiGridPanel.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/ui/generatorWF/myUiGeneratorWFPanel.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/leftPanel/myUiGridGlobalPanel.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/leftPanel/myUiGridUserPanel.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/leftPanel/myUiGeneratorWFPanel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/core/myMath.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGrids.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridPointMove.js?<?=$vrs?>"></script>

@@ -23,7 +23,7 @@ class MyGridsSaveLoad
 		
 		myGrids.dataGrids = [];
 		
-		myUiGridPanel.hideGridPanel();
+		myUiGridUserPanel.hideGridPanel();
 	}
 	
 	saveGrids()

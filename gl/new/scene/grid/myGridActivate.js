@@ -30,10 +30,10 @@ class MyGridActivate
 			points[i].visible = true;
 		}		
 		
-		myUiGridPanel.setValueInputSizeCell(dataGrid.grille.sizeCell * 100);
-		myUiGridPanel.btnToggleOffset({setAct: (modeOffset) ? 1 : 0});
-		myUiGridPanel.btnToggleLink({setAct: (modeLink) ? 1 : 0});		
-		myUiGridPanel.showGridPanel();
+		myUiGridUserPanel.setValueInputSizeCell(dataGrid.grille.sizeCell * 100);
+		myUiGridUserPanel.btnToggleOffset({setAct: (modeOffset) ? 1 : 0});
+		myUiGridUserPanel.btnToggleLink({setAct: (modeLink) ? 1 : 0});		
+		myUiGridUserPanel.showGridPanel();
 		
 		this.actDataGrid = dataGrid;
 	}
@@ -62,10 +62,10 @@ class MyGridActivate
 			points[i].visible = true;
 		}
 
-		myUiGridPanel.setValueInputSizeCell(dataGrid.grille.sizeCell * 100);
-		myUiGridPanel.btnToggleOffset({setAct: (modeOffset) ? 1 : 0});
-		myUiGridPanel.btnToggleLink({setAct: (modeLink) ? 1 : 0});			
-		myUiGridPanel.showGridPanel();
+		myUiGridUserPanel.setValueInputSizeCell(dataGrid.grille.sizeCell * 100);
+		myUiGridUserPanel.btnToggleOffset({setAct: (modeOffset) ? 1 : 0});
+		myUiGridUserPanel.btnToggleLink({setAct: (modeLink) ? 1 : 0});			
+		myUiGridUserPanel.showGridPanel();
 		
 		this.actDataGrid = dataGrid;
 	}
@@ -85,13 +85,13 @@ class MyGridActivate
 			points[i].visible = false;
 		}		
 
-		myUiGridPanel.setValueInputSizeCell('');		
+		myUiGridUserPanel.setValueInputSizeCell('');		
 		
 		this.actDataGrid = null;
 		
-		myUiGridPanel.btnToggleOffset({setAct: 0});
-		myUiGridPanel.btnToggleLink({setAct: 0});
-		myUiGridPanel.hideGridPanel();		
+		myUiGridUserPanel.btnToggleOffset({setAct: 0});
+		myUiGridUserPanel.btnToggleLink({setAct: 0});
+		myUiGridUserPanel.hideGridPanel();		
 	}
 	
 	
@@ -114,13 +114,13 @@ class MyGridActivate
 			points[i].visible = false;
 		}		
 		
-		myUiGridPanel.setValueInputSizeCell('');		
+		myUiGridUserPanel.setValueInputSizeCell('');		
 		
 		this.actDataGrid = null;
 		
-		myUiGridPanel.btnToggleOffset({setAct: 0});
-		myUiGridPanel.btnToggleLink({setAct: 0});
-		myUiGridPanel.hideGridPanel();
+		myUiGridUserPanel.btnToggleOffset({setAct: 0});
+		myUiGridUserPanel.btnToggleLink({setAct: 0});
+		myUiGridUserPanel.hideGridPanel();
 	}	
 
 

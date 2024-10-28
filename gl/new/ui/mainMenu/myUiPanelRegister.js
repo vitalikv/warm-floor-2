@@ -154,7 +154,7 @@ class MyUiPanelRegister
 					wrap.style.display = 'block';
 					document.querySelector('[nameId="reg_content_2"]').style.display = 'none';
 					
-					//myLeftPanel.crUserPanel();
+					//myUiGridGlobalPanel.crUserPanel();
 					
 					//if(infProject.user.mail === '9455469@mail.ru' || infProject.user.mail === '9334997@mail.ru')
 					//{

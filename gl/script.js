@@ -1730,11 +1730,11 @@ function checkNumberInput(cdm)
 let myUiMainMenu;
 let myUiPanelRegister;
 let myUiListProjects;
-let myLeftPanel;
+let myUiGridGlobalPanel;
 let myUiBtnGrid;
 let myUiInfoModalWindGrid;
 let myUiRightPanel;
-let myUiGridPanel;
+let myUiGridUserPanel;
 let myUiGeneratorWFPanel;
 let myMath;
 let myGrids;
@@ -1760,14 +1760,15 @@ document.addEventListener("DOMContentLoaded", ()=>
 	docReady = true;
 	myUiMainMenu = new MyUiMainMenu();
 	myUiPanelRegister = new MyUiPanelRegister();
-	myUiListProjects = new MyUiListProjects();
-	myLeftPanel = new MyLeftPanel();
+	myUiListProjects = new MyUiListProjects();	
 	myUiBtnGrid = new MyUiBtnGrid();
 	myUiInfoModalWindGrid = new MyUiInfoModalWindGrid();
 	
 	myUiRightPanel = new MyUiRightPanel();
-	myLeftPanel.init();
-	myUiGridPanel = new MyUiGridPanel();
+	
+	myUiGridGlobalPanel = new MyUiGridGlobalPanel();
+	myUiGridGlobalPanel.init();
+	myUiGridUserPanel = new MyUiGridUserPanel();
 	myUiGeneratorWFPanel = new MyUiGeneratorWFPanel();
 	
 	myMath = new MyMath();
@@ -1795,7 +1796,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	if(window.location.hostname === 'warm-floor-2')
 	{		
 		myUiBtnGrid.initEventForUser();		
-		myUiGridPanel.init();
+		myUiGridUserPanel.init();
 		myUiGeneratorWFPanel.init();
 	}
 	
