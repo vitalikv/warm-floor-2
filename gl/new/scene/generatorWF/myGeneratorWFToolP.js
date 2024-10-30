@@ -13,7 +13,7 @@ class MyGeneratorWFToolP
 	actDataGrid = null;
 	
 	
-	constructor()
+	init()
 	{
 		this.toolObj = this.crPoint({pos: new THREE.Vector3()});
 		

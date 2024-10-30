@@ -1793,15 +1793,17 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myGeneratorWFExits = new MyGeneratorWFExits();
 	
 	// активация пользовательской сетки для теста (так она активруется при оплаченной подписке)
-	if(window.location.hostname === 'warm-floor-2')
+	if(window.location.hostname === 'warm-floor-2' && 1===1)
 	{		
 		myUiBtnGrid.initEventForUser();		
 		myUiGridUserPanel.init();
 		myUiGeneratorWFPanel.init();
+		
+		myGeneratorWFToolP.init();
 	}
 	
 	// показываем в правой панеле Tab выноски
-	if (window.location.hostname === 'warm-floor-2')
+	if (window.location.hostname === 'warm-floor-2' && 1===2)
 	{
 		myUiRightPanel.showTabNotes();
 		myUiRightPanel.toggleTabs({act: 'notes'});

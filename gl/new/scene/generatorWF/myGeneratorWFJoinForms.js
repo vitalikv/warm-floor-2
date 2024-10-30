@@ -101,8 +101,8 @@ class MyGeneratorWFJoinForms
 		
 		arr.sort((a, b) => { return a.dist - b.dist; });
 		
-		this.crHelpBox({pos: points1[arr[0].ind1], color:  0x00ff00});
-		this.crHelpBox({pos: points2[arr[0].ind2], color:  0x00ff00});
+		//this.crHelpBox({pos: points1[arr[0].ind1], color:  0x00ff00});
+		//this.crHelpBox({pos: points2[arr[0].ind2], color:  0x00ff00});
 		
 		return arr[0];
 	}
@@ -116,11 +116,11 @@ class MyGeneratorWFJoinForms
 		
 		const dir1 = points[ind1].clone().sub(points[ind]).normalize();
 		const pos1 = new THREE.Vector3().addScaledVector( dir1, offset ).add(points[ind]);
-		this.crHelpBox({pos: pos1, color:  0x0000ff});
+		//this.crHelpBox({pos: pos1, color:  0x0000ff});
 		
 		const dir2 = points[ind2].clone().sub(points[ind]).normalize();
 		const pos2 = new THREE.Vector3().addScaledVector( dir2, offset ).add(points[ind]);
-		this.crHelpBox({pos: pos2, color:  0xff0000});
+		//this.crHelpBox({pos: pos2, color:  0xff0000});
 
 		const result = [{ind, pos: pos1, sng: -1}, {ind, pos: pos2, sng: 0}];
 		
@@ -165,8 +165,7 @@ class MyGeneratorWFJoinForms
 
 
 	crHelpBox({pos, size = 0.04, color = 0x00ff00})
-	{
-		return
+	{		
 		const geometry = new THREE.BoxGeometry( size, size, size );
 		const material = new THREE.MeshBasicMaterial({color});
 		const mesh = new THREE.Mesh( geometry, material );
