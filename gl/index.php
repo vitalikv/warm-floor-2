@@ -115,6 +115,7 @@
 	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFToolP.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFJoinForms.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFExits.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFOffsetStep.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>uiInterface.js?<?=$vrs?>"></script>	     		
 	

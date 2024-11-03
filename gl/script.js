@@ -1752,6 +1752,9 @@ let myNoteRouletteTool;
 let myNotesSaveLoad;
 let myGeneratorWF;
 let myGeneratorWFToolP;
+let myGeneratorWFJoinForms;
+let myGeneratorWFExits;
+let myGeneratorWFOffsetStep;
 
 var docReady = false;
 
@@ -1791,6 +1794,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myGeneratorWFToolP = new MyGeneratorWFToolP();
 	myGeneratorWFJoinForms = new MyGeneratorWFJoinForms();
 	myGeneratorWFExits = new MyGeneratorWFExits();
+	myGeneratorWFOffsetStep = new MyGeneratorWFOffsetStep();
 	
 	// активация пользовательской сетки для теста (так она активруется при оплаченной подписке)
 	if(window.location.hostname === 'warm-floor-2' && 1===1)
@@ -1816,7 +1820,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	
-	loadFile({local: true});	
+	loadFile({local: true, urlLocal: 'fileJson-2.json'});	
 });
 
 

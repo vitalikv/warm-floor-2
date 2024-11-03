@@ -592,14 +592,14 @@ function getJsonGeometry()
 
 
 
-async function loadFile({id = undefined, local = undefined}) 
+async function loadFile({id = undefined, local = undefined, urlLocal = 'fileJson.json'}) 
 {
 	resetScene();
 	let data = null;
 	
 	if(local)	// загрузка json из папки
 	{		
-		const url = infProject.path + 't/fileJson.json';		
+		const url = infProject.path + 't/'+urlLocal;		
 		const response = await fetch(url, 
 		{
 			method: 'POST',

@@ -62,6 +62,7 @@ new/scene/generatorWF/myGeneratorWF.js
 new/scene/generatorWF/myGeneratorWFToolP.js
 new/scene/generatorWF/myGeneratorWFJoinForms.js
 new/scene/generatorWF/myGeneratorWFExits.js
+new/scene/generatorWF/myGeneratorWFOffsetStep.js
 uiInterface.js
 ';
 
