@@ -137,6 +137,38 @@ class MyGeneratorWFExits
 				v = myMath.offsetArrayToFirstElem({arr: v, index: dataExits[i].ind + 2});				
 			}
 			
+			v.reverse();
+			
+			// четное число 0, 2, 4 и т.д.
+			if(i % 2 === 0)
+			{
+				if(i + 1 === contours.length - 1)
+				{
+					v.push(dataExits[i+1].a);
+					//v.unshift(dataExits[i+1].a); 					
+				}				
+				else if(i + 2 < contours.length)
+				{
+					v.push(dataExits[i+2].b);
+					//v.unshift(dataExits[i+2].b); 					
+				}
+			}
+			else
+			{	
+				if(i === 1)
+				{
+					v.unshift(dataExits[0].c); 					
+				}			
+
+				if(i + 1 === contours.length - 1)
+				{
+					v.push(dataExits[i+1].a); 					
+				}				
+				if(i + 2 < contours.length)
+				{
+					v.push(dataExits[i+2].b); 					
+				}				
+			}
 			
 			const line = contours[i].line;
 			

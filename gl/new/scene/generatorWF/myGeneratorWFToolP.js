@@ -40,7 +40,7 @@ class MyGeneratorWFToolP
 		const geometry = new THREE.Geometry();
 		geometry.vertices = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)];
 		
-		const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+		const material = new THREE.LineBasicMaterial({ color: 0x222222 });
 		
 		const line = new THREE.Line( geometry, material );
 		scene.add(line);
@@ -55,7 +55,7 @@ class MyGeneratorWFToolP
 		line.geometry.dispose();
 		
 		const geometry = new THREE.Geometry();
-		geometry.vertices = [pos.clone(), pos.clone().add(normal)];
+		geometry.vertices = [pos.clone(), pos.clone().add(normal.clone().multiplyScalar(0.3))];
 		
 		line.geometry = geometry;
 	}	
@@ -117,6 +117,12 @@ class MyGeneratorWFToolP
 		//obj.position.add( offset );
 
 		const { newPos, dir } = this.setToolObj({startPos: intersects[0].point});
+		
+		// точки выхода и разрыв линий контуров
+		if(this.contours)
+		{
+			myGeneratorWFExits.crExits({newPos: newPos.clone(), contours: this.contours});	
+		}		
 	}
 	
 	mouseup = () =>
@@ -182,10 +188,6 @@ class MyGeneratorWFToolP
 		}
 		
 		obj.position.copy(newPos);
-		
-		
-		myGeneratorWFExits.crExits({newPos: newPos.clone(), contours: this.contours});	// точки выхода и разрыв линий контуров
-		
 
 		return { newPos, dir };
 	}
