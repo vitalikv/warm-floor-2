@@ -3,6 +3,10 @@
 
 class MyMath
 {
+	// умножение числа на вектор
+	//const offset = new THREE.Vector3().addScaledVector( dir, sizeCell );
+	
+	
 	// сдвиг всего массива, так чтобы выбранный index оказался самым первым 
 	// пример: myMath.offsetArrayToFirstElem({arr: [1,2,3,45,8,9,7,10], index: 5})
 	// было arr = [1,2,3,45,8,9,7,10], index: 5

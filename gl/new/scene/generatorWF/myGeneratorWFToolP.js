@@ -11,6 +11,7 @@ class MyGeneratorWFToolP
 	
 	contours = null;
 	actDataGrid = null;
+	sizeCell = null;
 	
 	
 	init()
@@ -119,9 +120,9 @@ class MyGeneratorWFToolP
 		const { newPos, dir } = this.setToolObj({startPos: intersects[0].point});
 		
 		// точки выхода и разрыв линий контуров
-		if(this.contours)
+		if(this.contours && this.sizeCell)
 		{
-			myGeneratorWFExits.crExits({newPos: newPos.clone(), contours: this.contours});	
+			myGeneratorWFExits.crExits({newPos: newPos.clone(), contours: this.contours, sizeCell: this.sizeCell});	
 		}		
 	}
 	
@@ -144,10 +145,11 @@ class MyGeneratorWFToolP
 	}
 	
 	// ставим стрелку на контур в зависимости от ближайшей грани 
-	setToolObj({startPos, actDataGrid = null, contours = null})
+	setToolObj({startPos, actDataGrid = null, contours = null, sizeCell = null})
 	{		
 		if(actDataGrid) this.actDataGrid = actDataGrid;
 		if(contours) this.contours = contours;
+		if(sizeCell) this.sizeCell = sizeCell;
 		
 		let newPos = new THREE.Vector3();
 		let dir = null;

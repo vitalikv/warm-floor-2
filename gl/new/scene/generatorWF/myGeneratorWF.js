@@ -54,8 +54,10 @@ class MyGeneratorWF
 			p.push(points[i].position.clone());
 		}
 		
+		const sizeCell = dataGrid.grille.sizeCell;
+		
 		// расчитываем контуры
-		const forms = myGeneratorWF.calc({forms: [], points: p, offset: -dataGrid.grille.sizeCell});
+		const forms = myGeneratorWF.calc({forms: [], points: p, offset: sizeCell * -1});
 
 		// объединяем контуры одного уровня в единые контур
 		const contours = myGeneratorWFJoinForms.jointCirclesForm({forms});
@@ -82,10 +84,10 @@ class MyGeneratorWF
 		// определяем место входа тепл.пола
 		const n = 1;
 		const startPos = p[0].clone().sub(p[n + 0]).divideScalar( 2 ).add(p[n + 0]);
-		const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos, actDataGrid: dataGrid, contours});
+		const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos, actDataGrid: dataGrid, contours, sizeCell});
 		
 		// создаем выходы у труб для тепл.пола для каждего шага
-		myGeneratorWFExits.crExits({newPos: newPos.clone(), contours: this.contours});
+		myGeneratorWFExits.crExits({newPos: newPos.clone(), contours: this.contours, sizeCell});
 		
 		
 		this.render();		
