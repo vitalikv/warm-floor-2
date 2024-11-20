@@ -29,7 +29,7 @@ class MyGeneratorWFExits
 		for ( let i = 0; i < contours.length; i++ )
 		{
 			const posExits = this.calcExits({startPos: posF, contour: contours[i], sizeCell, del});
-			posF = posExits.c;
+			posF = posExits.a;
 			del = false;
 			
 			dataExits.push(posExits);
@@ -38,6 +38,7 @@ class MyGeneratorWFExits
 		if(dataExits.length > 0) this.upForms({startPos: newPos.clone(), dataExits, contours, sizeCell});		
 	}
 	
+	// находим для одного из конутров, позицию для 2-х точек выходов и одну центральную
 	calcExits({startPos, contour, sizeCell, del = false})
 	{
 		if(del) this.delete();
@@ -85,6 +86,8 @@ class MyGeneratorWFExits
 			
 			const ind = arrP[0].ind;
 			const dir = v[ind + 1].clone().sub(v[ind]).normalize();
+			
+			
 			dir.x *= sizeCell;
 			dir.z *= sizeCell;
 			
@@ -94,11 +97,14 @@ class MyGeneratorWFExits
 			pos1 = this.getPosLimitOnLine({pos: pos1, line: {start: v[ind], end: v[ind + 1]}});
 			pos2 = this.getPosLimitOnLine({pos: pos2, line: {start: v[ind], end: v[ind + 1]}});			
 
-			//const p1 = this.crHelpBox({pos: pos1, color:  0xff0000});
-			//this.pointsObj.push(p1);
+			if(1===1)
+			{
+				const p1 = this.crHelpBox({pos: pos1, color:  0xff0000});
+				this.pointsObj.push(p1);
 
-			//const p2 = this.crHelpBox({pos: pos2, color:  0xff0000});
-			//this.pointsObj.push(p2);
+				const p2 = this.crHelpBox({pos: pos2, color:  0x0000ff});
+				this.pointsObj.push(p2);				
+			}
 
 			posExits.a = pos1;
 			posExits.b = pos2;
@@ -106,7 +112,6 @@ class MyGeneratorWFExits
 
 		return posExits;
 	}
-	
 
 	// если точка находится за пределами отрезка, то назначаем pos точки самый край отрезка
 	getPosLimitOnLine({pos, line})
@@ -135,6 +140,8 @@ class MyGeneratorWFExits
 			
 			let v = [...contours[i].path];
 
+			// вставляем в массив точки входа/выхода
+			// сортируем массив с точками, так чтобы вход/выход были, началом м концом массива
 			if(dataExits[i].ind === v.length - 1)
 			{
 				v.splice(dataExits[i].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
@@ -238,7 +245,7 @@ class MyGeneratorWFExits
 			}
 			
 			
-			if(1===1)
+			if(1===2)
 			{
 				const p1 = this.crHelpBox({pos: v[0], color:  0x0000ff});
 				this.pointsObj.push(p1);
@@ -247,7 +254,7 @@ class MyGeneratorWFExits
 			}
 
 
-			if(i === 0)
+			if(1===2 && i === 0)
 			{
 				v[0] = startPos.clone();
 				
@@ -257,7 +264,7 @@ class MyGeneratorWFExits
 				v[0] = v[0].clone().sub(offset);
 			}
 			
-			if(i === 1)
+			if(1===2 && i === 1)
 			{
 				const v1 = contours[0].line.geometry.vertices;
 				

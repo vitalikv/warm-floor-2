@@ -4,7 +4,10 @@
 class MyMath
 {
 	// умножение числа на вектор
-	//const offset = new THREE.Vector3().addScaledVector( dir, sizeCell );
+	multiVector3({dir, num})
+	{
+		return new THREE.Vector3().addScaledVector( dir, num );
+	}
 	
 	
 	// сдвиг всего массива, так чтобы выбранный index оказался самым первым 
