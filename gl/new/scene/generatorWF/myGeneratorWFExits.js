@@ -28,7 +28,7 @@ class MyGeneratorWFExits
 		
 		for ( let i = 0; i < contours.length; i++ )
 		{
-			const posExits = this.calcExits({startPos: posF, contour: contours[i], sizeCell, del});
+			const posExits = this.calcExits({id: i, startPos: posF, contour: contours[i], sizeCell, del});
 			posF = posExits.a;
 			del = false;
 			
@@ -39,7 +39,7 @@ class MyGeneratorWFExits
 	}
 	
 	// находим для одного из конутров, позицию для 2-х точек выходов и одну центральную
-	calcExits({startPos, contour, sizeCell, del = false})
+	calcExits({id, startPos, contour, sizeCell, del = false})
 	{
 		if(del) this.delete();
 		
@@ -47,21 +47,24 @@ class MyGeneratorWFExits
 		
 		const arrP = [];
 		const formPoints = contour.path;
-		const v = [...formPoints, formPoints[0]];
+		const v = [...formPoints];
 
 		// 1. добавляем точки контура (нужно, если на на шаге 2, не было пересечения)
-		for ( let i = 0; i < v.length - 1; i++ )
+		for ( let i = 0; i < v.length; i++ )
 		{
 			const dist = v[i].distanceTo(startPos);
 			arrP.push({ind: i, pos: v[i], dist});					
 		}
 		
 		// 2. ищем точку пересечения с входной точкой и контуром
-		for ( let i = 0; i < v.length - 1; i++ )
-		{			
-			const pos = myMath.mathProjectPointOnLine2D({A: v[i], B: v[i + 1], C: startPos});
+		for ( let i = 0; i < v.length; i++ )
+		{
+			const v1 = v[i];
+			const v2 = (i + 1 > v.length - 1) ? v[0] : v[i + 1];
 			
-			const onLine = myMath.checkPointOnLine(v[i], v[i + 1], pos);
+			const pos = myMath.mathProjectPointOnLine2D({A: v1, B: v2, C: startPos});
+			
+			const onLine = myMath.checkPointOnLine(v1, v2, pos);
 			
 			if(onLine)
 			{				
@@ -81,11 +84,11 @@ class MyGeneratorWFExits
 			const pos = arrP[0].pos;
 			posExits.c = pos;
 			
-			//const pCenter = this.crHelpBox({pos, color:  0x00ff00});
-			//this.pointsObj.push(pCenter);
 			
 			const ind = arrP[0].ind;
-			const dir = v[ind + 1].clone().sub(v[ind]).normalize();
+			const v1 = v[ind];
+			const v2 = (ind + 1 > v.length - 1) ? v[0] : v[ind + 1];			
+			const dir = v2.clone().sub(v1).normalize();
 			
 			
 			dir.x *= sizeCell;
@@ -94,15 +97,20 @@ class MyGeneratorWFExits
 			let pos1 = pos.clone().add(dir);
 			let pos2 = pos.clone().sub(dir);
 			
-			pos1 = this.getPosLimitOnLine({pos: pos1, line: {start: v[ind], end: v[ind + 1]}});
-			pos2 = this.getPosLimitOnLine({pos: pos2, line: {start: v[ind], end: v[ind + 1]}});			
+			pos1 = this.getPosLimitOnLine({id: 0, pos: pos1, line: {start: v1, end: v2}, arrV: v, ind});
+			pos2 = this.getPosLimitOnLine({id: 1, pos: pos2, line: {start: v1, end: v2}, arrV: v, ind});			
 
-			if(1===1)
+			if(1===2)
 			{
-				const p1 = this.crHelpBox({pos: pos1, color:  0xff0000});
+				//const pCenter = this.crHelpBox({pos, color:  0x00ff00});
+				//this.pointsObj.push(pCenter);
+				
+				const color = (id % 2 !== 0) ? 0xff0000 : 0x0000ff; 
+			
+				const p1 = this.crHelpBox({pos: pos1, color});
 				this.pointsObj.push(p1);
 
-				const p2 = this.crHelpBox({pos: pos2, color:  0x0000ff});
+				const p2 = this.crHelpBox({pos: pos2, color});
 				this.pointsObj.push(p2);				
 			}
 
@@ -113,18 +121,39 @@ class MyGeneratorWFExits
 		return posExits;
 	}
 
-	// если точка находится за пределами отрезка, то назначаем pos точки самый край отрезка
-	getPosLimitOnLine({pos, line})
+	// если точка находится за пределами отрезка, то находим место на ближайщем отрезке
+	getPosLimitOnLine({id, pos, line, arrV, ind})
 	{
 		const onLine = myMath.checkPointOnLine(line.start, line.end, pos);
 		
-		if(!onLine)
+		if(!onLine && id === 0)
+		{
+			const dist2 = pos.distanceTo(line.end);			
+			
+			let v1 = (ind + 1 > arrV.length - 1) ? arrV[0] : arrV[ind + 1];
+			let v2 = (ind + 2 > arrV.length - 1) ? (ind + 1 > arrV.length - 1) ? arrV[1] : arrV[0] : arrV[ind + 2];
+			
+			const dir = v2.clone().sub(v1).normalize();			
+			dir.x *= dist2;
+			dir.z *= dist2;
+
+			pos = line.end.clone().add(dir);			
+		}
+		
+		if(!onLine && id === 1)
 		{
 			const dist1 = pos.distanceTo(line.start);
-			const dist2 = pos.distanceTo(line.end);
 			
-			pos = (dist1 < dist2) ? line.start : line.end;
-		}
+			let v1 = arrV[ind];
+			let v2 = (ind - 1 < 0) ? arrV[arrV.length - 1] : arrV[ind - 1];
+			
+			const dir = v2.clone().sub(v1).normalize();
+			
+			dir.x *= dist1;
+			dir.z *= dist1;
+
+			pos = line.start.clone().add(dir);			
+		}		
 		
 		return pos;
 	}
@@ -133,163 +162,208 @@ class MyGeneratorWFExits
 	// обновляем форму конутров (вставляем точки входа/выхода и создаем в этом месте разрыв линии)
 	upForms({startPos, dataExits, contours, sizeCell})
 	{
+		let arrV = [];
+		const defV = [];
+		
 		for ( let i = 0; i < contours.length; i++ )
 		{
 			const pos1 = dataExits[i].a;
 			const pos2 = dataExits[i].b;
+			const pos3 = dataExits[i].c;
 			
-			let v = [...contours[i].path];
-
-			// вставляем в массив точки входа/выхода
-			// сортируем массив с точками, так чтобы вход/выход были, началом м концом массива
-			if(dataExits[i].ind === v.length - 1)
+			let v = [...contours[i].path];			
+			
+			// определяем, есть ли точка между точками двумя точками входа
+			let vDel = null;
+			for ( let i2 = 0; i2 < v.length; i2++ )
 			{
-				v.splice(dataExits[i].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
-				v.splice(0, 0, pos1);				
-			}
-			else
-			{
-				v.splice(dataExits[i].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
-				v.splice(dataExits[i].ind + 2, 0, pos1);	
+				const dist = v[i2].distanceTo(pos3);
 				
-				v = myMath.offsetArrayToFirstElem({arr: v, index: dataExits[i].ind + 2});				
-			}
-			
-			v.reverse();	// делаем массив точек против часовой
-			
-			const distKof = 0.01;
-			
-			// четное число 0, 2, 4 и т.д.
-			if(i % 2 === 0)
-			{												
-				if(i + 1 === contours.length - 1)
+				if(dist <= sizeCell) 
 				{
-					let v1 = v[v.length - 1];
-					let v2 = v[v.length - 2];
-					const dist = v1.distanceTo(v2);
-					if(dist < distKof && this.mode === 'V')
-					{
-						v.pop();
-						v1 = v[v.length - 1];
-						v2 = v[v.length - 2];						
-					}
-					
-					const pos2 = myMath.mathProjectPointOnLine2D({A: v1, B: v2, C: dataExits[i+1].a});
-					pos2.y = v[0].y;					
-					if(this.mode === 'V') v[v.length - 1] = pos2;				
-			
-					v.push(dataExits[i+1].a); 					
-				}				
-				else if(i + 2 < contours.length)
-				{
-					let v1 = v[v.length - 1];
-					let v2 = v[v.length - 2];
-					const dist = v1.distanceTo(v2);
-					if(dist < distKof && this.mode === 'V')
-					{
-						v.pop();
-						v1 = v[v.length - 1];
-						v2 = v[v.length - 2];						
-					}
-					
-					const pos2 = myMath.mathProjectPointOnLine2D({A: v1, B: v2, C: dataExits[i+2].b});
-					pos2.y = v[0].y;					
-					if(this.mode === 'V') v[v.length - 1] = pos2;	
-			
-					v.push(dataExits[i+2].b);				
+					vDel = v[i2];
+					break;
 				}
 			}
-			else
-			{	
+			
+			// вставляем в массив точки входа/выхода
+			// сортируем массив с точками, так чтобы вход/выход были, началом м концом массива
+			v.splice(dataExits[i].ind + 1, 0, pos2);	// встявляем элемент в массив по индексу
+			v.splice(dataExits[i].ind + 2, 0, pos1);				
+			v = myMath.offsetArrayToFirstElem({arr: v, index: dataExits[i].ind + 2});				
+			
+			defV.push([...v]);
+			
+			// если есть точка между двумя точкам, то удаляем ее
+			if(vDel)
+			{
+				const index = v.findIndex((item) => item === vDel);
+				if(index > -1) v.splice(index, 1);				
+			}			
+			
+			v.reverse();	// делаем массив точек против часовой			
+			
+			arrV.push(v);	
+		}
+
+
+		//arrV = this.dpVVV({arrV});
+		
+		// добавляем точку до следующего контура, чтобы соединить 
+		for ( let i = 0; i < arrV.length; i++ )
+		{
+			const v = arrV[i];
+			
+
+			
+			if(i + 1 === contours.length - 1)
+			{
+				if(this.mode === 'V')
+				{
+					let v1 = v[v.length - 2];
+					let v2 = v[v.length - 3];
+						
+
+					
+					const v3 = arrV[i+1][arrV[i+1].length - 1];
+					const v4 = arrV[i+1][arrV[i+1].length - 2];
+					
+					const p1 = this.crHelpBox({pos: v1, color: 0xff0000});
+					this.pointsObj.push(p1);
+
+					const p2 = this.crHelpBox({pos: v2, color: 0x0000ff});
+					this.pointsObj.push(p2);	
+
+					const dist2 = v[v.length - 1].distanceTo(v[v.length - 2]);					
+					
+					if(dist2 < 0.1) 
+					{
+						const pos2 = myMath.mathProjectPointOnLine2D({A: v1, B: v2, C: v3});
+						pos2.y = v[0].y;							
+						
+						v.pop();
+						v[v.length - 1] = pos2;
+					}
+					else 
+					{
+						v1 = v[v.length - 1];
+						v2 = v[v.length - 2];
+						
+						const pos2 = myMath.mathProjectPointOnLine2D({A: v1, B: v2, C: v3});
+						pos2.y = v[0].y;	
+							
+						//v.pop();
+						v[v.length - 1] = pos2;
+					}					
+				}
+			}
+			else if(i + 2 < contours.length)
+			{
+				
+				if(this.mode === 'V')
+				{
+					let v1 = v[v.length - 1];
+					let v2 = v[v.length - 2];	
+
+					const dist2 = dataExits[i].a.distanceTo(v2);						
+					
+					if(i > -11)
+					{
+						//const p1 = this.crHelpBox({pos: arrV[i+2][1], color: 0xff0000});
+						//this.pointsObj.push(p1);
+
+						//const p2 = this.crHelpBox({pos: v1, color: 0x0000ff});
+						//this.pointsObj.push(p2);	
+			
+						//const area = 0.5 * Math.abs(v1.x * (v2.z - pos2.z) + v2.x * (pos2.z - v1.z) + pos2.x * (v1.z - v2.z));				
+						
+						
+						if(dist2 < 0.1) 
+						{
+							const pos2 = myMath.mathProjectPointOnLine2D({A: arrV[i+2][0], B: arrV[i+2][1], C: v2});
+							pos2.y = v[0].y;							
+							
+							v.pop();
+							v[v.length - 1] = pos2;
+						}
+						else 
+						{
+							const pos2 = myMath.mathProjectPointOnLine2D({A: arrV[i+2][0], B: arrV[i+2][1], C: v1});
+							pos2.y = v[0].y;	
+							
+							if(defV[i].length === v.length) 
+							{
+								v.push(pos2);
+							}
+							else 
+							{
+								v[v.length - 1] = pos2;
+							}
+						}					
+					}												
+				}				
+			}
+			
+			
+			// четное число 0, 2, 4 и т.д.
+			if(i % 2 === 0) {}
+			else 
+			{
 				if(i === 1)
 				{
 					v.unshift(dataExits[0].c); 					
-				}			
-
-				if(i + 1 === contours.length - 1)
-				{
-					let v1 = v[v.length - 1];
-					let v2 = v[v.length - 2];
-					const dist = v1.distanceTo(v2);
-					if(dist < distKof && this.mode === 'V')
-					{
-						v.pop();
-						v1 = v[v.length - 1];
-						v2 = v[v.length - 2];					
-					}
-					
-					const pos2 = myMath.mathProjectPointOnLine2D({A: v1, B: v2, C: dataExits[i+1].a});
-					pos2.y = v[0].y;					
-					if(this.mode === 'V') v[v.length - 1] = pos2;					
-			
-					v.push(dataExits[i+1].a); 					
-				}				
-				if(i + 2 < contours.length)
-				{
-					let v1 = v[v.length - 1];
-					let v2 = v[v.length - 2];
-					const dist = v1.distanceTo(v2);
-					if(dist < distKof && this.mode === 'V')
-					{
-						v.pop();
-						v1 = v[v.length - 1];
-						v2 = v[v.length - 2];						
-					}
-					
-					const pos2 = myMath.mathProjectPointOnLine2D({A: v1, B: v2, C: dataExits[i+2].b});
-					pos2.y = v[0].y;					
-					if(this.mode === 'V') v[v.length - 1] = pos2;
-			
-					v.push(dataExits[i+2].b); 					
-				}				
-			}
-			
-			
-			if(1===2)
-			{
-				const p1 = this.crHelpBox({pos: v[0], color:  0x0000ff});
-				this.pointsObj.push(p1);
-				const p2 = this.crHelpBox({pos: v[v.length - 2], color:  0x0000ff});
-				this.pointsObj.push(p2);				
+				}					
 			}
 
+			if(i + 1 === contours.length - 1)
+			{
+				v.push(dataExits[i+1].a);
+			}
+			else if(i + 2 < contours.length)
+			{
+				v.push(dataExits[i+2].b);
+			}				
+		}
 
-			if(1===2 && i === 0)
-			{
-				v[0] = startPos.clone();
 				
-				const dir = v[1].clone().sub(v[2]).normalize();
-				const offset = new THREE.Vector3().addScaledVector( dir, 0.1 );
-				v[1] = v[1].clone().add(offset);
-				v[0] = v[0].clone().sub(offset);
-			}
-			
-			if(1===2 && i === 1)
-			{
-				const v1 = contours[0].line.geometry.vertices;
-				
-				const dir = myMath.calcNormal2D({p1: v1[2], p2: v1[1], reverse: false});
-				const offset = new THREE.Vector3().addScaledVector( dir, sizeCell );
-				v[1] = v1[1].clone().add(offset);
-				
-				const dir1 = v1[1].clone().sub(v1[2]).normalize();
-				const offset1 = new THREE.Vector3().addScaledVector( dir1, -0.05 );
-				v[1] = v[1].clone().add(offset1);
-				
-				v[0] = startPos.clone();
-				v[0] = v[0].clone().add(offset1).add(offset1).add(offset1);
-			}
-			
+
+		for ( let i = 0; i < contours.length; i++ )
+		{
 			const line = contours[i].line;
 			
 			const geometry = new THREE.Geometry();
-			geometry.vertices = v;
+			geometry.vertices = arrV[i];
 			//geometry.verticesNeedUpdate = true;
 			
 			line.geometry.dispose();
-			line.geometry = geometry;				
-		}	
-	}	
+			line.geometry = geometry;			
+		}
+		
+	}
+
+
+	dpVVV({arrV})
+	{
+		for ( let i = arrV.length - 1; i >= arrV.length - 1; i-- )
+		{
+			const v = arrV[i];
+			const v1 = arrV[i - 1];
+
+			const p1 = this.crHelpBox({pos: v[0], color:  0x0000ff});
+			this.pointsObj.push(p1);
+
+			const p2 = this.crHelpBox({pos: v[v.length - 1], color:  0xff0000});
+			this.pointsObj.push(p2);
+
+			const p3 = this.crHelpBox({pos: v1[0], color:  0x0000ff});
+			this.pointsObj.push(p3);
+
+			const p4 = this.crHelpBox({pos: v1[v1.length - 1], color:  0xff0000});
+			this.pointsObj.push(p4);			
+		}
+
+		return arrV;
+	}
 
 	crHelpBox({pos, size = 0.04, color = 0x0000ff})
 	{
