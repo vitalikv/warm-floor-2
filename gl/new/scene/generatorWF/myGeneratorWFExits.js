@@ -162,29 +162,22 @@ class MyGeneratorWFExits
 	// обновляем форму конутров (вставляем точки входа/выхода и создаем в этом месте разрыв линии)
 	upForms({startPos, dataExits, contours, sizeCell})
 	{
-		let arrV = [];
-		const defV = [];
+		const arrV = [];
+		const defV = [];	// нужно знать изначальное кол-во точек, до удаления (чтобы понять было удаление точек или нет)
 		
 		for ( let i = 0; i < contours.length; i++ )
 		{
 			const pos1 = dataExits[i].a;
 			const pos2 = dataExits[i].b;
-			const pos3 = dataExits[i].c;
+			const pos3 = dataExits[i].c;						
 			
 			let v = [...contours[i].path];			
 			
 			// определяем, есть ли точка между точками двумя точками входа
 			let vDel = null;
-			for ( let i2 = 0; i2 < v.length; i2++ )
-			{
-				const dist = v[i2].distanceTo(pos3);
-				
-				if(dist <= sizeCell) 
-				{
-					vDel = v[i2];
-					break;
-				}
-			}
+			const dist = v[dataExits[i].ind].distanceTo(pos3);			
+			if(dist <= sizeCell) vDel = v[dataExits[i].ind];
+
 			
 			// вставляем в массив точки входа/выхода
 			// сортируем массив с точками, так чтобы вход/выход были, началом м концом массива
@@ -192,11 +185,11 @@ class MyGeneratorWFExits
 			v.splice(dataExits[i].ind + 2, 0, pos1);				
 			v = myMath.offsetArrayToFirstElem({arr: v, index: dataExits[i].ind + 2});				
 			
-			defV.push([...v]);
+			defV.push([...v]);						
 			
 			// если есть точка между двумя точкам, то удаляем ее
 			if(vDel)
-			{
+			{				
 				const index = v.findIndex((item) => item === vDel);
 				if(index > -1) v.splice(index, 1);				
 			}			
@@ -206,15 +199,11 @@ class MyGeneratorWFExits
 			arrV.push(v);	
 		}
 
-
-		//arrV = this.dpVVV({arrV});
 		
-		// добавляем точку до следующего контура, чтобы соединить 
+		 
 		for ( let i = 0; i < arrV.length; i++ )
 		{
 			const v = arrV[i];
-			
-
 			
 			if(i + 1 === contours.length - 1)
 			{
@@ -222,21 +211,13 @@ class MyGeneratorWFExits
 				{
 					let v1 = v[v.length - 2];
 					let v2 = v[v.length - 3];
-						
-
 					
 					const v3 = arrV[i+1][arrV[i+1].length - 1];
 					const v4 = arrV[i+1][arrV[i+1].length - 2];
-					
-					const p1 = this.crHelpBox({pos: v1, color: 0xff0000});
-					this.pointsObj.push(p1);
 
-					const p2 = this.crHelpBox({pos: v2, color: 0x0000ff});
-					this.pointsObj.push(p2);	
-
-					const dist2 = v[v.length - 1].distanceTo(v[v.length - 2]);					
+					const dist = v[v.length - 1].distanceTo(v[v.length - 2]);					
 					
-					if(dist2 < 0.1) 
+					if(dist < sizeCell) 
 					{
 						const pos2 = myMath.mathProjectPointOnLine2D({A: v1, B: v2, C: v3});
 						pos2.y = v[0].y;							
@@ -265,20 +246,20 @@ class MyGeneratorWFExits
 					let v1 = v[v.length - 1];
 					let v2 = v[v.length - 2];	
 
-					const dist2 = dataExits[i].a.distanceTo(v2);						
+					const dist = dataExits[i].a.distanceTo(v2);						
 					
-					if(i > -11)
+					if(i > -6)
 					{
-						//const p1 = this.crHelpBox({pos: arrV[i+2][1], color: 0xff0000});
-						//this.pointsObj.push(p1);
+						const p1 = this.crHelpBox({pos: arrV[i+2][1], color: 0xff0000});
+						this.pointsObj.push(p1);
 
-						//const p2 = this.crHelpBox({pos: v1, color: 0x0000ff});
-						//this.pointsObj.push(p2);	
+						const p2 = this.crHelpBox({pos: v1, color: 0x0000ff});
+						this.pointsObj.push(p2);	
 			
 						//const area = 0.5 * Math.abs(v1.x * (v2.z - pos2.z) + v2.x * (pos2.z - v1.z) + pos2.x * (v1.z - v2.z));				
 						
 						
-						if(dist2 < 0.1) 
+						if(dist <= sizeCell) 
 						{
 							const pos2 = myMath.mathProjectPointOnLine2D({A: arrV[i+2][0], B: arrV[i+2][1], C: v2});
 							pos2.y = v[0].y;							
@@ -305,6 +286,7 @@ class MyGeneratorWFExits
 			}
 			
 			
+			// добавляем точку до следующего контура, чтобы соединить
 			// четное число 0, 2, 4 и т.д.
 			if(i % 2 === 0) {}
 			else 
@@ -342,28 +324,6 @@ class MyGeneratorWFExits
 	}
 
 
-	dpVVV({arrV})
-	{
-		for ( let i = arrV.length - 1; i >= arrV.length - 1; i-- )
-		{
-			const v = arrV[i];
-			const v1 = arrV[i - 1];
-
-			const p1 = this.crHelpBox({pos: v[0], color:  0x0000ff});
-			this.pointsObj.push(p1);
-
-			const p2 = this.crHelpBox({pos: v[v.length - 1], color:  0xff0000});
-			this.pointsObj.push(p2);
-
-			const p3 = this.crHelpBox({pos: v1[0], color:  0x0000ff});
-			this.pointsObj.push(p3);
-
-			const p4 = this.crHelpBox({pos: v1[v1.length - 1], color:  0xff0000});
-			this.pointsObj.push(p4);			
-		}
-
-		return arrV;
-	}
 
 	crHelpBox({pos, size = 0.04, color = 0x0000ff})
 	{
