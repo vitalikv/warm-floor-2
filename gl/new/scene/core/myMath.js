@@ -106,6 +106,53 @@ class MyMath
 	}
 
 
+	// определить с высокой точностью, находится ли точка на отрезке (gpt)
+	isPointOnSegment2({point1, point2, targetPoint}) 
+	{
+		const A = point1; 
+		const B = point2; 
+		const P = targetPoint;
+		
+		// Допустимая погрешность
+		const epsilon = 1e-12;
+
+		// Рассчитываем векторное произведение для проверки коллинеарности
+		const crossProduct = (P.x - A.x) * (B.z - A.z) - (P.z - A.z) * (B.x - A.x);
+
+		// Проверяем, что точка на прямой (с учетом погрешности)
+		if (Math.abs(crossProduct) > epsilon) {
+			return false; // точка не на прямой
+		}
+
+		// Проверяем, что точка P лежит в пределах отрезка AB (с учетом погрешности)
+		const minX = Math.min(A.x, B.x);
+		const maxX = Math.max(A.x, B.x);
+		const minY = Math.min(A.z, B.z);
+		const maxY = Math.max(A.z, B.z);
+
+		return P.x >= minX - epsilon && P.x <= maxX + epsilon && P.z >= minY - epsilon && P.z <= maxY + epsilon;
+	}
+
+
+	// найти ближайшую точку (не проверял работоспособность) (gpt)
+	findClosestPoint({target, pointsArray}) 
+	{
+		let closestPoint = null;
+		let minDistance = Infinity;
+
+		pointsArray.forEach(point => 
+		{
+			const distance = target.distanceTo(point); // Рассчитываем расстояние
+			if (distance < minDistance) 
+			{
+				minDistance = distance;
+				closestPoint = point;
+			}
+		});
+
+		return closestPoint;
+	}	
+
 	
 	// Проверка двух отрезков на пересечение (ориентированная площадь треугольника)
 	checkCrossLine(a, b, c, d)
@@ -176,7 +223,19 @@ class MyMath
 		
 		return point;
 	}
-	
+
+
+	// попадает ли точка в граница отрезка 3D BoundBox
+	checkPointBoundBoxLine(pointA, pointB, pointToCheck) 
+	{
+		if(pointToCheck.x < Math.min(pointA.x, pointB.x) || pointToCheck.x > Math.max(pointA.x, pointB.x)) { return false; }
+
+		if(pointToCheck.y < Math.min(pointA.y, pointB.y) || pointToCheck.y > Math.max(pointA.y, pointB.y)) { return false; }
+
+		if(pointToCheck.z < Math.min(pointA.z, pointB.z) || pointToCheck.z > Math.max(pointA.z, pointB.z)) { return false; } 
+
+		return true;
+	}	
 	
 	
 	//площадь многоугольника (нужно чтобы понять положительное значение или отрецательное, для того чтобы понять напрвление по часовой или проитв часовой)
