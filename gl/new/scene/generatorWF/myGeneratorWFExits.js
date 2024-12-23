@@ -20,11 +20,16 @@ class MyGeneratorWFExits
 	};
 	
 
-	crExits({newPos, contours, sizeCell})
+	crExits({newPos, dir = null, contours, sizeCell})
 	{
 		const dataExits = [];
 		let posF = newPos.clone();
 		let del = true;
+		
+		if(dir)
+		{
+			posF = this.calcStartPoint({posF, dir, contours});
+		}
 		
 		for ( let i = 0; i < contours.length; i++ )
 		{
@@ -37,6 +42,47 @@ class MyGeneratorWFExits
 		
 		if(dataExits.length > 0) this.upForms({startPos: newPos.clone(), dataExits, contours, sizeCell});		
 	}
+	
+	
+	calcStartPoint({posF, dir, contours})
+	{
+		const v = contours[0].path;
+		const arrP = [];
+
+		for ( let i = 0; i < v.length; i++ )
+		{
+			const dist = v[i].distanceTo(posF);
+			arrP.push({pos: v[i], dist});					
+		}
+	
+		for ( let i = 0; i < v.length; i++ )
+		{
+			const v1 = v[i];
+			const v2 = (i + 1 > v.length - 1) ? v[0] : v[i + 1];
+			
+			const pos = this.getIntersection(posF, posF.clone().add(dir), v1, v2);
+			if(!pos) continue;
+			
+			const onLine = myMath.isPointOnSegment2({point1: v1, point2: v2, targetPoint: pos});
+			
+			if(onLine)
+			{				
+				const dist = pos.distanceTo(posF);
+				
+				arrP.push({dist, pos});				
+			}				
+		}
+
+		if(arrP.length > 0)
+		{
+			arrP.sort((a, b) => { return a.dist - b.dist; }); 
+			
+			posF = arrP[0].pos;
+		}
+
+		return posF;
+	}
+	
 	
 	// находим для одного из конутров, позицию для 2-х точек выходов и одну центральную
 	calcExits({id, startPos, contour, sizeCell, del = false})
@@ -97,11 +143,11 @@ class MyGeneratorWFExits
 			let pos1 = pos.clone().add(dir);
 			let pos2 = pos.clone().sub(dir);
 			
-			pos1 = this.getPosLimitOnLine({id: 0, pos: pos1, line: {start: v1, end: v2}, arrV: v, ind});
-			pos2 = this.getPosLimitOnLine({id: 1, pos: pos2, line: {start: v1, end: v2}, arrV: v, ind, step: id});			
+			pos1 = this.getPosLimitOnLine({id: 0, pos: pos1, arrV: v, ind});
+			pos2 = this.getPosLimitOnLine({id: 1, pos: pos2, arrV: v, ind, step: id});			
 
 			
-			if(1===1)
+			if(1===2)
 			{
 				//const pCenter = this.crHelpBox({pos, color:  0x00ff00});
 				//this.pointsObj.push(pCenter);
@@ -123,61 +169,69 @@ class MyGeneratorWFExits
 	}
 
 	// если точка находится за пределами отрезка, то находим место на ближайщем отрезке
-	getPosLimitOnLine({id, pos, line, arrV, ind, step = -1})
+	getPosLimitOnLine({id, pos, arrV, ind, step = -1})
 	{
-		const onLine = myMath.isPointOnSegment2({point1: line.start, point2: line.end, targetPoint: pos});
+		let v1 = arrV[ind];
+		let v2 = (ind + 1 > arrV.length - 1) ? arrV[0] : arrV[ind + 1];
+	
 		
-		//if(step === 2 && id === 1) console.log(onLine, line.start, line.end);
+		const onLine = myMath.isPointOnSegment2({point1: v1, point2: v2, targetPoint: pos});
+
 		
 		if(!onLine && id === 0)
 		{
-			const dist2 = pos.distanceTo(line.end);			
-			
 			let v1 = (ind + 1 > arrV.length - 1) ? arrV[0] : arrV[ind + 1];
 			let v2 = (ind + 2 > arrV.length - 1) ? (ind + 1 > arrV.length - 1) ? arrV[1] : arrV[0] : arrV[ind + 2];
 			
+			const dist1 = pos.distanceTo(v1);
+			
 			const dir = v2.clone().sub(v1).normalize();			
-			dir.x *= dist2;
-			dir.z *= dist2;
+			dir.x *= dist1;
+			dir.z *= dist1;
 
-			pos = line.end.clone().add(dir);
+			pos = v1.clone().add(dir);
 
 			const onLine = myMath.isPointOnSegment2({point1: v1, point2: v2, targetPoint: pos});
 
 					
 			if(!onLine)
 			{
-				pos = v2.clone();
+				//pos = v2.clone();
 				
+				const ind2 = (ind + 1 > arrV.length - 1) ? 0 : ind + 1;				
+				pos = this.getPosLimitOnLine({id, pos, arrV, ind: ind2, step});				
 			}
 		}
 		
 		if(!onLine && id === 1)
-		{
-			const dist1 = pos.distanceTo(line.start);
-			
+		{						
 			let v1 = arrV[ind];
 			let v2 = (ind - 1 < 0) ? arrV[arrV.length - 1] : arrV[ind - 1];
 			
-			const dir = v2.clone().sub(v1).normalize();
+			const dist1 = pos.distanceTo(v1);
 			
+			const dir = v2.clone().sub(v1).normalize();			
 			dir.x *= dist1;
 			dir.z *= dist1;
 
-			pos = line.start.clone().add(dir);	
+			pos = v1.clone().add(dir);	
 
 			const onLine = myMath.isPointOnSegment2({point1: v1, point2: v2, targetPoint: pos});
 			
 			
 			if(!onLine)
 			{
-				pos = v2.clone();
+				//pos = v2.clone();
+				
+				const ind2 = (ind - 1 < 0) ? arrV.length - 1 : ind - 1;				
+				pos = this.getPosLimitOnLine({id, pos, arrV, ind: ind2, step});					
 			}			
 		}		
 		
 		return pos;
 	}
-	
+
+
 	
 	getPointOnLine({pos, v, step = -1, num = 0})
 	{
@@ -362,7 +416,7 @@ getIntersection(p1, p2, p3, p4, epsilon = 1e-12) {
 			arrV.push(v);	
 		}
 
-		 return
+		
 		for ( let i = 0; i < arrV.length; i++ )
 		{
 			const v = arrV[i];
@@ -415,7 +469,7 @@ getIntersection(p1, p2, p3, p4, epsilon = 1e-12) {
 					
 					if(i > -1)
 					{
-						if(i===1)
+						if(i===0)
 						{
 							const p1 = this.crHelpBox({pos: v1, color: 0xff0000});
 							this.pointsObj.push(p1);
@@ -452,6 +506,8 @@ getIntersection(p1, p2, p3, p4, epsilon = 1e-12) {
 							{
 								const dir = myMath.calcNormal2D({p1: v1, p2: v2});
 		
+		if(i === 0) console.log(555, dist <= sizeCell);
+		
 								if(dist <= sizeCell && 1===1) 
 								{
 									let pos2 = this.getProjectPointOnLine2D({targetPoint: v3, point1: v2, point2: v2.clone().add(dir)});
@@ -459,8 +515,25 @@ getIntersection(p1, p2, p3, p4, epsilon = 1e-12) {
 									pos2.y = v[0].y;	
 									
 									const area = 0.5 * Math.abs(v3.x * (v4.z - pos2.z) + v4.x * (pos2.z - v3.z) + pos2.x * (v3.z - v4.z));
+
+
+									const onLine = myMath.isPointOnSegment2({point1: v3, point2: v4, targetPoint: pos2});
 									
-									if(area < 0.000001 && 1===2)
+									if(i === 0) 
+									{
+										const p4 = this.crHelpBox({pos: pos2, color: 0xff8f0f});
+										this.pointsObj.push(p4);										
+									}
+									
+									
+									if(onLine)
+									{
+										//v.pop();
+										//v[v.length - 1] = pos2;
+										dataExits[i+2].b = pos2;
+										arrV[i+2][0] = pos2;											
+									}
+									else if(area < 0.000001 && 1===2)
 									{
 										//const dir2 = v1.clone().sub(v2).normalize();
 										pos2 = new THREE.Vector3().addScaledVector(dir, -sizeCell).add(pos2);
@@ -509,7 +582,7 @@ getIntersection(p1, p2, p3, p4, epsilon = 1e-12) {
 									
 									const cross = myMath.checkCrossLine(v1, v2, v4, pos2);
 									
-									if(i === 1) 
+									if(i === -1) 
 									{
 										const p4 = this.crHelpBox({pos: pos2, color: 0xff8f0f});
 										this.pointsObj.push(p4);	
@@ -543,7 +616,7 @@ getIntersection(p1, p2, p3, p4, epsilon = 1e-12) {
 											//pos2.y = v[0].y;
 											
 										const area = 0.5 * Math.abs(v3.x * (v4.z - result.z) + v4.x * (result.z - v3.z) + result.x * (v3.z - v4.z));
-												if(i === 1) console.log(444, area);
+												
 
 
 
@@ -551,9 +624,11 @@ getIntersection(p1, p2, p3, p4, epsilon = 1e-12) {
 											const dist2 = result.distanceTo(v2);
 											
 											const dist3 = v1.distanceTo(v3);
-											const dist4 = v1.distanceTo(pos2);											
+											const dist4 = v1.distanceTo(pos2);	
+
+if(i === 0) console.log(444, dist1 < dist2, dist3 < dist4);											
 											
-											if(dist1 < dist2)
+											if(dist1 < dist2 && 1===1)
 											{
 												pos2 = myMath.mathProjectPointOnLine2D({A: v1, B: v2, C: v3});
 												pos2.y = v[0].y;										
@@ -574,7 +649,7 @@ getIntersection(p1, p2, p3, p4, epsilon = 1e-12) {
 										else
 										{
 											pos2 = myMath.mathProjectPointOnLine2D({A: v1, B: v2, C: v3});
-											pos2.y = v[0].y;										
+											pos2.y = v[0].y;											
 											v[v.length - 1] = pos2;											
 										}
 									}
@@ -582,9 +657,12 @@ getIntersection(p1, p2, p3, p4, epsilon = 1e-12) {
 								}
 								else
 								{
-									if(i === 1) console.log(888888, pos2);
-							
+									
+									
+									if(i === 0) console.log(6666);
+									
 									v[v.length - 1] = pos2;
+									
 								}
 								
 								//pos2 = this.getProjectPointOnLine2D({targetPoint: v1, point1: v3, point2: v4});

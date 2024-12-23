@@ -122,7 +122,7 @@ class MyGeneratorWFToolP
 		// точки выхода и разрыв линий контуров
 		if(this.contours && this.sizeCell)
 		{
-			myGeneratorWFExits.crExits({newPos: newPos.clone(), contours: this.contours, sizeCell: this.sizeCell});	
+			myGeneratorWFExits.crExits({newPos: newPos.clone(), dir, contours: this.contours, sizeCell: this.sizeCell});	
 		}		
 	}
 	
@@ -164,7 +164,9 @@ class MyGeneratorWFToolP
 		for ( let i = 0; i < v.length - 1; i++ )
 		{
 			const dist = v[i].distanceTo(startPos);
-			const normal = v[i].clone().sub(startPos).normalize();
+			const pos = v[i].clone().sub(startPos);
+			pos.y = 0;
+			const normal = pos.normalize();
 			arrP.push({pos: v[i], dist, normal});					
 		}
 		
