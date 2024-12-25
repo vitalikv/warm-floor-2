@@ -105,54 +105,6 @@ class MyMath
 		return result;
 	}
 
-
-	// определить с высокой точностью, находится ли точка на отрезке (gpt)
-	isPointOnSegment2({point1, point2, targetPoint}) 
-	{
-		const A = point1; 
-		const B = point2; 
-		const P = targetPoint;
-		
-		// Допустимая погрешность
-		const epsilon = 1e-12;
-
-		// Рассчитываем векторное произведение для проверки коллинеарности
-		const crossProduct = (P.x - A.x) * (B.z - A.z) - (P.z - A.z) * (B.x - A.x);
-
-		// Проверяем, что точка на прямой (с учетом погрешности)
-		if (Math.abs(crossProduct) > epsilon) {
-			return false; // точка не на прямой
-		}
-
-		// Проверяем, что точка P лежит в пределах отрезка AB (с учетом погрешности)
-		const minX = Math.min(A.x, B.x);
-		const maxX = Math.max(A.x, B.x);
-		const minY = Math.min(A.z, B.z);
-		const maxY = Math.max(A.z, B.z);
-
-		return P.x >= minX - epsilon && P.x <= maxX + epsilon && P.z >= minY - epsilon && P.z <= maxY + epsilon;
-	}
-
-
-	// найти ближайшую точку (не проверял работоспособность) (gpt)
-	findClosestPoint({target, pointsArray}) 
-	{
-		let closestPoint = null;
-		let minDistance = Infinity;
-
-		pointsArray.forEach(point => 
-		{
-			const distance = target.distanceTo(point); // Рассчитываем расстояние
-			if (distance < minDistance) 
-			{
-				minDistance = distance;
-				closestPoint = point;
-			}
-		});
-
-		return closestPoint;
-	}	
-
 	
 	// Проверка двух отрезков на пересечение (ориентированная площадь треугольника)
 	checkCrossLine(a, b, c, d)
@@ -276,6 +228,111 @@ class MyMath
 		return res;
 	}
 
+
+
+
+	//--- gpt
+	
+	// проекция точки на прямую (работоспособность не проверял)
+	getProjectPointOnLine2D({targetPoint, point1, point2})
+	{
+		// Точки, задающие линию
+		// const point1 = new THREE.Vector3(0, 0, 0); // Начало линии
+		// const point2 = new THREE.Vector3(1, 1, 1); // Конец линии
+
+		// Точка, которую нужно спроецировать
+		// const targetPoint = new THREE.Vector3(2, 0, 0);
+
+		// 1. Вектор направления линии
+		const lineDir = new THREE.Vector3().subVectors(point2, point1).normalize();
+
+		// 2. Вектор от точки на линии до целевой точки
+		const pointToTarget = new THREE.Vector3().subVectors(targetPoint, point1);
+
+		// 3. Скалярное произведение (длина проекции)
+		const projectionLength = pointToTarget.dot(lineDir);
+
+		// 4. Координаты проекции
+		const projection = new THREE.Vector3()
+		  .copy(lineDir)
+		  .multiplyScalar(projectionLength)
+		  .add(point1);
+		
+		return projection;
+	}
+
+
+	// точка пересечение двух прямых
+	getIntersection(p1, p2, p3, p4, epsilon = 1e-12) {
+		// Векторы направления для каждой прямой
+		const d1 = new THREE.Vector3().subVectors(p2, p1); // Вектор для прямой 1
+		const d2 = new THREE.Vector3().subVectors(p4, p3); // Вектор для прямой 2
+
+		// Разница между точками, образующими прямые
+		const denom = d1.x * d2.z - d1.z * d2.x;
+
+		// Проверяем, параллельны ли прямые с учётом погрешности
+		if (Math.abs(denom) < epsilon) {
+			return null; // Прямые параллельны, пересечения нет
+		}
+
+		// Находим параметр t для прямой 1
+		const t1 = ((p3.x - p1.x) * d2.z - (p3.z - p1.z) * d2.x) / denom;
+
+		// Вычисляем точку пересечения
+		const intersection = new THREE.Vector3().addScaledVector(d1, t1).add(p1);
+
+		return intersection;
+	}
+  
+  
+	// определить с высокой точностью, находится ли точка на отрезке
+	isPointOnSegment2({point1, point2, targetPoint}) 
+	{
+		const A = point1; 
+		const B = point2; 
+		const P = targetPoint;
+		
+		// Допустимая погрешность
+		const epsilon = 1e-12;
+
+		// Рассчитываем векторное произведение для проверки коллинеарности
+		const crossProduct = (P.x - A.x) * (B.z - A.z) - (P.z - A.z) * (B.x - A.x);
+
+		// Проверяем, что точка на прямой (с учетом погрешности)
+		if (Math.abs(crossProduct) > epsilon) {
+			return false; // точка не на прямой
+		}
+
+		// Проверяем, что точка P лежит в пределах отрезка AB (с учетом погрешности)
+		const minX = Math.min(A.x, B.x);
+		const maxX = Math.max(A.x, B.x);
+		const minY = Math.min(A.z, B.z);
+		const maxY = Math.max(A.z, B.z);
+
+		return P.x >= minX - epsilon && P.x <= maxX + epsilon && P.z >= minY - epsilon && P.z <= maxY + epsilon;
+	}
+
+
+	// найти ближайшую точку (не проверял работоспособность) 
+	findClosestPoint({target, pointsArray}) 
+	{
+		let closestPoint = null;
+		let minDistance = Infinity;
+
+		pointsArray.forEach(point => 
+		{
+			const distance = target.distanceTo(point); // Рассчитываем расстояние
+			if (distance < minDistance) 
+			{
+				minDistance = distance;
+				closestPoint = point;
+			}
+		});
+
+		return closestPoint;
+	}	
+	
 }
 
 
