@@ -22,8 +22,8 @@ foreach ($res as $text)
 	
 	if($text['date'])
 	{
-		$dateMonth = date_parse($text['date'])['month'];
-		$data[$i]['date'] = $dateMonth;	
+		$dateMonth = date_parse($text['date']);
+		$data[$i]['date'] = $dateMonth['month'].'.'.$dateMonth['year'];	
 	}
 
 	if($text['amount'])
@@ -37,6 +37,16 @@ foreach ($res as $text)
 $data = json_encode( $data );
 
 ?>
+
+
+<div nameId="aut">
+	<div style="width: 150px; margin: 20px 20px 20px auto;">
+        <div style="display: flex; justify-content: center; align-items: center; margin: 10px;">
+          <input type="text" value="" nameId="inputValue" style="width: 300px; height: 25px; margin-right: 10px; border: 1px solid #D1D1D1; outline: none;">
+        </div>		
+	</div>
+</div>
+
 
 
 
@@ -104,7 +114,7 @@ body
 		</div>
 		
 		<div style="display: flex; margin-top: 20px;">
-			<div style="">Общая сумма:</div>
+			<div style="">Результат:</div>
 			<div nameId="valueSum" style="margin-left: 20px;"><?=$mess?></div>
 		</div>
 
@@ -266,23 +276,25 @@ class MyInitCalc
 	sum = 0;
 	
 	
-	init()
+	init({year})
 	{
 		const data = JSON.parse('<?=$data?>');
 		console.log(data);
 
-		this.calcData({data});
+		this.calcData({data, year});
 		
 		this.calcSum();
 	}
 
-	calcData({data})
+	calcData({data, year})
 	{
 		const list = [];
 
 		for ( let i = 0; i < data.length; i++ )
 		{
 			const month = data[i].date;
+			
+			if(!month.includes(year)) continue;	// поиск по году
 			
 			const index = list.findIndex((o) => o.month === month);
 			
@@ -337,36 +349,50 @@ class MyInitCalc
 	
 }
 
-const divValueSum = document.querySelector('[nameId="valueSum"]');
-const divContentList = document.querySelector('[nameId="contentList"]');
-
-const myInitCalc = new MyInitCalc();
-const myGraphPaint = new MyGraphPaint();
-
-myInitCalc.init();
-const jsonData = myInitCalc.getData();
-const fullSum = myInitCalc.getSum();
-
-myGraphPaint.draw({data: jsonData});
-
-
-divValueSum.innerText = fullSum;
-
-divContentList.innerHTML = '';
-let html = '';
-for(let i = 0; i < jsonData.length; i++)
-{
-	html += '<div style="display: flex;">';
-	html += '<div style="margin: 5px 45px 5px 0;">month: ' + jsonData[i].month + '</div>';
-	html += '<div style="margin: 5px 45px;">count: ' + jsonData[i].count + '</div>';
-	html += '<div style="margin: 5px 45px;">sum: ' + jsonData[i].sum + '</div>';
-	html += '</div>';
-}
-divContentList.innerHTML = '<div style="display: flex; flex-direction: column;">'+html+'</div>';
-console.log(divContentList);
 
 </script>
 
+<script>
+const inputValue = document.querySelector('[nameId="inputValue"]');
+
+
+inputValue.onkeydown = (e) => 
+{
+	if (e.code === 'Enter') 
+	{
+		const year = inputValue.value;
+		
+		const divValueSum = document.querySelector('[nameId="valueSum"]');
+		const divContentList = document.querySelector('[nameId="contentList"]');
+
+		const myInitCalc = new MyInitCalc();
+		const myGraphPaint = new MyGraphPaint();
+
+		myInitCalc.init({year});
+		const jsonData = myInitCalc.getData();
+		const fullSum = myInitCalc.getSum();
+
+		myGraphPaint.draw({data: jsonData});
+
+
+		divValueSum.innerText = fullSum;
+
+		divContentList.innerHTML = '';
+		let html = '';
+		for(let i = 0; i < jsonData.length; i++)
+		{
+			html += '<div style="display: flex;">';
+			html += '<div style="margin: 5px 45px 5px 0;">pos: ' + jsonData[i].month + '</div>';
+			html += '<div style="margin: 5px 45px;">count: ' + jsonData[i].count + '</div>';
+			html += '<div style="margin: 5px 45px;">sum: ' + jsonData[i].sum + '</div>';
+			html += '</div>';
+		}
+		divContentList.innerHTML = '<div style="display: flex; flex-direction: column;">'+html+'</div>';
+		console.log(divContentList);
+
+	}
+};
+</script>
 
 								
 								

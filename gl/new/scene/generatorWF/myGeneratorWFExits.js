@@ -4,10 +4,12 @@ class MyGeneratorWFExits
 {
 	lineWf = null;
 	pointsObj = [];
+	posY = 0;
 	
 	constructor()
 	{
 		this.mode = '';
+		this.posY = infProject.settings.grid.pos.y;
 		document.addEventListener('keydown', this.onKeyDown);
 	}
 
@@ -109,6 +111,7 @@ class MyGeneratorWFExits
 			const v2 = (i + 1 > v.length - 1) ? v[0] : v[i + 1];
 			
 			const pos = myMath.mathProjectPointOnLine2D({A: v1, B: v2, C: startPos});
+			pos.y = this.posY;
 			
 			const onLine = myMath.isPointOnSegment2({point1: v1, point2: v2, targetPoint: pos});
 			

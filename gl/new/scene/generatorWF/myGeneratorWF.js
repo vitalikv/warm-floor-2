@@ -4,9 +4,11 @@ class MyGeneratorWF
 {
 	contours = [];
 	dataGrid = null;
+	posY = 0;
 	
 	constructor()
 	{
+		this.posY = infProject.settings.grid.pos.y;
 		document.addEventListener('keydown', this.onKeyDown);
 	}
 
@@ -244,7 +246,7 @@ class MyGeneratorWF
 			for ( let i2 = 0; i2 < path.length; i2++ )
 			{
 				const pos = path[i2];
-				arrPos[i].push(new THREE.Vector3(pos.X / scale, 0, pos.Y / scale));				
+				arrPos[i].push(new THREE.Vector3(pos.X / scale, this.posY, pos.Y / scale));				
 			}
 		}
 		

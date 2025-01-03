@@ -2,6 +2,7 @@
 // инструмент для установки выхода труб
 class MyGeneratorWFToolP 
 {
+	posY = infProject.settings.grid.pos.y;
 	isDown = false;
 	isMove = false;
 	toolObj = null;	
@@ -165,7 +166,9 @@ class MyGeneratorWFToolP
 		{
 			const dist = v[i].distanceTo(startPos);
 			const pos = v[i].clone().sub(startPos);
-			pos.y = 0;
+			
+			pos.y = this.posY;
+			
 			const normal = pos.normalize();
 			arrP.push({pos: v[i], dist, normal});					
 		}
@@ -175,6 +178,8 @@ class MyGeneratorWFToolP
 			const pos = myMath.mathProjectPointOnLine2D({A: v[i], B: v[i + 1], C: startPos});
 			const onLine = myMath.checkPointOnLine(v[i], v[i + 1], startPos);
 			if(!onLine) continue;
+			
+			pos.y = this.posY;
 			
 			const dist = pos.distanceTo(startPos);
 			const normal = myMath.calcNormal2D({p1: v[i], p2: v[i + 1], reverse: true});
@@ -191,8 +196,8 @@ class MyGeneratorWFToolP
 			this.dirLineGeometry({pos: arrP[0].pos, normal: arrP[0].normal});
 		}
 		
-		obj.position.copy(newPos);
-
+		obj.position.copy(newPos);		
+		
 		return { newPos, dir };
 	}
 
