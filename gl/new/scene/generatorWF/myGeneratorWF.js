@@ -234,6 +234,21 @@ class MyGeneratorWF
 		const offsetted_paths = new ClipperLib.Paths();
 		co.Execute(offsetted_paths, offset * scale);
 
+		// блокирую сложные формы
+		// 1. если контру раздваевается
+		// 2. если форма изменилась при уменьшении предидущего контура (уменьшилось число точек, был 5-угольник, стал квадрат)
+		if(1===1)
+		{
+			// 1
+			if(offsetted_paths.length > 1) return forms;
+			
+			// 2
+			const forms2 = (round > 0) ? forms[round - 1][0].paths : null;
+			if(forms2 && offsetted_paths.length > 0)
+			{
+				if(offsetted_paths[0].length !== forms2.length) return forms;
+			}			
+		}
 
 		const arrPos = [];
 		

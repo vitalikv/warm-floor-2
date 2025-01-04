@@ -300,15 +300,15 @@ class MyGeneratorWFExits
 			{
 				let countDel = 0;
 				
-				if(line2[0] > line1[1])
+				if(line2[0] > line1[1] || line2[0] > line2[1] || line1[0] > line1[1])
 				{
 					countDel = ((line1[1] + v.length) - line2[0]) - 1;
-				}
+				}			
 				else
 				{
 					countDel = (line1[1] - line2[0]) - 1;
 				}
-				
+				//if(i === contours.length - 1) console.log(555, countDel, v.length, line1, line2);
 				
 				v = myMath.offsetArrayToFirstElem({arr: v, index: line2[0]});				
 				if(countDel > 0) v.splice(1, countDel);	// удаляем точки, которые находятся между нашими 2-мя точками
@@ -327,11 +327,11 @@ class MyGeneratorWFExits
 		}
 		
 		
+		// добавляем точку до следующего контура, чтобы соединить
 		for ( let i = 0; i < arrV.length; i++ )
 		{
-			const v = arrV[i];
+			const v = arrV[i];			
 			
-			// добавляем точку до следующего контура, чтобы соединить
 			// четное число 0, 2, 4 и т.д.
 			if(i % 2 === 0) {}
 			else 
@@ -352,7 +352,8 @@ class MyGeneratorWFExits
 			}			
 		}
 
-
+		
+		// добавляем точку на последнию линию, чтобы ее можно было согнуть
 		for ( let i = 0; i < arrV.length; i++ )
 		{
 			const v = arrV[i];
