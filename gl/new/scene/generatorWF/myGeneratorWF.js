@@ -254,7 +254,7 @@ class MyGeneratorWF
 						 
 		const co = new ClipperLib.ClipperOffset(2, 0.25);
 		co.AddPaths(paths, ClipperLib.JoinType.jtMiter, ClipperLib.EndType.etClosedPolygon);
-		const offsetted_paths = new ClipperLib.Paths();
+		let offsetted_paths = new ClipperLib.Paths();
 		co.Execute(offsetted_paths, offset * scale);
 
 		// блокирую сложные формы
@@ -263,7 +263,10 @@ class MyGeneratorWF
 		if(1===1)
 		{
 			// 1
-			if(offsetted_paths.length > 1) return forms;
+			if(offsetted_paths.length > 1)
+			{
+				offsetted_paths = [offsetted_paths[0]];		// решил не блокировать, а делать только один контур, если их несколько
+			}
 			
 			// 2
 			const forms2 = (round > 0) ? forms[round - 1][0].paths : null;
