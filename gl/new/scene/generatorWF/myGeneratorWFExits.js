@@ -3,8 +3,9 @@
 class MyGeneratorWFExits
 {
 	lineWf = null;
-	pointsObj = [];
 	posY = 0;
+	pointsObj = [];
+	linesObj = [];
 	
 	constructor()
 	{
@@ -308,7 +309,6 @@ class MyGeneratorWFExits
 				{
 					countDel = (line1[1] - line2[0]) - 1;
 				}
-				//if(i === contours.length - 1) console.log(555, countDel, v.length, line1, line2);
 				
 				v = myMath.offsetArrayToFirstElem({arr: v, index: line2[0]});				
 				if(countDel > 0) v.splice(1, countDel);	// удаляем точки, которые находятся между нашими 2-мя точками
@@ -372,30 +372,215 @@ class MyGeneratorWFExits
 
 				const pos = v4.clone().sub(v3).divideScalar(2).add(v3);
 
+				//const rad = v3.clone().sub(pos).normalize().dot(pos.clone().sub(v4).normalize());
+				//console.log(rad, v3.clone().sub(pos).normalize(), v4.clone().sub(pos).normalize());
+				
 				//const p4 = this.crHelpBox({pos, color: 0xff8f0f});
 				//this.pointsObj.push(p4);
-
+			
 				v.splice(v.length - 1, 0, pos);
 			}				
 		}
+		
+		if(this.mode === '')
+		{
+			const r1 = this.findLinesCross({arrN: arrV[arrV.length - 2], arrV1: arrV[arrV.length - 2], arrV3: arrV[arrV.length - 2 + 1], t: 1});
+			const r2 = this.findLinesCross({arrN: arrV[arrV.length - 3], arrV1: arrV[arrV.length - 2], arrV3: arrV[arrV.length - 2 + 1], t: 2});
+			if(r1 && r2)
+			{
+				r1.arrV1.pop();
+				r2.arrV1.pop();
 				
+				r1.arrV3.push(r1.pos);
+				r2.arrV3.unshift(r2.pos);			
+				
+				const v1 = arrV[arrV.length - 2];
+				const v2 = arrV[arrV.length - 3];
+				v2.push(v1[v1.length - 1].clone());
+				
+				const v = arrV[arrV.length - 2];
+				
+				const line1 = this.getPointOnLine({pos: r1.pos, v});
+				const line2 = this.getPointOnLine({pos: r2.pos, v});
 
-		for ( let i = 0; i < arrV.length; i++ )
+				
+				const limit1 = line1[1];
+				const newV1 = [];				
+				for ( let i = 0; i < limit1; i++ )
+				{
+					newV1.push(v[i]);
+				}
+				newV1.push(r1.pos);
+				
+				const limit2 = line2[1];
+				const newV2 = [];
+				newV2.push(r2.pos);				
+				for ( let i = limit2; i < v.length; i++ )
+				{
+					newV2.push(v[i]);
+				}								
+				
+				arrV[arrV.length - 2] = newV1;
+				
+				arrV.splice(arrV.length - 2, 0, newV2);
+			}			
+		}
+
+		for ( let i = 0; i < contours.length; i++ )
 		{
 			const line = contours[i].line;
-			
-			const geometry = new THREE.Geometry();
-			geometry.vertices = arrV[i];
-			//geometry.verticesNeedUpdate = true;
-			
-			
+			scene.remove(line);
 			line.geometry.dispose();
-			line.geometry = geometry;			
 		}
 		
+
+		const gV = this.sborkaLine({arrV});
+		
+		const geometry = new THREE.Geometry();
+		geometry.vertices = gV;
+		const line = new THREE.Line( geometry, new THREE.MeshLambertMaterial({color: 0x0000ff, lightMap: lightMap_1}) );	
+		scene.add( line );
+		//console.log(geometry.vertices);
+		this.linesObj.push(line);		
 	}
+	
+	
+	findLinesCross({arrN, arrV1, arrV3, t})
+	{
+		let result = null;
+		
+		const v = arrN;
+		
+		const v1 = v[v.length - 1];
+		const v2 = v[v.length - 2];
+				
+		
+		const arrP = [];
+		
+		for ( let i = 0; i < arrV1.length - 1; i++ )
+		{
+			const v3 = arrV1[i];
+			const v4 = arrV1[i + 1];	
+
+			if(v1.x === v3.x && v1.z === v3.z) continue;
+			if(v2.x === v4.x && v2.z === v4.z) continue;
+			
+			
+			const cross = myMath.checkCrossLine(v1, v2, v3, v4);
+			if(!cross) continue;
+			
+			const pos = myMath.getIntersection(v1, v2, v3, v4);
+			if(!pos) continue;
+
+			const dot = v1.clone().sub(v2).dot(v1.clone().sub(pos));				
+			//if(dot < 0) continue; // если точка находится сзади, то не включем в рассчет
 
 
+			const onLine = myMath.isPointOnSegment2({point1: v3, point2: v4, targetPoint: pos});
+
+			if(1===1)
+			{				
+				const dist = pos.distanceTo(v1);
+				
+				arrP.push({dist, pos});					
+				
+				if(t === 22)
+				{
+					const geometry1 = new THREE.Geometry();
+					geometry1.vertices = [v1, v2];
+					const line1 = new THREE.Line( geometry1, new THREE.MeshLambertMaterial({color: 0x00ff00, lightMap: lightMap_1}) );	
+					scene.add( line1 );
+					this.linesObj.push(line1);					
+					
+					const geometry = new THREE.Geometry();
+					geometry.vertices = [v3, v4];
+					const line = new THREE.Line( geometry, new THREE.MeshLambertMaterial({color: 0x000000, lightMap: lightMap_1}) );	
+					scene.add( line );
+					this.linesObj.push(line);
+					
+											
+				}				
+			}			
+		}
+		
+		if(arrP.length > 0)
+		{
+			arrP.sort((a, b) => { return a.dist - b.dist; }); 
+			const pos = arrP[0].pos;
+
+
+			const p4 = this.crHelpBox({pos, color: 0xff8f0f});
+			this.pointsObj.push(p4);
+					
+			result = { pos, t, arrV1: arrN, arrV3 };
+		}
+
+		return result;
+	}
+	
+	
+	// собираем контуры в одну линию (т.к. до это каждый контур это отдельная линия)
+	// находим конец и начало разных контуров и определяем соединены они или нет
+	// если соединены, значит добавляем в общий массив точек
+	sborkaLine({arrV})
+	{
+		//if(arrV.length === 0) return;
+		
+		const arrPos = [];
+
+		const findPos = ({v, startPos}) => 
+		{
+			let result = null;
+			
+			const startP = v[0];
+			const endP = v[v.length - 1];
+			
+			if(startP.x === startPos.x && startP.z === startPos.z)
+			{
+				result = { pos: endP, reverse: false };
+			}
+			else if(endP.x === startPos.x && endP.z === startPos.z)
+			{
+				result = { pos: startP, reverse: true };
+			}
+			
+			return result;
+		}
+		
+		let startPos = arrV[0][arrV[0].length - 1];
+		arrPos.push(...arrV[0]);
+		
+		// сначала идем от внешних к контуров к центру
+		for ( let i = 0; i < arrV.length - 1; i++ )
+		{
+			const result = findPos({v: arrV[i + 1], startPos});
+			
+			if(result)
+			{
+				const v = [...arrV[i + 1]];
+				if(result.reverse) v.reverse()
+				arrPos.push(...v);
+				startPos = result.pos;
+			}
+		}
+		
+		// затем от центра к внешним контурам
+		for ( let i = arrV.length - 1; i >= 1; i-- )
+		{
+			const result = findPos({v: arrV[i - 1], startPos});
+			
+			if(result)
+			{
+				const v = [...arrV[i - 1]];
+				if(result.reverse) v.reverse()
+				arrPos.push(...v);
+				startPos = result.pos;
+			}
+		}
+		
+		return arrPos;
+	}
+	
 
 	crHelpBox({pos, size = 0.04, color = 0x0000ff})
 	{
@@ -416,9 +601,19 @@ class MyGeneratorWFExits
 		for ( let i = 0; i < points.length; i++ )
 		{
 			scene.remove(points[i]);
+			points[i].geometry.dispose();
 		}
 		
+		const lines = this.linesObj;
+		
+		for ( let i = 0; i < lines.length; i++ )
+		{
+			scene.remove(lines[i]);
+			lines[i].geometry.dispose();
+		}		
+		
 		this.pointsObj = [];
+		this.linesObj = [];
 	}
 	
 	

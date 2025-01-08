@@ -66,7 +66,7 @@ class MyGeneratorWF
 
 		// если на прошлом шаге контур разделился на два и мы его объединили в один, 
 		// то проверяем чтобы предидущий контур не пересекался с разделенным и при необходимости смещаем
-		myGeneratorWFOffsetStep.upContours({forms, contours});
+		//myGeneratorWFOffsetStep.upContours({forms, contours});
 		
 
 		// рисуем линии контуров
@@ -97,7 +97,7 @@ class MyGeneratorWF
 	
 	
 	// создаем трубы 
-	crTubeGeneratorWF({type = 'default'})
+	crTubeGeneratorWF({type = 'new'})
 	{
 		const contours = this.contours;
 		
@@ -214,6 +214,29 @@ class MyGeneratorWF
 				tube.userData.wf_tube.color = new THREE.Color(line.userData.wf_line.color);
 			}					
 		}		
+
+
+		if(type === 'new')
+		{
+			const v = contours[0].line.geometry.vertices;
+			const p1 = [];
+			
+			for ( let i2 = 0; i2 < v.length; i2++ )
+			{
+				p1[p1.length] = createPointWF({pos: v[i2]});
+			}							
+			
+			const line = createLineWF({point: p1, diameter: infProject.settings.wf_tube.d}); 
+			
+			geometryTubeWF({line, createLine: true});
+			
+			if(line.userData.wf_line.tube)
+			{	
+				const tube = line.userData.wf_line.tube;
+				tube.userData.wf_tube.color = new THREE.Color(line.userData.wf_line.color);
+			}					
+		}		
+		
 	}
 	
 	// на вход контур сетки
@@ -246,7 +269,7 @@ class MyGeneratorWF
 			const forms2 = (round > 0) ? forms[round - 1][0].paths : null;
 			if(forms2 && offsetted_paths.length > 0)
 			{
-				if(offsetted_paths[0].length !== forms2.length) return forms;
+				//if(offsetted_paths[0].length !== forms2.length) return forms;
 			}			
 		}
 
