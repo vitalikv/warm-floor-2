@@ -24,6 +24,8 @@ class MyGridsSaveLoad
 		myGrids.dataGrids = [];
 		
 		myUiGridUserPanel.hideGridPanel();
+		
+		myGridSprite.hide();
 	}
 	
 	saveGrids()

@@ -54,6 +54,8 @@ class MyGridPointMove
 
 		myGrids.upGeometryLine({point: obj});
 		
+		myGridSprite.upGridSprites();
+		
 		// обновление обрешетки
 		myGridMesh.upGridMeshFromPoint({point: obj, upCross: false});
 	}

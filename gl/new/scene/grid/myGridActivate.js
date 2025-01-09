@@ -35,6 +35,8 @@ class MyGridActivate
 		myUiGridUserPanel.btnToggleLink({setAct: (modeLink) ? 1 : 0});		
 		myUiGridUserPanel.showGridPanel();
 		
+		myGridSprite.show({points});
+		
 		this.actDataGrid = dataGrid;
 	}
 	
@@ -67,6 +69,8 @@ class MyGridActivate
 		myUiGridUserPanel.btnToggleLink({setAct: (modeLink) ? 1 : 0});			
 		myUiGridUserPanel.showGridPanel();
 		
+		myGridSprite.show({points});
+		
 		this.actDataGrid = dataGrid;
 	}
 
@@ -91,7 +95,9 @@ class MyGridActivate
 		
 		myUiGridUserPanel.btnToggleOffset({setAct: 0});
 		myUiGridUserPanel.btnToggleLink({setAct: 0});
-		myUiGridUserPanel.hideGridPanel();		
+		myUiGridUserPanel.hideGridPanel();	
+
+		myGridSprite.hide();
 	}
 	
 	
@@ -121,6 +127,8 @@ class MyGridActivate
 		myUiGridUserPanel.btnToggleOffset({setAct: 0});
 		myUiGridUserPanel.btnToggleLink({setAct: 0});
 		myUiGridUserPanel.hideGridPanel();
+		
+		myGridSprite.hide(); 
 	}	
 
 

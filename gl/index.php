@@ -103,6 +103,7 @@
 	<script src="<?=$path?>new/scene/grid/myGridMesh.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridMeshOffset.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridActivate.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/grid/myGridSprite.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridsSaveLoad.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNotes.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNoteRuler.js?<?=$vrs?>"></script>

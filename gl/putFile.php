@@ -51,6 +51,7 @@ new/scene/grid/myGridPointTool.js
 new/scene/grid/myGridMesh.js
 new/scene/grid/myGridMeshOffset.js
 new/scene/grid/myGridActivate.js
+new/scene/grid/myGridSprite.js
 new/scene/grid/myGridsSaveLoad.js
 new/scene/notes/myNotes.js
 new/scene/notes/myNoteRuler.js

@@ -1743,6 +1743,7 @@ let myGridPointTool;
 let myGridMesh;
 let myGridMeshOffset;
 let myGridActivate;
+let myGridSprite;
 let myGridsSaveLoad;
 let myNotes;
 let myNoteRuler;
@@ -1781,6 +1782,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myGridMesh = new MyGridMesh();
 	myGridMeshOffset = new MyGridMeshOffset();
 	myGridActivate = new MyGridActivate();
+	myGridSprite = new MyGridSprite();
 	myGridsSaveLoad = new MyGridsSaveLoad();
 	
 	myNotes = new MyNotes();

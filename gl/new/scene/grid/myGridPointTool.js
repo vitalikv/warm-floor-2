@@ -42,6 +42,10 @@ class MyGridPointTool
 	clickRight()
 	{
 		this.deleteToolContour();
+		
+		myGridSprite.hide();
+		
+		this.render();
 	}	
 
 
@@ -56,7 +60,9 @@ class MyGridPointTool
 		// последнию точку замкнули на первой
 		if(joint) 
 		{
-			let stop = false;				
+			let stop = false;
+			
+			myGridSprite.hide();
 			
 			// контур из одной точки нельзя построить, поэтому удаляем
 			if(this.arrPoints.length === 2)
@@ -85,7 +91,10 @@ class MyGridPointTool
 			obj.userData.tag = 'gridPointToolWf';
 			
 			this.arrPoints.push(obj);		
-			if(this.arrPoints.length > 1) myGrids.crLine({points: [...this.arrPoints]});				
+			if(this.arrPoints.length > 1) myGrids.crLine({points: [...this.arrPoints]});
+
+			myGridSprite.hide();
+			myGridSprite.show({points: this.arrPoints, loop: false});
 		}
 
 		
@@ -134,6 +143,8 @@ class MyGridPointTool
 		}
 
 		myGrids.upGeometryLine({point: obj});
+		
+		myGridSprite.upGridSprites();
 	}
 	
 	mouseup = () =>
