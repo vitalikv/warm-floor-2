@@ -31,7 +31,7 @@
 	<script src="<?=$path?>js/OBJLoader.js"></script>
 	<script src="<?=$path?>js/MTLLoader.js"></script>   
 	
-	<script src="<?=$path?>js/clipper_unminified.js"></script>
+	<script src="<?=$path?>js/clipUdf.js"></script>
 	<script src="<?=$path?>js/loader/inflate.min.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>js/loader/FBXLoader.js?<?=$vrs?>"></script>
 	
