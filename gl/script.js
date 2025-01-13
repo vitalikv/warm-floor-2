@@ -1737,6 +1737,8 @@ let myUiRightPanel;
 let myUiGridUserPanel;
 let myUiGeneratorWFPanel;
 let myMath;
+let myFloorActivate;
+let myFloorOutline;
 let myGrids;
 let myGridPointMove;
 let myGridPointTool;
@@ -1776,6 +1778,10 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myUiGeneratorWFPanel = new MyUiGeneratorWFPanel();
 	
 	myMath = new MyMath();
+	
+	myFloorActivate = new MyFloorActivate();
+	myFloorOutline = new MyFloorOutline();
+	
 	myGrids = new MyGrids();
 	myGridPointMove = new MyGridPointMove();
 	myGridPointTool = new MyGridPointTool();
@@ -1822,7 +1828,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	
-	loadFile({local: true, urlLocal: 'fileJson-2.json'});	
+	loadFile({local: true, urlLocal: 'fileJson.json'});	
 });
 
 

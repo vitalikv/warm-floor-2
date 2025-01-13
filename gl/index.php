@@ -84,6 +84,7 @@
     <script src="<?=$path?>label.js?<?=$vrs?>"></script>  	
 	<script src="<?=$path?>clickActiveObj.js?<?=$vrs?>"></script>    
     <script src="<?=$path?>saveLoad.js?<?=$vrs?>"></script>
+
 	
 	<script src="<?=$path?>new/ui/mainMenu/myUiMainMenu.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/mainMenu/myUiPanelRegister.js?<?=$vrs?>"></script>
@@ -97,6 +98,8 @@
 	<script src="<?=$path?>new/ui/leftPanel/myUiGridUserPanel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/leftPanel/myUiGeneratorWFPanel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/core/myMath.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/house/floor/myFloorActivate.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/house/floor/myFloorOutline.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGrids.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridPointMove.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridPointTool.js?<?=$vrs?>"></script>

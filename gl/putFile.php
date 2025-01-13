@@ -45,6 +45,8 @@ new/ui/leftPanel/myUiGridGlobalPanel.js
 new/ui/leftPanel/myUiGridUserPanel.js
 new/ui/leftPanel/myUiGeneratorWFPanel.js
 new/scene/core/myMath.js
+new/scene/house/floor/myFloorActivate.js
+new/scene/house/floor/myFloorOutline.js
 new/scene/grid/myGrids.js
 new/scene/grid/myGridPointMove.js
 new/scene/grid/myGridPointTool.js

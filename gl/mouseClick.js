@@ -260,7 +260,7 @@ function clickRayHit(event)
 	}
 	
 
-	// ищем контур
+	// ищем контур сетки
 	if(!rayhit) 
 	{
 		const dataGrid = myGrids.mouseDetectContour({event, click: true});
@@ -271,6 +271,19 @@ function clickRayHit(event)
 			return rayhit;
 		}
 	}	
+
+	
+	// ищем пол
+	if(!infProject.scene.block.click.room && !rayhit) 
+	{
+		// проверяем чтобы не кликнули на стены, т.к. часть пола располагается под стенами
+		var ray = rayIntersect( event, infProject.scene.array.wall, 'arr' );	
+		if(ray.length === 0)
+		{
+			var ray = rayIntersect( event, infProject.scene.array.room , 'arr' );
+			if(ray.length > 0) { rayhit = ray[0]; }						
+		}		
+	}
 	
 	
 	return rayhit;
@@ -299,6 +312,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'wf_line' ) {  }
 		else if( tag == 'window' ) { clickWD( rayhit ); }
 		else if( tag == 'door' ) { clickWD( rayhit ); }
+		else if( tag == 'room' ) { /* myFloorActivate.clickFloor({obj}); */ }
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
 		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj, rayhit ); }

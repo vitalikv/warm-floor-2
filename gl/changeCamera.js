@@ -263,8 +263,7 @@ function blockActiveObj(cdm)
 	infProject.scene.block.click.door = visible_1;
 	infProject.scene.block.hover.door = visible_1;
 
-	infProject.scene.block.click.room = visible_1;
-	infProject.scene.block.hover.room = visible_1;
+	infProject.scene.block.click.room = visible_2;
 
 	infProject.scene.block.click.controll_wd = visible_1;
 	infProject.scene.block.hover.controll_wd = visible_1;	

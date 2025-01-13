@@ -125,7 +125,8 @@ function objActiveColor_2D(obj)
 	if(tag == 'window'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }
 	else if(tag == 'point'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }	
 	else if(tag == 'wall'){ obj.material[3].color = new THREE.Color(infProject.listColor.active2D); } 	
-	else if(tag == 'door'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }	
+	else if(tag == 'door'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }
+	else if(tag == 'room'){ myFloorActivate.clickFloor({obj}); }
 	else if(tag == 'wf_point'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }
 	else if(tag == 'wf_line')
 	{ 
@@ -159,7 +160,8 @@ function objDeActiveColor_2D()
 	else if(o.userData.tag == 'point'){ o.material.color = o.userData.point.color; }	
 	else if(o.userData.tag == 'window'){ o.material.color = new THREE.Color(infProject.listColor.window2D); }
 	else if(o.userData.tag == 'door'){ o.material.color = new THREE.Color(infProject.listColor.door2D); }	
-	else if(o.userData.tag == 'room'){ scene.remove(o.userData.room.outline); o.userData.room.outline = null; } 
+	//else if(o.userData.tag == 'room'){ scene.remove(o.userData.room.outline); o.userData.room.outline = null; }
+	else if(o.userData.tag == 'room'){ myFloorOutline.deleteOutline(); }
 	else if(o.userData.tag == 'wf_point'){ o.material.color = o.userData.wf_point.color; }
 	else if(o.userData.tag == 'wf_line')
 	{ 
