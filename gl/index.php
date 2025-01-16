@@ -97,6 +97,7 @@
 	<script src="<?=$path?>new/ui/leftPanel/myUiGridGlobalPanel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/leftPanel/myUiGridUserPanel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/ui/leftPanel/myUiGeneratorWFPanel.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/ui/bottomPanel/myUiPanelFloor.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/core/myMath.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/house/floor/myFloorActivate.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/house/floor/myFloorOutline.js?<?=$vrs?>"></script>

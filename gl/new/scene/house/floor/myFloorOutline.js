@@ -3,6 +3,7 @@
 class MyFloorOutline 
 {
 	outline = null;
+
 	
 	crFloorOutline({obj})
 	{			
@@ -36,7 +37,7 @@ class MyFloorOutline
 				p2 = wall.localToWorld( v[6].clone() );			
 			}	
 			
-			arrP.push(p1);
+			(arrS[i] === 0) ? arrP.push(p1) : arrP.push(p2);
 			
 			const geometry = this.createGeometryLine(x, 0.02, 0.02); 
 			const line = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial({ color: 'rgb(17, 255, 0)', depthTest: false, transparent: true }) );
@@ -121,6 +122,12 @@ class MyFloorOutline
 		return geometry;
 	}
 	
+
+	getOutline()
+	{
+		return this.outline;
+	}
+
 	
 	deleteOutline()
 	{

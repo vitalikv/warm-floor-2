@@ -44,6 +44,7 @@ new/ui/rightPanel/myUiRightPanel.js
 new/ui/leftPanel/myUiGridGlobalPanel.js
 new/ui/leftPanel/myUiGridUserPanel.js
 new/ui/leftPanel/myUiGeneratorWFPanel.js
+new/ui/bottomPanel/myUiPanelFloor.js
 new/scene/core/myMath.js
 new/scene/house/floor/myFloorActivate.js
 new/scene/house/floor/myFloorOutline.js

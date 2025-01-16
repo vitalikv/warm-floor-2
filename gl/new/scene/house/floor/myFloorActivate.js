@@ -6,10 +6,19 @@ class MyFloorActivate
 	// кликнули на пол
 	clickFloor({obj})
 	{
-
-
 		myFloorOutline.deleteOutline();
-		const outline = myFloorOutline.crFloorOutline({obj});
+		myFloorOutline.crFloorOutline({obj});
+		
+		//this.crGridAuto();	
+	}	
+
+	
+	crGridAuto()
+	{
+		const outline = myFloorOutline.getOutline();
+		if(!outline) return;
+		
+		myFloorOutline.deleteOutline();
 		
 		const arrP = outline.userData.arrP;
 		const points = [];
@@ -25,10 +34,8 @@ class MyFloorActivate
 		myGrids.crLine({points});
 		myGrids.upGeometryLine({point: points[0]});
 		
-		myGrids.crGrid({points}); 			
-	}	
-
-
+		myGrids.crGrid({points}); 		
+	}
 	
 	render()
 	{

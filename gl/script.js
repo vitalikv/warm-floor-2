@@ -1736,6 +1736,7 @@ let myUiInfoModalWindGrid;
 let myUiRightPanel;
 let myUiGridUserPanel;
 let myUiGeneratorWFPanel;
+let myUiPanelFloor;
 let myMath;
 let myFloorActivate;
 let myFloorOutline;
@@ -1776,6 +1777,8 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myUiGridGlobalPanel.init();
 	myUiGridUserPanel = new MyUiGridUserPanel();
 	myUiGeneratorWFPanel = new MyUiGeneratorWFPanel();
+	
+	myUiPanelFloor = new MyUiPanelFloor();
 	
 	myMath = new MyMath();
 	
