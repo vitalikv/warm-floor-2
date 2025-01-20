@@ -101,7 +101,7 @@ class MyUiGeneratorWFPanel
 		{ 
 			this.hideGeneratorWFPanel();
 			myUiGridUserPanel.divPanel.style.display = '';
-			myGeneratorWF.crTubeGeneratorWF({});
+			myGeneratorWF.crTubeGeneratorWF();
 		}		
 		
 		const btn2 = this.divPanel.querySelector('[nameId="btnCancelWF"]');

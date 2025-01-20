@@ -17,21 +17,44 @@ class MyGeneratorWFToolP
 	
 	init()
 	{
-		this.toolObj = this.crPoint({pos: new THREE.Vector3()});
+		this.toolObj = this.crTool();
 		
 		this.dirLine = this.crDirLine();
 	}
 	
-	crPoint({pos})
+	
+	crTool()
 	{
-		const geometry = new THREE.SphereGeometry( 0.1, 16, 16 );
-		const material = new THREE.MeshStandardMaterial({ color: 0xff0000, lightMap: lightMap_1 });		
-		const obj = new THREE.Mesh( geometry, material ); 
-
+		const arrP = [];
+		arrP.push(new THREE.Vector2(0, 0));
+		arrP.push(new THREE.Vector2(-0.5, 0.5));
+		arrP.push(new THREE.Vector2(-0.3, 0.5));
+		arrP.push(new THREE.Vector2(-0.3, 1.5));
+		
+		arrP.push(new THREE.Vector2(0.3, 1.5));
+		arrP.push(new THREE.Vector2(0.3, 0.5));
+		arrP.push(new THREE.Vector2(0.5, 0.5));
+		
+		for ( let i = 0; i < arrP.length; i++ ) 
+		{  
+			arrP[i].x /= 4;	
+			arrP[i].y /= 4;			
+		}	 
+		
+		const shape = new THREE.Shape( arrP );
+		//const geometry = new THREE.ShapeGeometry( shape );
+		const geometry = new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, amount: 0.01 } );
+		geometry.rotateX(-Math.PI / 2);
+		
+		const material = new THREE.MeshLambertMaterial({ color: 'rgb(17, 255, 0)', lightMap: lightMap_1, depthTest: false, transparent: true });
+		
+		const obj = new THREE.Mesh(geometry, material); 
 		obj.userData.tag = 'arrowContourWf';
-		obj.position.copy(pos);		
-		scene.add( obj );
+		obj.position.set( 0, infProject.settings.floor.posY, 0 );
+		obj.visible = false;
 
+		scene.add(obj);
+		
 		return obj;
 	}
 	
@@ -42,9 +65,10 @@ class MyGeneratorWFToolP
 		const geometry = new THREE.Geometry();
 		geometry.vertices = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)];
 		
-		const material = new THREE.LineBasicMaterial({ color: 0x222222 });
+		const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
 		
 		const line = new THREE.Line( geometry, material );
+		line.visible = false;
 		scene.add(line);
 		
 		return line;
@@ -192,6 +216,9 @@ class MyGeneratorWFToolP
 			obj.position.copy(arrP[0].pos);
 			newPos = arrP[0].pos.clone();
 			dir = arrP[0].normal;
+
+			const angle = Math.atan2(dir.x, dir.z);
+			obj.rotation.set(0, angle, 0);
 			
 			this.dirLineGeometry({pos: arrP[0].pos, normal: arrP[0].normal});
 		}
@@ -200,6 +227,19 @@ class MyGeneratorWFToolP
 		
 		return { newPos, dir };
 	}
+	
+	
+	showToolP()
+	{
+		this.toolObj.visible = true;		
+		this.dirLine.visible = true;		
+	}
+	
+	hideToolP()
+	{
+		this.toolObj.visible = false;		
+		this.dirLine.visible = false;		
+	}	
 
 
 	clearPoint()

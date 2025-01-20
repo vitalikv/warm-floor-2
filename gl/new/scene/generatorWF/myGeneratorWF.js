@@ -21,7 +21,7 @@ class MyGeneratorWF
 		
 		if (event.code === 'KeyT')
 		{
-			this.crTubeGeneratorWF({});
+			this.crTubeGeneratorWF();
 			this.render();
 		}
 	};
@@ -87,6 +87,7 @@ class MyGeneratorWF
 		const n = 1;
 		const startPos = p[0].clone().sub(p[n + 0]).divideScalar( 2 ).add(p[n + 0]);
 		const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos, actDataGrid: dataGrid, contours, sizeCell});
+		myGeneratorWFToolP.showToolP();
 		
 		// создаем выходы у труб для тепл.пола для каждего шага
 		myGeneratorWFExits.crExits({newPos: newPos.clone(), contours: this.contours, sizeCell});
@@ -95,149 +96,6 @@ class MyGeneratorWF
 		this.render();		
 	}
 	
-	
-	// создаем трубы 
-	crTubeGeneratorWF({type = 'new'})
-	{
-		const contours = this.contours;
-		
-		if(contours.length === 0) return;
-		
-
-		if(type === '0' || type === '01')
-		{
-			const p = [];
-			
-			for ( let i = 0; i < contours.length; i++ )
-			{
-				const v = contours[i].line.geometry.vertices;
-				
-				if(i % 2 === 0)
-				{
-					for ( let i2 = 0; i2 < v.length; i2++ )
-					{
-						if(i !== 0 && i2 === 0) continue;
-						p[p.length] = createPointWF({pos: v[i2]});
-					}							
-				}
-			}			
-
-			const line = createLineWF({point: p, diameter: infProject.settings.wf_tube.d, color: new THREE.Color(0xff0000)}); 
-			
-			geometryTubeWF({line, createLine: true});
-			
-			if(line.userData.wf_line.tube)
-			{	
-				const tube = line.userData.wf_line.tube;
-				tube.userData.wf_tube.color = new THREE.Color(line.userData.wf_line.color);
-			}					
-		}
-		
-		
-		if(type === '1' || type === '01')
-		{
-			const p = [];
-			
-			for ( let i = 0; i < contours.length; i++ )
-			{
-				const v = contours[i].line.geometry.vertices;
-				
-				if(i % 2 !== 0)
-				{
-					for ( let i2 = 0; i2 < v.length; i2++ )
-					{
-						if(i !== 1 && i2 === 0) continue;
-						if(i + 1 >= contours.length && i2 === v.length - 1) continue;
-						
-						p[p.length] = createPointWF({pos: v[i2]});
-					}							
-				}
-			}			
-
-			const line = createLineWF({point: p, diameter: infProject.settings.wf_tube.d}); 
-			
-			geometryTubeWF({line, createLine: true});
-			
-			if(line.userData.wf_line.tube)
-			{	
-				const tube = line.userData.wf_line.tube;
-				tube.userData.wf_tube.color = new THREE.Color(line.userData.wf_line.color);
-			}					
-		}
-		
-		
-		if(type === 'default')
-		{
-			const p1 = [];
-			
-			for ( let i = 0; i < contours.length; i++ )
-			{
-				const v = contours[i].line.geometry.vertices;
-				
-				if(i % 2 === 0)
-				{
-					for ( let i2 = 0; i2 < v.length; i2++ )
-					{
-						if(i !== 0 && i2 === 0) continue;
-						p1[p1.length] = createPointWF({pos: v[i2]});
-					}							
-				}
-			}
-
-			const p2 = [];
-			
-			for ( let i = 0; i < contours.length; i++ )
-			{
-				const v = contours[i].line.geometry.vertices;
-				
-				if(i % 2 !== 0)
-				{
-					for ( let i2 = 0; i2 < v.length; i2++ )
-					{
-						if(i !== 1 && i2 === 0) continue;
-						if(i + 1 >= contours.length && i2 === v.length - 1) continue;
-						
-						p2[p2.length] = createPointWF({pos: v[i2]});
-					}							
-				}
-			}
-			
-			p2.reverse();
-			
-			const line = createLineWF({point: [...p1, ...p2], diameter: infProject.settings.wf_tube.d}); 
-			
-			geometryTubeWF({line, createLine: true});
-			
-			if(line.userData.wf_line.tube)
-			{	
-				const tube = line.userData.wf_line.tube;
-				tube.userData.wf_tube.color = new THREE.Color(line.userData.wf_line.color);
-			}					
-		}		
-
-
-		if(type === 'new')
-		{
-			const v = contours[0].line.geometry.vertices;
-			const p1 = [];
-			
-			for ( let i2 = 0; i2 < v.length; i2++ )
-			{
-				p1[p1.length] = createPointWF({pos: v[i2]});
-			}							
-			
-			const line = createLineWF({point: p1, diameter: infProject.settings.wf_tube.d}); 
-			
-			geometryTubeWF({line, createLine: true});
-			
-			if(line.userData.wf_line.tube)
-			{	
-				const tube = line.userData.wf_line.tube;
-				tube.userData.wf_tube.color = new THREE.Color(line.userData.wf_line.color);
-			}					
-		}		
-		
-	}
 	
 	// на вход контур сетки
 	calc({forms, points, offset = -0.2, round = 0})
@@ -324,6 +182,33 @@ class MyGeneratorWF
 	}
 	
 
+	// создаем трубы 
+	crTubeGeneratorWF()
+	{
+		const contours = this.contours;		
+		if(contours.length === 0) return;
+		
+
+		const v = contours[0].line.geometry.vertices;
+		const point = [];
+		
+		for ( let i = 0; i < v.length; i++ )
+		{
+			point[point.length] = createPointWF({pos: v[i]});
+		}							
+		
+		const line = createLineWF({point, diameter: infProject.settings.wf_tube.d}); 
+		
+		geometryTubeWF({line, createLine: true});
+		
+		if(line.userData.wf_line.tube)
+		{	
+			const tube = line.userData.wf_line.tube;
+			tube.userData.wf_tube.color = new THREE.Color(line.userData.wf_line.color);
+		}									
+	}
+	
+	
 	clearFormsGeneratorWF()
 	{
 		for ( let i = 0; i < this.contours.length; i++ )
@@ -337,6 +222,8 @@ class MyGeneratorWF
 		this.contours = [];
 		
 		this.dataGrid = null;
+		
+		myGeneratorWFToolP.hideToolP();
 	}
 	
 	render()

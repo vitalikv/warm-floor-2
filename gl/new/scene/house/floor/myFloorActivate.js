@@ -9,16 +9,20 @@ class MyFloorActivate
 		myFloorOutline.deleteOutline();
 		myFloorOutline.crFloorOutline({obj});
 		
+		myUiPanelFloor.showPanel();
+		
 		//this.crGridAuto();	
 	}	
 
 	
+	// создаем по выделеному полу сетку
 	crGridAuto()
 	{
 		const outline = myFloorOutline.getOutline();
 		if(!outline) return;
 		
 		myFloorOutline.deleteOutline();
+		myUiPanelFloor.hidePanel();
 		
 		const arrP = outline.userData.arrP;
 		const points = [];
