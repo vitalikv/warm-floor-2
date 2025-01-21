@@ -17,7 +17,12 @@ class MyGeneratorWF
 		if (event.code === 'KeyM') 
 		{
 			this.initUlitka();
-		}		
+		}
+
+		if (event.code === 'KeyZ') 
+		{
+			this.initZmyka();
+		}			
 		
 		if (event.code === 'KeyT')
 		{
@@ -45,6 +50,24 @@ class MyGeneratorWF
 	}
 	
 	
+	initZmyka()
+	{
+		this.clearFormsGeneratorWF();
+		
+		if(!myGridActivate.actDataGrid) return;
+		
+		const dataGrid = myGridActivate.actDataGrid;
+		this.dataGrid = dataGrid;
+		deActiveSelected();
+		
+		myGeneratorWFZmyka.crZmyka({dataGrid});
+		
+		myUiGeneratorWFPanel.showGeneratorWFPanel();
+
+		setLastSelectObj({obj: myGeneratorWFToolP.toolObj});
+	}	
+	
+	
 	// создаем улитку
 	crUlitka({dataGrid})
 	{
@@ -59,7 +82,7 @@ class MyGeneratorWF
 		const sizeCell = dataGrid.grille.sizeCell;
 		
 		// расчитываем контуры
-		const forms = myGeneratorWF.calc({forms: [], points: p, offset: sizeCell * -1});
+		const forms = this.calc({forms: [], points: p, offset: sizeCell * -1});
 
 		// объединяем контуры одного уровня в единые контур
 		const contours = myGeneratorWFJoinForms.jointCirclesForm({forms});

@@ -147,7 +147,8 @@ class MyGeneratorWFToolP
 		// точки выхода и разрыв линий контуров
 		if(this.contours && this.sizeCell)
 		{
-			myGeneratorWFExits.crExits({newPos: newPos.clone(), dir, contours: this.contours, sizeCell: this.sizeCell});	
+			//myGeneratorWFExits.crExits({newPos: newPos.clone(), dir, contours: this.contours, sizeCell: this.sizeCell});
+			myGeneratorWFZmyka.detectCrossLines({startPos: newPos.clone(), dir, contours: this.contours});			
 		}		
 	}
 	

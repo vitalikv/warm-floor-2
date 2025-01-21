@@ -9,6 +9,21 @@ class MyMath
 		return new THREE.Vector3().addScaledVector( dir, num );
 	}
 	
+	// округление числа
+	numberRound({value, step = 100, type = 'round'})
+	{
+		if(type === 'round')
+		{
+			value = Math.round(value * step)/step;
+		}
+		else
+		{
+			value = Math.floor(value * step)/step;
+		}
+		
+		return value;
+	}
+	
 	
 	// сдвиг всего массива, так чтобы выбранный index оказался самым первым 
 	// пример: myMath.offsetArrayToFirstElem({arr: [1,2,3,45,8,9,7,10], index: 5})

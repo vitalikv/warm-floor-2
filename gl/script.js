@@ -1755,6 +1755,7 @@ let myNoteRoulette;
 let myNoteRouletteTool;
 let myNotesSaveLoad;
 let myGeneratorWF;
+let myGeneratorWFZmyka;
 let myGeneratorWFToolP;
 let myGeneratorWFJoinForms;
 let myGeneratorWFExits;
@@ -1802,6 +1803,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myNotesSaveLoad = new MyNotesSaveLoad();
 	
 	myGeneratorWF = new MyGeneratorWF();
+	myGeneratorWFZmyka = new MyGeneratorWFZmyka();
 	myGeneratorWFToolP = new MyGeneratorWFToolP();
 	myGeneratorWFJoinForms = new MyGeneratorWFJoinForms();
 	myGeneratorWFExits = new MyGeneratorWFExits();
@@ -1831,7 +1833,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	
-	loadFile({local: true, urlLocal: 'fileJson.json'});	
+	loadFile({local: true, urlLocal: 'fileJson-2.json'});	
 });
 
 
