@@ -148,7 +148,7 @@ class MyGeneratorWFToolP
 		if(this.contours && this.sizeCell)
 		{
 			//myGeneratorWFExits.crExits({newPos: newPos.clone(), dir, contours: this.contours, sizeCell: this.sizeCell});
-			myGeneratorWFZmyka.detectCrossLines({startPos: newPos.clone(), dir, contours: this.contours});			
+			myGeneratorWFZmyka.detectCrossLines({startPos: newPos.clone(), dir, contours: this.contours, pGrid: this.getActContourPointsPos()});			
 		}		
 	}
 	
