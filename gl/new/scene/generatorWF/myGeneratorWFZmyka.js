@@ -44,20 +44,8 @@ class MyGeneratorWFZmyka
 			line.visible = false;
 		}
 		
-		myGeneratorWF.contours = contours;
 
-		// определяем место входа тепл.пола
-		const n = 1;
-		const startPos = pGrid[0].clone().sub(pGrid[n + 0]).divideScalar( 2 ).add(pGrid[n + 0]);
-		const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos, actDataGrid: dataGrid, contours, sizeCell});
-		myGeneratorWFToolP.showToolP();
-		
-		// создаем выходы у труб для тепл.пола для каждего шага
-		//myGeneratorWFExits.crExits({newPos: newPos.clone(), contours, sizeCell});
-		
-		this.detectCrossLines({startPos: newPos, dir, contours, pGrid});
-		
-		this.render();		
+		return {type: 'zmyka', contours, sizeCell, pGrid};		
 	}
 	
 	
@@ -167,6 +155,7 @@ class MyGeneratorWFZmyka
 		
 		if(arrL.length === 0) return;
 		
+		const newLine = [];
 		
 		// создаем точки по краю контура, которые будут соединены и образует змейку
 		if(1===1)
@@ -308,7 +297,7 @@ class MyGeneratorWFZmyka
 				
 				let ind = 0;
 				let n = 1;
-				const newLine = [];
+				
 
 				while (arrL3.length > 0) 
 				{
@@ -324,7 +313,7 @@ class MyGeneratorWFZmyka
 				}
 				
 				
-				this.crHelpLine({v: newLine});
+				
 				
 				if(this.typeZmyka === 2) this.offsetContour({v: newLine, offset: sizeCell});	// обратка
 				//console.log(arrL3.length, newLine);				
@@ -332,6 +321,13 @@ class MyGeneratorWFZmyka
 		}
 		
 		
+		
+		if(newLine.length > 0)
+		{
+			const line = this.crHelpLine({v: newLine});
+			
+			contours[0].line = line;
+		}
 	}
 
 
@@ -461,13 +457,12 @@ class MyGeneratorWFZmyka
 	}
 	
 	
+	// обратка
 	offsetContour({v, offset})
 	{
 		const newFormPoints = this.offsetForm({points: v, offset});
-		
-		console.log(111112, newFormPoints);
-		
 		this.crHelpLine({v: newFormPoints, color: 0x0000ff});
+		return newFormPoints;		
 	}
 	
 

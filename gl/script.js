@@ -1755,10 +1755,10 @@ let myNoteRoulette;
 let myNoteRouletteTool;
 let myNotesSaveLoad;
 let myGeneratorWF;
-let myGeneratorWFZmyka;
 let myGeneratorWFToolP;
 let myGeneratorWFJoinForms;
-let myGeneratorWFExits;
+let myGeneratorWFUlitka;
+let myGeneratorWFZmyka;
 let myGeneratorWFOffsetStep;
 
 var docReady = false;
@@ -1802,11 +1802,11 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myNoteRouletteTool = new MyNoteRouletteTool();	
 	myNotesSaveLoad = new MyNotesSaveLoad();
 	
-	myGeneratorWF = new MyGeneratorWF();
-	myGeneratorWFZmyka = new MyGeneratorWFZmyka();
+	myGeneratorWF = new MyGeneratorWF();	
 	myGeneratorWFToolP = new MyGeneratorWFToolP();
 	myGeneratorWFJoinForms = new MyGeneratorWFJoinForms();
-	myGeneratorWFExits = new MyGeneratorWFExits();
+	myGeneratorWFUlitka = new MyGeneratorWFUlitka();
+	myGeneratorWFZmyka = new MyGeneratorWFZmyka();
 	myGeneratorWFOffsetStep = new MyGeneratorWFOffsetStep();
 	
 	// активация пользовательской сетки для теста (так она активруется при оплаченной подписке)

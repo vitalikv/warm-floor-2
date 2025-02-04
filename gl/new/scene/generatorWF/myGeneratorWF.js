@@ -2,7 +2,8 @@
 // автоматическое построение теплого пола
 class MyGeneratorWF
 {
-	contours = [];
+	
+	dataWF = null;	// здесь храниться основная инфа для создания пола
 	dataGrid = null;
 	posY = 0;
 	
@@ -42,7 +43,18 @@ class MyGeneratorWF
 		this.dataGrid = dataGrid;
 		deActiveSelected();
 		
-		this.crUlitka({dataGrid});
+		this.dataWF = myGeneratorWFUlitka.crUlitka({dataGrid});
+		
+		const pGrid = this.dataWF.pGrid;
+		const contours = this.dataWF.contours;
+		const sizeCell = this.dataWF.sizeCell;
+		
+		const { newPos, dir } = this.setStartPosToolWF();
+		
+		// создаем выходы у труб для тепл.пола для каждего шага
+		myGeneratorWFUlitka.crExits({newPos: newPos.clone(), contours, sizeCell});
+
+		this.render();		
 		
 		myUiGeneratorWFPanel.showGeneratorWFPanel();
 
@@ -60,7 +72,17 @@ class MyGeneratorWF
 		this.dataGrid = dataGrid;
 		deActiveSelected();
 		
-		myGeneratorWFZmyka.crZmyka({dataGrid});
+		this.dataWF = myGeneratorWFZmyka.crZmyka({dataGrid});
+
+		const pGrid = this.dataWF.pGrid;
+		const contours = this.dataWF.contours;
+		const sizeCell = this.dataWF.sizeCell;
+		
+		const { newPos, dir } = this.setStartPosToolWF();
+		
+		myGeneratorWFZmyka.detectCrossLines({startPos: newPos, dir, contours, pGrid});
+
+		this.render();		
 		
 		myUiGeneratorWFPanel.showGeneratorWFPanel();
 
@@ -68,56 +90,7 @@ class MyGeneratorWF
 	}	
 	
 	
-	// создаем улитку
-	crUlitka({dataGrid})
-	{
-		const p = [];
-		const points = myGrids.getPointsFromDataGrid({dataGrid});
-		
-		for ( let i = 0; i < points.length; i++ )
-		{
-			p.push(points[i].position.clone());
-		}
-		
-		const sizeCell = dataGrid.grille.sizeCell;
-		
-		// расчитываем контуры
-		const forms = this.calc({forms: [], points: p, offset: sizeCell * -1});
 
-		// объединяем контуры одного уровня в единые контур
-		const contours = myGeneratorWFJoinForms.jointCirclesForm({forms});
-
-		// если на прошлом шаге контур разделился на два и мы его объединили в один, 
-		// то проверяем чтобы предидущий контур не пересекался с разделенным и при необходимости смещаем
-		//myGeneratorWFOffsetStep.upContours({forms, contours});
-		
-
-		// рисуем линии контуров
-		for ( let i = 0; i < contours.length; i++ )
-		{
-			let color = 0x0000ff;
-			
-			if (i % 2 === 0) { console.log(`${i} - четное число.`); color = 0x0000ff; } 
-			else { console.log(`${i} - нечетное число.`); color = 0xff0000; }
-	
-			const line = this.crForm({arrPos: contours[i].path, color});
-			contours[i].line = line;									
-		}
-		
-		this.contours = contours;
-
-		// определяем место входа тепл.пола
-		const n = 1;
-		const startPos = p[0].clone().sub(p[n + 0]).divideScalar( 2 ).add(p[n + 0]);
-		const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos, actDataGrid: dataGrid, contours, sizeCell});
-		myGeneratorWFToolP.showToolP();
-		
-		// создаем выходы у труб для тепл.пола для каждего шага
-		myGeneratorWFExits.crExits({newPos: newPos.clone(), contours: this.contours, sizeCell});
-		
-		
-		this.render();		
-	}
 	
 	
 	// на вход контур сетки
@@ -191,6 +164,20 @@ class MyGeneratorWF
 	}
 	
 	
+	// определяем место входа тепл.пола (в момент создания пола)
+	setStartPosToolWF()
+	{
+		const pGrid = this.dataWF.pGrid;		
+		
+		const n = 1;
+		const startPos = pGrid[0].clone().sub(pGrid[n + 0]).divideScalar( 2 ).add(pGrid[n + 0]);
+		const { newPos, dir } = myGeneratorWFToolP.setToolObj({startPos});
+		myGeneratorWFToolP.showToolP();
+
+		return { newPos, dir };
+	}
+	
+	
 	// рисуем линию
 	crForm({arrPos, color = 0x0000ff})
 	{
@@ -208,9 +195,10 @@ class MyGeneratorWF
 	// создаем трубы 
 	crTubeGeneratorWF()
 	{
-		const contours = this.contours;		
-		if(contours.length === 0) return;
+		if(!this.dataWF) return;
 		
+		const dataWF = this.dataWF;
+		const contours = dataWF.contours;		
 
 		const v = contours[0].line.geometry.vertices;
 		const point = [];
@@ -234,17 +222,21 @@ class MyGeneratorWF
 	
 	clearFormsGeneratorWF()
 	{
-		for ( let i = 0; i < this.contours.length; i++ )
+		if(!this.dataWF) return;
+		
+		const dataWF = this.dataWF;
+		const contours = dataWF.contours;
+			
+		for ( let i = 0; i < contours.length; i++ )
 		{						
-			const line = this.contours[i].line;
+			const line = contours[i].line;
 			
 			line.geometry.dispose();
 			scene.remove(line);													
 		}
 		
-		this.contours = [];
-		
 		this.dataGrid = null;
+		this.dataWF = null;
 		
 		myGeneratorWFToolP.hideToolP();
 	}

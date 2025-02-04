@@ -1,6 +1,6 @@
 
 // класс для расчета и создание выходов у тепл.пола
-class MyGeneratorWFExits
+class MyGeneratorWFUlitka
 {
 	lineWf = null;
 	posY = 0;
@@ -21,6 +21,46 @@ class MyGeneratorWFExits
 			this.mode = (this.mode === '') ? 'V' : '';
 		}		
 	};
+
+
+	// создаем улитку
+	crUlitka({dataGrid})
+	{
+		const p = [];
+		const points = myGrids.getPointsFromDataGrid({dataGrid});
+		
+		for ( let i = 0; i < points.length; i++ )
+		{
+			p.push(points[i].position.clone());
+		}
+		
+		const sizeCell = dataGrid.grille.sizeCell;
+		
+		// расчитываем контуры
+		const forms = myGeneratorWF.calc({forms: [], points: p, offset: sizeCell * -1});
+
+		// объединяем контуры одного уровня в единые контур
+		const contours = myGeneratorWFJoinForms.jointCirclesForm({forms});
+
+		// если на прошлом шаге контур разделился на два и мы его объединили в один, 
+		// то проверяем чтобы предидущий контур не пересекался с разделенным и при необходимости смещаем
+		//myGeneratorWFOffsetStep.upContours({forms, contours});
+		
+
+		// рисуем линии контуров
+		for ( let i = 0; i < contours.length; i++ )
+		{
+			let color = 0x0000ff;
+			
+			if (i % 2 === 0) { console.log(`${i} - четное число.`); color = 0x0000ff; } 
+			else { console.log(`${i} - нечетное число.`); color = 0xff0000; }
+	
+			const line = myGeneratorWF.crForm({arrPos: contours[i].path, color});
+			contours[i].line = line;									
+		}
+
+		return {type: 'ulitka', contours, sizeCell, pGrid: p};
+	}
 	
 
 	crExits({newPos, dir = null, contours, sizeCell})

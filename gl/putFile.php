@@ -63,10 +63,10 @@ new/scene/notes/myNoteRoulette.js
 new/scene/notes/myNoteRouletteTool.js
 new/scene/notes/myNotesSaveLoad.js
 new/scene/generatorWF/myGeneratorWF.js
-new/scene/generatorWF/myGeneratorWFZmyka.js
 new/scene/generatorWF/myGeneratorWFToolP.js
 new/scene/generatorWF/myGeneratorWFJoinForms.js
-new/scene/generatorWF/myGeneratorWFExits.js
+new/scene/generatorWF/myGeneratorWFUlitka.js
+new/scene/generatorWF/myGeneratorWFZmyka.js
 new/scene/generatorWF/myGeneratorWFOffsetStep.js
 uiInterface.js
 ';

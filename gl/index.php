@@ -116,11 +116,11 @@
 	<script src="<?=$path?>new/scene/notes/myNoteRouletteTool.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNotesSaveLoad.js?<?=$vrs?>"></script>
 	
-	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWF.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFZmyka.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWF.js?<?=$vrs?>"></script>	
 	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFToolP.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFJoinForms.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFExits.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFUlitka.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFZmyka.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWFOffsetStep.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>uiInterface.js?<?=$vrs?>"></script>	     		

@@ -10,10 +10,6 @@ class MyGeneratorWFToolP
 	
 	dirLine = null;
 	
-	contours = null;
-	actDataGrid = null;
-	sizeCell = null;
-	
 	
 	init()
 	{
@@ -22,7 +18,7 @@ class MyGeneratorWFToolP
 		this.dirLine = this.crDirLine();
 	}
 	
-	
+	// создание инструмента стрелка
 	crTool()
 	{
 		const arrP = [];
@@ -145,10 +141,23 @@ class MyGeneratorWFToolP
 		const { newPos, dir } = this.setToolObj({startPos: intersects[0].point});
 		
 		// точки выхода и разрыв линий контуров
-		if(this.contours && this.sizeCell)
+		if(myGeneratorWF.dataWF)
 		{
-			//myGeneratorWFExits.crExits({newPos: newPos.clone(), dir, contours: this.contours, sizeCell: this.sizeCell});
-			myGeneratorWFZmyka.detectCrossLines({startPos: newPos.clone(), dir, contours: this.contours, pGrid: this.getActContourPointsPos()});			
+			const dataWF = myGeneratorWF.dataWF;
+			const type = dataWF.type;
+			const contours = dataWF.contours;
+			const sizeCell = dataWF.sizeCell;
+			const pGrid = dataWF.pGrid;
+			
+			
+			if(type === 'ulitka')
+			{
+				myGeneratorWFUlitka.crExits({newPos: newPos.clone(), dir, contours, sizeCell});
+			}
+			else
+			{
+				myGeneratorWFZmyka.detectCrossLines({startPos: newPos.clone(), dir, contours, pGrid});
+			}		
 		}		
 	}
 	
@@ -171,19 +180,20 @@ class MyGeneratorWFToolP
 	}
 	
 	// ставим стрелку на контур в зависимости от ближайшей грани 
-	setToolObj({startPos, actDataGrid = null, contours = null, sizeCell = null})
+	setToolObj({startPos})
 	{		
-		if(actDataGrid) this.actDataGrid = actDataGrid;
-		if(contours) this.contours = contours;
-		if(sizeCell) this.sizeCell = sizeCell;
+		const dataWF = myGeneratorWF.dataWF;
+		if(!dataWF) return;
+		
+		const pGrid = dataWF.pGrid;
 		
 		let newPos = new THREE.Vector3();
 		let dir = null;
 		const obj = this.toolObj;
 		
 		const arrP = [];
-		let v = this.getActContourPointsPos();
-		v = [...v];
+		
+		const v = [...pGrid];
 		v.push(v[0]);
 		
 		
@@ -256,24 +266,6 @@ class MyGeneratorWFToolP
 	}
 
 
-	//-------
-	
-	// получаем точки активного контура
-	getActContourPointsPos()
-	{
-		if(!this.actDataGrid) return;
-		
-		const points = myGrids.getPointsFromDataGrid({dataGrid: this.actDataGrid});
-				
-		const arrPos = [];		
-		for ( let i = 0; i < points.length; i++ ) arrPos.push(points[i].position.clone());
-
-		return arrPos;		
-	}
-
-
-
- 	
 }
 
 
