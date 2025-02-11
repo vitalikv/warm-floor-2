@@ -166,6 +166,7 @@ var ceiling = [];
 var arrWallFront = [];
 
 var clickO = resetPop.clickO();
+infProject.localFile = 'fileJson.json';
 infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.grid = { obj: null, active: false, link: false, show: true };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
@@ -1753,6 +1754,8 @@ let myNoteRuler;
 let myNoteRulerTool;
 let myNoteRoulette;
 let myNoteRouletteTool;
+let myNoteMarker;
+let myNoteMarkerTool;
 let myNotesSaveLoad;
 let myGeneratorWF;
 let myGeneratorWFToolP;
@@ -1799,7 +1802,9 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myNoteRuler = new MyNoteRuler();
 	myNoteRulerTool = new MyNoteRulerTool();
 	myNoteRoulette = new MyNoteRoulette();
-	myNoteRouletteTool = new MyNoteRouletteTool();	
+	myNoteRouletteTool = new MyNoteRouletteTool();
+	myNoteMarker = new MyNoteMarker();
+	myNoteMarkerTool = new MyNoteMarkerTool();
 	myNotesSaveLoad = new MyNotesSaveLoad();
 	
 	myGeneratorWF = new MyGeneratorWF();	
@@ -1820,7 +1825,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	}
 	
 	// показываем в правой панеле Tab выноски
-	if (window.location.hostname === 'warm-floor-2' && 1===2)
+	if (window.location.hostname === 'warm-floor-2' && 1===1)
 	{
 		myUiRightPanel.showTabNotes();
 		myUiRightPanel.toggleTabs({act: 'notes'});
@@ -1833,7 +1838,8 @@ document.addEventListener("DOMContentLoaded", ()=>
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	
-	loadFile({local: true, urlLocal: 'fileJson-2.json'});	
+	infProject.localFile = 'fileJson-2.json';
+	loadFile({local: true, urlLocal: infProject.localFile});	
 });
 
 

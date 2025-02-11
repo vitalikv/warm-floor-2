@@ -187,6 +187,7 @@ function objDeActiveColor_2D()
 	}	
 	else if(o.userData.tag == 'noteRulerPoint'){ myNoteRuler.deActivateNoteRuler({obj: o}); }
 	else if(o.userData.tag == 'noteRoulettePoint'){ myNoteRoulette.deActivateNoteRoulette({obj: o}); }
+	else if(o.userData.tag == 'noteMarkerPoint'){ myNoteMarker.deActivateNoteMarker({obj: o}); }
 	
 	if(clickO.hover == clickO.last_obj) { clickO.hover = null; }
 } 

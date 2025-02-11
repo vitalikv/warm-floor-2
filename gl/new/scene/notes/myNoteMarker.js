@@ -1,6 +1,6 @@
 
-// 
-class MyNoteRoulette
+// инструмент выноски с текстом
+class MyNoteMarker
 {
 	isDown = false;
 	isMove = false;
@@ -21,14 +21,13 @@ class MyNoteRoulette
 		this.matDef = new THREE.MeshLambertMaterial({ color: new THREE.Color(this.defColor), transparent: true, lightMap: lightMap_1 });
 	}	
 	
-	
 
 	// точка
 	crPoint({pos})
 	{
 		const obj = new THREE.Mesh( this.geomPoint, this.matDef.clone() ); 
 
-		obj.userData.tag = 'noteRoulettePoint';
+		obj.userData.tag = 'noteMarkerPoint';
 		obj.userData.id = this.indPoint;
 		obj.userData.line = null;
 		obj.userData.points = [];
@@ -67,12 +66,12 @@ class MyNoteRoulette
 			points[i].userData.points = points;
 		}
 		
-		const sprites = this.show({points});
-		line.userData.sprites = sprites;
+		const sprite = this.show({points});
+		line.userData.sprite = sprite;
 	}
 
 
-	// обновляем линию контура
+	// обновляем линию линейки
 	upGeometryLine({point})
 	{		
 		const line = this.getLineFromPoint({point});
@@ -89,10 +88,10 @@ class MyNoteRoulette
 		//geometry.verticesNeedUpdate = true;
 		
 		line.geometry.dispose();
-		line.geometry = geometry;	
+		line.geometry = geometry;
 		
-		const sprites = this.getSpritesFromPoint({point: points[0]});
-		if(sprites.length > 0) this.upGridSprites({sprites});		
+		const sprite = this.getSpriteFromPoint({point});
+		if(sprite) this.upSpriteMarker({sprite});		
 	}
 
 
@@ -108,27 +107,15 @@ class MyNoteRoulette
 		return point.userData.line;		
 	}	
 
-
-	// назначаем все точкам рулетки, массив точек
-	setPointsForPoint({points})
-	{
-		for ( let i = 0; i < points.length; i++ )
-		{
-			points[i].userData.points = points;
-		}		
-	}
-
-
 	// назначаем tag для точек, когда превращаем их из tool в линейку
-	setPointsRouletteTag({points})
+	setPointsMarkerTag({points})
 	{
 		for ( let i = 0; i < points.length; i++ )
 		{
-			points[i].userData.tag = 'noteRoulettePoint';
+			points[i].userData.tag = 'noteMarkerPoint';
 		}		
 	}
-		
-		
+	
 	mousedown = ({event, obj}) =>
 	{
 		this.isDown = false;
@@ -144,12 +131,12 @@ class MyNoteRoulette
 		if (intersects.length === 0) return;
 		this.offset = intersects[0].point;		
 
-		this.activateNoteRoulette({obj});
+		this.activateNoteMarker({obj});
 		
 		this.isDown = true;
 
 		return this.actObj;
-	}
+	}	
 	
 	
 	mousemove = (event) =>
@@ -169,8 +156,8 @@ class MyNoteRoulette
 		
 		obj.position.add( offset );
 
-		this.upGeometryLine({point: obj});
-	}
+		this.upGeometryLine({point: obj});		
+	}	
 	
 	mouseup = () =>
 	{
@@ -188,39 +175,39 @@ class MyNoteRoulette
 		this.isDown = false;
 		this.isMove = false;
 	}
-
-
-	activateNoteRoulette({obj})
+	
+	
+	activateNoteMarker({obj})
 	{
-		this.setColorNoteRoulette({obj, color: this.actColor});
+		this.setColorNoteMarker({obj, color: this.actColor});
 	}
 	
-	deActivateNoteRoulette({obj})
+	deActivateNoteMarker({obj})
 	{
-		this.setColorNoteRoulette({obj, color: this.defColor});
+		this.setColorNoteMarker({obj, color: this.defColor});
 	}	
 	
-
-	// получаем структуру data (для создания, удаления, выделения) рулетки
+	
+	// получаем структуру data (для создания, удаления, выделения) линийки
 	getStructure({obj})
 	{
 		let detect = false;
-		const structureRuler = { tag: 'noteRoulette', points: [], line: null };
+		const structure = { tag: 'noteMarker', points: [], line: null };
 		
-		if(obj.userData.tag === 'noteRoulettePoint')
+		if(obj.userData.tag === 'noteMarkerPoint')
 		{
 			detect = true;
-			structureRuler.points = this.getPointsFromPoint({point: obj});
-			structureRuler.line = this.getLineFromPoint({point: obj});
-			structureRuler.sprites = this.getSpritesFromPoint({point: obj});
+			structure.points = this.getPointsFromPoint({point: obj});
+			structure.line = this.getLineFromPoint({point: obj});
+			structure.sprite = this.getSpriteFromPoint({point: obj});
 		}
 
-		return (!detect) ? null : structureRuler;
+		return (!detect) ? null : structure;
 	}
 	
-
+	
 	// ставим цвет для линейки
-	setColorNoteRoulette({obj, color})
+	setColorNoteMarker({obj, color})
 	{
 		const structure = this.getStructure({obj});		
 		if(!structure) return;
@@ -230,14 +217,13 @@ class MyNoteRoulette
 		for ( let i = 0; i < points.length; i++ )
 		{				
 			points[i].material.color = new THREE.Color(color);
-			points[i].material.depthTest = (this.actColor === color) ? false : true;
 		}
 		
 		structure.line.material.color = new THREE.Color(color);
 	}
 	
 
-	deleteNoteRoulette({obj})
+	deleteNoteMarker({obj})
 	{
 		const structure = this.getStructure({obj});
 		if(!structure) return;
@@ -246,7 +232,7 @@ class MyNoteRoulette
 		
 		const points = structure.points;
 		const line = structure.line;
-		const sprites = structure.sprites;
+		const sprite = structure.sprite;
 		
 		for ( let i = 0; i < points.length; i++ )
 		{				
@@ -259,21 +245,19 @@ class MyNoteRoulette
 			scene.remove(line);
 		}
 		
-		for ( let i = 0; i < sprites.length; i++ )
+		if(sprite)
 		{				
-			scene.remove(sprites[i]);
-			disposeNode(sprites[i]);
-		}		
-	}	
-
-
+			scene.remove(sprite);
+			disposeNode(sprite);
+		}			
+	}
 
 
 
 	//---
 	
 	// создание sprite
-	crGridSprite({points, text = '0', sizeText = '85', geometry = infProject.geometry.labelWall}) 
+	crSprite({point, text = '0', sizeText = '85', geometry = infProject.geometry.labelWall}) 
 	{	
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
@@ -294,7 +278,7 @@ class MyNoteRoulette
 		const material = new THREE.MeshBasicMaterial({map: texture, transparent: true, opacity: 0.5, depthTest: false});		
 		
 		const sprite = new THREE.Mesh(geometry, material);
-		sprite.userData = { line: [points[0], points[1]] };		
+		sprite.userData = { point };		
 		sprite.visible = true;
 		sprite.renderOrder = 1.1;
 		scene.add( sprite );
@@ -304,84 +288,35 @@ class MyNoteRoulette
 
 	// создаем новые sprites и показываем
 	show({points})
-	{
-		const sprites = [];
+	{		
+		const sprite = this.crSprite({point: points[1]});
 		
-		for ( let i = 0; i < points.length - 1; i++ )
-		{
-			const p1 = points[i];
-			const p2 = points[i + 1];
-			
-			const sprite = this.crGridSprite({points: [p1, p2]});
-			
-			sprites.push(sprite);
-		}
+		this.setPosSprite({sprite});
 		
+		this.upSpriteText({sprite});
 		
-		this.setPosRot({sprites});
-		
-		this.upCanvasGridSprites({sprites});
-		
-		return sprites;
+		return sprite;
 	}	
 
 
-	// устанавливаем всем sprites позицию и поворот
-	setPosRot({sprites})
+	// устанавливаем sprite позицию
+	setPosSprite({sprite})
 	{
-		
-		for ( let i = 0; i < sprites.length; i++ )
-		{
-			const line = this.getPointsFromSprite({sprite: sprites[i]});
-			const p1 = line[0].position.clone();
-			const p2 = line[1].position.clone();			
-			
-			const pos = p2.clone().sub(p1).divideScalar(2).add(p1);			
-			sprites[i].position.copy(pos);
-
-			const normal = myMath.calcNormal2D({p1, p2, reverse: true});
-			normal.x *= 0.1;
-			normal.z *= 0.1;
-			sprites[i].position.add(normal);
-		}
-		
-		
-		for ( let i = 0; i < sprites.length; i++ )
-		{
-			const line = this.getPointsFromSprite({sprite: sprites[i]});
-			const p1 = line[0].position.clone();
-			const p2 = line[1].position.clone();	
-			
-			const dir = p2.clone().sub(p1);
-			let rotY = Math.atan2(dir.x, dir.z);
-			
-			if(rotY <= 0.001){ rotY += Math.PI / 2; }
-			else { rotY -= Math.PI / 2; }
-
-			sprites[i].rotation.set( 0, rotY, 0 );
-		}		
+		const point = this.getPointFromSprite({sprite});
+		const pos = point.position.clone();
+		sprite.position.copy(pos.add(new THREE.Vector3(0.1, 0, -0.1)));		
 	}
 	
 	
 	// обвноляем всем sprites изображение с текстом
-	upCanvasGridSprites({sprites})
+	upSpriteText({sprite})
 	{		
-		for ( let i = 0; i < sprites.length; i++ )
-		{
-			const line = this.getPointsFromSprite({sprite: sprites[i]});
-			const p1 = line[0].position.clone();
-			const p2 = line[1].position.clone();
-			
-			let dist = p1.distanceTo(p2);
-			dist = Math.round(dist * 100)/100;
-			
-			this.upCanvasGridSprite({sprite: sprites[i], text: dist});
-		}		
+		this.upCanvasSprite({sprite, text: 'dist'});		
 	}
 	
 	
 	// меняем изображение на canvas
-	upCanvasGridSprite({sprite, text, sizeText = '55'})  
+	upCanvasSprite({sprite, text, sizeText = '55'})  
 	{		
 		const canvs = sprite.material.map.image; 
 		const ctx = canvs.getContext("2d");
@@ -399,28 +334,27 @@ class MyNoteRoulette
 	
 	
 	// получаем у sprite 2 точки между которыми он должен располагаться
-	getPointsFromSprite({sprite})
+	getPointFromSprite({sprite})
 	{
-		return [sprite.userData.line[0], sprite.userData.line[1]];
+		return sprite.userData.point;
 	}
 	
-	getSpritesFromPoint({point})
+	getSpriteFromPoint({point})
 	{
 		const line = this.getLineFromPoint({point});
-		const sprites = (line && line.userData.sprites) ? line.userData.sprites : [];
+		const sprite = (line && line.userData.sprite) ? line.userData.sprite : null;
 		
-		return sprites;
+		return sprite;
 	}
 
 
 	// обновляем положение и текст и всех sprites
-	upGridSprites({sprites})
+	upSpriteMarker({sprite})
 	{
-		this.setPosRot({sprites});
+		this.setPosSprite({sprite});
 		
-		this.upCanvasGridSprites({sprites});		
-	}
-
+		this.upSpriteText({sprite});		
+	}	
 }
 
 

@@ -61,6 +61,8 @@ new/scene/notes/myNoteRuler.js
 new/scene/notes/myNoteRulerTool.js
 new/scene/notes/myNoteRoulette.js
 new/scene/notes/myNoteRouletteTool.js
+new/scene/notes/myNoteMarker.js
+new/scene/notes/myNoteMarkerTool.js
 new/scene/notes/myNotesSaveLoad.js
 new/scene/generatorWF/myGeneratorWF.js
 new/scene/generatorWF/myGeneratorWFToolP.js

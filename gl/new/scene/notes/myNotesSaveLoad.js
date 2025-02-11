@@ -19,6 +19,10 @@ class MyNotesSaveLoad
 			{
 				myNoteRoulette.deleteNoteRoulette({obj: dataNotes[i].points[0]});
 			}
+			if(tag === 'noteMarker')
+			{
+				myNoteMarker.deleteNoteMarker({obj: dataNotes[i].points[0]});
+			}			
 		}	
 	}
 	
@@ -65,31 +69,42 @@ class MyNotesSaveLoad
 				{
 					point = myNoteRoulette.crPoint({pos: new THREE.Vector3(pos.x, pos.y, pos.z)});
 				}				
+				if(tag === 'noteMarker')
+				{
+					point = myNoteMarker.crPoint({pos: new THREE.Vector3(pos.x, pos.y, pos.z)});
+				}
 				
 				if(point) points.push(point);
 			}
 			
 			if(points.length > 0)
 			{
-				let structureRuler = null;
+				let structure = null;
 				
 				if(tag === 'noteRuler')
 				{
 					myNoteRuler.crLine({points});
 					myNoteRuler.upGeometryLine({point: points[0]});
-					structureRuler = myNoteRuler.getStructure({obj: points[0]});
+					structure = myNoteRuler.getStructure({obj: points[0]});
 				}
   
 				if(tag === 'noteRoulette')
 				{
 					myNoteRoulette.crLine({points});
 					myNoteRoulette.upGeometryLine({point: points[0]});
-					structureRuler = myNoteRoulette.getStructure({obj: points[0]});
+					structure = myNoteRoulette.getStructure({obj: points[0]});
 				}
-
-				if(structureRuler)
+				
+				if(tag === 'noteMarker')
 				{
-					myNotes.addDataNote({data: structureRuler});
+					myNoteMarker.crLine({points});
+					myNoteMarker.upGeometryLine({point: points[0]});
+					structure = myNoteMarker.getStructure({obj: points[0]});
+				}				
+
+				if(structure)
+				{
+					myNotes.addDataNote({data: structure});
 				}
 			}			
 		}		

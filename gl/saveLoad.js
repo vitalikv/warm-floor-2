@@ -359,11 +359,12 @@ async function saveFile(cdm)
 	if(cdm.local)
 	{
 		const url = infProject.path+'saveJson.php';			
+		const fileName = infProject.localFile;
 		
 		const response = await fetch(url, 
 		{
 			method: 'POST',
-			body: 'myarray='+encodeURIComponent(json),
+			body: 'myarray='+encodeURIComponent(json)+'&fileName='+fileName,
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },				
 		});
 		const data = await response.json();		

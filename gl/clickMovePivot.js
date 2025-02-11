@@ -244,6 +244,11 @@ function movePivot( event )
 		if(obj.userData.tag === 'noteRoulettePoint')
 		{
 			myNoteRoulette.upGeometryLine({point: obj});
+		}
+
+		if(obj.userData.tag === 'noteMarkerPoint')
+		{
+			myNoteMarker.upGeometryLine({point: obj});
 		}		
 	}
 		

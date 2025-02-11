@@ -114,6 +114,8 @@
 	<script src="<?=$path?>new/scene/notes/myNoteRulerTool.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNoteRoulette.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNoteRouletteTool.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/myNoteMarker.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/myNoteMarkerTool.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNotesSaveLoad.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWF.js?<?=$vrs?>"></script>	
