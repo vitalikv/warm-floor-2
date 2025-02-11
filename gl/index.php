@@ -110,12 +110,15 @@
 	<script src="<?=$path?>new/scene/grid/myGridSprite.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridsSaveLoad.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNotes.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/scene/notes/myNoteRuler.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/scene/notes/myNoteRulerTool.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/scene/notes/myNoteRoulette.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/scene/notes/myNoteRouletteTool.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/scene/notes/myNoteMarker.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>new/scene/notes/myNoteMarkerTool.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/ruler/myNoteRuler.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/ruler/myNoteRulerTool.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/ruler/myNoteRulerSprite.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/roulette/myNoteRoulette.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/roulette/myNoteRouletteTool.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/roulette/myNoteRouletteSprite.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/marker/myNoteMarker.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/marker/myNoteMarkerTool.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/marker/myNoteMarkerSprite.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNotesSaveLoad.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWF.js?<?=$vrs?>"></script>	

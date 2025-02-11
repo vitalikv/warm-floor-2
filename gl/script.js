@@ -1752,10 +1752,13 @@ let myGridsSaveLoad;
 let myNotes;
 let myNoteRuler;
 let myNoteRulerTool;
+let myNoteRulerSprite;
 let myNoteRoulette;
 let myNoteRouletteTool;
+let myNoteRouletteSprite;
 let myNoteMarker;
 let myNoteMarkerTool;
+let myNoteMarkerSprite;
 let myNotesSaveLoad;
 let myGeneratorWF;
 let myGeneratorWFToolP;
@@ -1801,10 +1804,13 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myNotes = new MyNotes();
 	myNoteRuler = new MyNoteRuler();
 	myNoteRulerTool = new MyNoteRulerTool();
+	myNoteRulerSprite = new MyNoteRulerSprite();
 	myNoteRoulette = new MyNoteRoulette();
 	myNoteRouletteTool = new MyNoteRouletteTool();
+	myNoteRouletteSprite = new MyNoteRouletteSprite();
 	myNoteMarker = new MyNoteMarker();
 	myNoteMarkerTool = new MyNoteMarkerTool();
+	myNoteMarkerSprite = new MyNoteMarkerSprite();
 	myNotesSaveLoad = new MyNotesSaveLoad();
 	
 	myGeneratorWF = new MyGeneratorWF();	
