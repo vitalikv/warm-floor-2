@@ -14,8 +14,8 @@ class MyNoteMarker
 	// точка
 	crPoint({pos})
 	{
-		//const obj = new THREE.Mesh( myNotesInstance.geomPoint, myNotesInstance.matDef.clone() );
-		const obj = new THREE.Mesh( myNotesInstance.geomCone, myNotesInstance.matDef.clone() ); 
+		const obj = new THREE.Mesh( myNotesInstance.geomPoint, myNotesInstance.matDef.clone() );
+		//const obj = new THREE.Mesh( myNotesInstance.geomCone, myNotesInstance.matDef.clone() ); 
 
 		obj.userData.tag = 'noteMarkerPoint';
 		obj.userData.id = this.indPoint;
@@ -55,6 +55,8 @@ class MyNoteMarker
 			points[i].userData.line = line;
 			points[i].userData.points = points;
 		}
+		
+		this.changeGeometryPoint({point: points[0], type: 'cone'});	// заменяем geometry точки на стрелку
 		
 		this.setRotCone({points});
 		
@@ -227,6 +229,22 @@ class MyNoteMarker
 	}
 	
 
+	
+
+	// заменяем geometry точки на точку или стрелку
+	changeGeometryPoint({point, type = 'cone'})
+	{
+		if(type === 'cone')
+		{
+			point.geometry = myNotesInstance.geomCone;
+		}
+		if(type === 'point')
+		{
+			point.geometry = myNotesInstance.geomPoint;
+		}		
+	}
+	
+	
 	deleteNoteMarker({obj})
 	{
 		const structure = this.getStructure({obj});

@@ -137,6 +137,9 @@ class MyNoteRouletteTool
 				
 				myNoteRoulette.setPointsForPoint({points});							
 				myNoteRoulette.upGeometryLine({point: points[0]});
+				
+				myNoteRoulette.changeGeometryPoint({point: points[points.length - 1], type: 'cone'});
+				
 				this.addNoteRoulette();
 			}
 		}

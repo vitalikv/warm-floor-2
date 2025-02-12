@@ -14,7 +14,8 @@ class MyNoteRuler
 	// точка
 	crPoint({pos})
 	{
-		const obj = new THREE.Mesh( myNotesInstance.geomCone, myNotesInstance.matDef.clone() ); 
+		const obj = new THREE.Mesh( myNotesInstance.geomPoint, myNotesInstance.matDef.clone() );
+		//const obj = new THREE.Mesh( myNotesInstance.geomCone, myNotesInstance.matDef.clone() ); 
 		
 		obj.userData.tag = 'noteRulerPoint';
 		obj.userData.id = this.indPoint;
@@ -53,6 +54,8 @@ class MyNoteRuler
 		{				
 			points[i].userData.line = line;
 			points[i].userData.points = points;
+			
+			this.changeGeometryPoint({point: points[i], type: 'cone'});	// заменяем geometry точки на стрелку
 		}
 		
 		this.setRotCone({points});		
@@ -227,6 +230,20 @@ class MyNoteRuler
 	}
 	
 
+	// заменяем geometry точки на точку или стрелку
+	changeGeometryPoint({point, type = 'cone'})
+	{
+		if(type === 'cone')
+		{
+			point.geometry = myNotesInstance.geomCone;
+		}
+		if(type === 'point')
+		{
+			point.geometry = myNotesInstance.geomPoint;
+		}		
+	}
+	
+	
 	deleteNoteRuler({obj})
 	{
 		const structure = this.getStructure({obj});

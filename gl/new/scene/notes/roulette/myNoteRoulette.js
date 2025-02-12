@@ -14,8 +14,8 @@ class MyNoteRoulette
 	// точка
 	crPoint({pos})
 	{
-		//const obj = new THREE.Mesh( myNotesInstance.geomPoint, myNotesInstance.matDef.clone() ); 
-		const obj = new THREE.Mesh( myNotesInstance.geomCone, myNotesInstance.matDef.clone() ); 
+		const obj = new THREE.Mesh( myNotesInstance.geomPoint, myNotesInstance.matDef.clone() ); 
+		//const obj = new THREE.Mesh( myNotesInstance.geomCone, myNotesInstance.matDef.clone() ); 
 
 		obj.userData.tag = 'noteRoulettePoint';
 		obj.userData.id = this.indPoint;
@@ -54,7 +54,13 @@ class MyNoteRoulette
 		{				
 			points[i].userData.line = line;
 			points[i].userData.points = points;
+			
+			this.changeGeometryPoint({point: points[i], type: 'point'}); // заменяем geometry на точку
 		}
+		
+		// заменяем первую и последнию geometry точки на стрелку
+		this.changeGeometryPoint({point: points[0], type: 'cone'});
+		this.changeGeometryPoint({point: points[points.length - 1], type: 'cone'});
 		
 		this.setRotCone({points});
 		
@@ -240,6 +246,19 @@ class MyNoteRoulette
 		structure.line.material.color = new THREE.Color(color);
 	}
 	
+	
+	// заменяем geometry точки на точку или стрелку
+	changeGeometryPoint({point, type = 'cone'})
+	{
+		if(type === 'cone')
+		{
+			point.geometry = myNotesInstance.geomCone;
+		}
+		if(type === 'point')
+		{
+			point.geometry = myNotesInstance.geomPoint;
+		}		
+	}
 
 	deleteNoteRoulette({obj})
 	{
