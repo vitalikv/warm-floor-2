@@ -110,6 +110,7 @@
 	<script src="<?=$path?>new/scene/grid/myGridSprite.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/grid/myGridsSaveLoad.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNotes.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/myNotesInstance.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/ruler/myNoteRuler.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/ruler/myNoteRulerTool.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/ruler/myNoteRulerSprite.js?<?=$vrs?>"></script>

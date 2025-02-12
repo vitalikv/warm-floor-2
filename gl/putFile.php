@@ -57,6 +57,7 @@ new/scene/grid/myGridActivate.js
 new/scene/grid/myGridSprite.js
 new/scene/grid/myGridsSaveLoad.js
 new/scene/notes/myNotes.js
+new/scene/notes/myNotesInstance.js
 new/scene/notes/ruler/myNoteRuler.js
 new/scene/notes/ruler/myNoteRulerTool.js
 new/scene/notes/ruler/myNoteRulerSprite.js

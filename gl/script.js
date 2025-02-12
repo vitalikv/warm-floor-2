@@ -1750,6 +1750,7 @@ let myGridActivate;
 let myGridSprite;
 let myGridsSaveLoad;
 let myNotes;
+let myNotesInstance;
 let myNoteRuler;
 let myNoteRulerTool;
 let myNoteRulerSprite;
@@ -1802,6 +1803,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myGridsSaveLoad = new MyGridsSaveLoad();
 	
 	myNotes = new MyNotes();
+	myNotesInstance = new MyNotesInstance();
 	myNoteRuler = new MyNoteRuler();
 	myNoteRulerTool = new MyNoteRulerTool();
 	myNoteRulerSprite = new MyNoteRulerSprite();

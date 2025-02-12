@@ -9,23 +9,13 @@ class MyNoteMarker
 	actObj = null;
 
 	indPoint = 0;
-	geomPoint;
-	matDef;
-	defColor = 0x000000;
-	actColor = 0xff0000;
-	
 
-	constructor()
-	{
-		this.geomPoint = new THREE.SphereGeometry( 0.02, 16, 16 );
-		this.matDef = new THREE.MeshLambertMaterial({ color: new THREE.Color(this.defColor), transparent: true, lightMap: lightMap_1 });
-	}	
-	
 
 	// точка
 	crPoint({pos})
 	{
-		const obj = new THREE.Mesh( this.geomPoint, this.matDef.clone() ); 
+		//const obj = new THREE.Mesh( myNotesInstance.geomPoint, myNotesInstance.matDef.clone() );
+		const obj = new THREE.Mesh( myNotesInstance.geomCone, myNotesInstance.matDef.clone() ); 
 
 		obj.userData.tag = 'noteMarkerPoint';
 		obj.userData.id = this.indPoint;
@@ -52,7 +42,7 @@ class MyNoteMarker
 			const geometry = new THREE.Geometry();
 			geometry.vertices = arrP;
 	
-			line = new THREE.Line( geometry, this.matDef.clone() );	
+			line = new THREE.Line( geometry, myNotesInstance.matDef.clone() );	
 			scene.add( line );					
 		}
 		else
@@ -65,6 +55,8 @@ class MyNoteMarker
 			points[i].userData.line = line;
 			points[i].userData.points = points;
 		}
+		
+		this.setRotCone({points});
 		
 		const sprite = myNoteMarkerSprite.show({points});
 		line.userData.sprite = sprite;
@@ -90,10 +82,22 @@ class MyNoteMarker
 		line.geometry.dispose();
 		line.geometry = geometry;
 		
+		this.setRotCone({points});
+		
 		const sprite = myNoteMarkerSprite.getSpriteFromPoint({point});
 		if(sprite) myNoteMarkerSprite.upSpriteMarker({sprite});		
 	}
 
+
+	// поворачиваем конусы(стерлки) с учетом расположения линии
+	setRotCone({points})
+	{
+		const p1 = points[0];
+		const p2 = points[points.length - 1];
+		
+		p1.lookAt(p2.position);
+	}
+	
 
 	// получаем массив точек из точки
 	getPointsFromPoint({point})
@@ -179,12 +183,12 @@ class MyNoteMarker
 	
 	activateNoteMarker({obj})
 	{
-		this.setColorNoteMarker({obj, color: this.actColor});
+		this.setColorNoteMarker({obj, color: myNotesInstance.actColor});
 	}
 	
 	deActivateNoteMarker({obj})
 	{
-		this.setColorNoteMarker({obj, color: this.defColor});
+		this.setColorNoteMarker({obj, color: myNotesInstance.defColor});
 	}	
 	
 	

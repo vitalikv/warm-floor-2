@@ -9,24 +9,13 @@ class MyNoteRuler
 	actObj = null;
 
 	indPoint = 0;
-	geomPoint;
-	matDef;
-	defColor = 0x000000;
-	actColor = 0xff0000;
-	
-
-	constructor()
-	{
-		this.geomPoint = new THREE.SphereGeometry( 0.02, 16, 16 );
-		this.matDef = new THREE.MeshLambertMaterial({ color: new THREE.Color(this.defColor), transparent: true, lightMap: lightMap_1 });
-	}	
 	
 
 	// точка
 	crPoint({pos})
 	{
-		const obj = new THREE.Mesh( this.geomPoint, this.matDef.clone() ); 
-
+		const obj = new THREE.Mesh( myNotesInstance.geomCone, myNotesInstance.matDef.clone() ); 
+		
 		obj.userData.tag = 'noteRulerPoint';
 		obj.userData.id = this.indPoint;
 		obj.userData.line = null;
@@ -52,7 +41,7 @@ class MyNoteRuler
 			const geometry = new THREE.Geometry();
 			geometry.vertices = arrP;
 	
-			line = new THREE.Line( geometry, this.matDef.clone() );	
+			line = new THREE.Line( geometry, myNotesInstance.matDef.clone() );	
 			scene.add( line );					
 		}
 		else
@@ -65,6 +54,8 @@ class MyNoteRuler
 			points[i].userData.line = line;
 			points[i].userData.points = points;
 		}
+		
+		this.setRotCone({points});		
 		
 		const sprite = myNoteRulerSprite.show({points});
 		line.userData.sprite = sprite;
@@ -90,10 +81,23 @@ class MyNoteRuler
 		line.geometry.dispose();
 		line.geometry = geometry;
 		
+		this.setRotCone({points});
+		
 		const sprite = myNoteRulerSprite.getSpriteFromPoint({point: points[0]});
 		if(sprite) myNoteRulerSprite.upSprite({sprite});		
 	}
 
+
+	// поворачиваем конусы(стерлки) с учетом расположения линии
+	setRotCone({points})
+	{
+		const p1 = points[0];
+		const p2 = points[points.length - 1];
+		
+		p1.lookAt(p2.position);
+		p2.lookAt(p1.position);
+	}
+	
 
 	// получаем массив точек из точки
 	getPointsFromPoint({point})
@@ -179,12 +183,12 @@ class MyNoteRuler
 	
 	activateNoteRuler({obj})
 	{
-		this.setColorNoteRuler({obj, color: this.actColor});
+		this.setColorNoteRuler({obj, color: myNotesInstance.actColor});
 	}
 	
 	deActivateNoteRuler({obj})
 	{
-		this.setColorNoteRuler({obj, color: this.defColor});
+		this.setColorNoteRuler({obj, color: myNotesInstance.defColor});
 	}	
 	
 	

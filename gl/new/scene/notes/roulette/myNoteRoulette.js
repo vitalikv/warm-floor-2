@@ -9,24 +9,13 @@ class MyNoteRoulette
 	actObj = null;
 
 	indPoint = 0;
-	geomPoint;
-	matDef;
-	defColor = 0x000000;
-	actColor = 0xff0000;
-	
-
-	constructor()
-	{
-		this.geomPoint = new THREE.SphereGeometry( 0.02, 16, 16 );
-		this.matDef = new THREE.MeshLambertMaterial({ color: new THREE.Color(this.defColor), transparent: true, lightMap: lightMap_1 });
-	}	
-	
 	
 
 	// точка
 	crPoint({pos})
 	{
-		const obj = new THREE.Mesh( this.geomPoint, this.matDef.clone() ); 
+		//const obj = new THREE.Mesh( myNotesInstance.geomPoint, myNotesInstance.matDef.clone() ); 
+		const obj = new THREE.Mesh( myNotesInstance.geomCone, myNotesInstance.matDef.clone() ); 
 
 		obj.userData.tag = 'noteRoulettePoint';
 		obj.userData.id = this.indPoint;
@@ -53,7 +42,7 @@ class MyNoteRoulette
 			const geometry = new THREE.Geometry();
 			geometry.vertices = arrP;
 	
-			line = new THREE.Line( geometry, this.matDef.clone() );	
+			line = new THREE.Line( geometry, myNotesInstance.matDef.clone() );	
 			scene.add( line );					
 		}
 		else
@@ -66,6 +55,8 @@ class MyNoteRoulette
 			points[i].userData.line = line;
 			points[i].userData.points = points;
 		}
+		
+		this.setRotCone({points});
 		
 		const sprites = myNoteRouletteSprite.show({points});
 		line.userData.sprites = sprites;
@@ -89,12 +80,25 @@ class MyNoteRoulette
 		//geometry.verticesNeedUpdate = true;
 		
 		line.geometry.dispose();
-		line.geometry = geometry;	
+		line.geometry = geometry;
+
+		this.setRotCone({points});
 		
 		const sprites = myNoteRouletteSprite.getSpritesFromPoint({point: points[0]});
 		if(sprites.length > 0) myNoteRouletteSprite.upSprites({sprites});		
 	}
 
+
+	// поворачиваем конусы(стерлки) с учетом расположения линии
+	setRotCone({points})
+	{
+		const p1 = points[0];
+		const p2 = points[points.length - 1];
+		
+		p1.lookAt(points[1].position);
+		p2.lookAt(points[points.length - 2].position);
+	}
+	
 
 	// получаем массив точек из точки
 	getPointsFromPoint({point})
@@ -192,12 +196,12 @@ class MyNoteRoulette
 
 	activateNoteRoulette({obj})
 	{
-		this.setColorNoteRoulette({obj, color: this.actColor});
+		this.setColorNoteRoulette({obj, color: myNotesInstance.actColor});
 	}
 	
 	deActivateNoteRoulette({obj})
 	{
-		this.setColorNoteRoulette({obj, color: this.defColor});
+		this.setColorNoteRoulette({obj, color: myNotesInstance.defColor});
 	}	
 	
 
@@ -230,7 +234,7 @@ class MyNoteRoulette
 		for ( let i = 0; i < points.length; i++ )
 		{				
 			points[i].material.color = new THREE.Color(color);
-			points[i].material.depthTest = (this.actColor === color) ? false : true;
+			points[i].material.depthTest = (myNotesInstance.actColor === color) ? false : true;
 		}
 		
 		structure.line.material.color = new THREE.Color(color);
