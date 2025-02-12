@@ -103,6 +103,18 @@ class MyNoteMarkerSprite
 		
 		this.upSpriteText({sprite});		
 	}	
+
+
+	// удаляем sprite
+	deleteSprite({points})
+	{
+		const sprite = this.getSpriteFromPoint({point: points[0]});
+		
+		if(!sprite) return;
+		
+		scene.remove(sprite);
+		disposeNode(sprite);		
+	}
 }
 
 

@@ -5,7 +5,7 @@ class MyNoteRouletteSprite
 
 	
 	// создание sprite
-	crGridSprite({points, text = '0', sizeText = '85', geometry = infProject.geometry.labelWall}) 
+	crSprite({points, text = '0', sizeText = '85', geometry = infProject.geometry.labelWall}) 
 	{	
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
@@ -37,6 +37,8 @@ class MyNoteRouletteSprite
 	// создаем новые sprites и показываем
 	show({points})
 	{
+		this.deleteSprites({points});
+		
 		const sprites = [];
 		
 		for ( let i = 0; i < points.length - 1; i++ )
@@ -44,7 +46,7 @@ class MyNoteRouletteSprite
 			const p1 = points[i];
 			const p2 = points[i + 1];
 			
-			const sprite = this.crGridSprite({points: [p1, p2]});
+			const sprite = this.crSprite({points: [p1, p2]});
 			
 			sprites.push(sprite);
 		}
@@ -52,7 +54,7 @@ class MyNoteRouletteSprite
 		
 		this.setPosRot({sprites});
 		
-		this.upCanvasGridSprites({sprites});
+		this.upSpriteText({sprites});
 		
 		return sprites;
 	}	
@@ -96,7 +98,7 @@ class MyNoteRouletteSprite
 	
 	
 	// обвноляем всем sprites изображение с текстом
-	upCanvasGridSprites({sprites})
+	upSpriteText({sprites})
 	{		
 		for ( let i = 0; i < sprites.length; i++ )
 		{
@@ -107,13 +109,13 @@ class MyNoteRouletteSprite
 			let dist = p1.distanceTo(p2);
 			dist = Math.round(dist * 100)/100;
 			
-			this.upCanvasGridSprite({sprite: sprites[i], text: dist});
+			this.upCanvasSprite({sprite: sprites[i], text: dist});
 		}		
 	}
 	
 	
 	// меняем изображение на canvas
-	upCanvasGridSprite({sprite, text, sizeText = '55'})  
+	upCanvasSprite({sprite, text, sizeText = '55'})  
 	{		
 		const canvs = sprite.material.map.image; 
 		const ctx = canvs.getContext("2d");
@@ -146,13 +148,27 @@ class MyNoteRouletteSprite
 
 
 	// обновляем положение и текст и всех sprites
-	upGridSprites({sprites})
+	upSprites({sprites})
 	{
 		this.setPosRot({sprites});
 		
-		this.upCanvasGridSprites({sprites});		
+		this.upSpriteText({sprites});		
 	}
 
+
+	// удаляем все sprites
+	deleteSprites({points})
+	{
+		const sprites = this.getSpritesFromPoint({point: points[0]});
+		
+		if(sprites.length === 0) return;
+		
+		for ( let i = 0; i < sprites.length; i++ )
+		{				
+			scene.remove(sprites[i]);
+			disposeNode(sprites[i]);
+		}		
+	}
 }
 
 

@@ -66,8 +66,8 @@ class MyNoteRuler
 			points[i].userData.points = points;
 		}
 		
-		const sprites = myNoteRulerSprite.show({points});
-		line.userData.sprites = sprites;
+		const sprite = myNoteRulerSprite.show({points});
+		line.userData.sprite = sprite;
 	}
 
 
@@ -90,8 +90,8 @@ class MyNoteRuler
 		line.geometry.dispose();
 		line.geometry = geometry;
 		
-		const sprites = myNoteRulerSprite.getSpritesFromPoint({point: points[0]});
-		if(sprites.length > 0) myNoteRulerSprite.upSprites({sprites});		
+		const sprite = myNoteRulerSprite.getSpriteFromPoint({point: points[0]});
+		if(sprite) myNoteRulerSprite.upSprite({sprite});		
 	}
 
 
@@ -199,7 +199,7 @@ class MyNoteRuler
 			detect = true;
 			structure.points = this.getPointsFromPoint({point: obj});
 			structure.line = this.getLineFromPoint({point: obj});
-			structure.sprites = myNoteRulerSprite.getSpritesFromPoint({point: obj});
+			structure.sprite = myNoteRulerSprite.getSpriteFromPoint({point: obj});
 		}
 
 		return (!detect) ? null : structure;
@@ -232,7 +232,7 @@ class MyNoteRuler
 		
 		const points = structure.points;
 		const line = structure.line;
-		const sprites = structure.sprites;
+		const sprite = structure.sprite;
 		
 		for ( let i = 0; i < points.length; i++ )
 		{				
@@ -245,11 +245,7 @@ class MyNoteRuler
 			scene.remove(line);
 		}
 		
-		for ( let i = 0; i < sprites.length; i++ )
-		{				
-			scene.remove(sprites[i]);
-			disposeNode(sprites[i]);
-		}			
+		myNoteRulerSprite.deleteRulerSprite({points});			
 	}
 
 }

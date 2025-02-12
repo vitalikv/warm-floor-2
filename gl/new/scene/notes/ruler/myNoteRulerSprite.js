@@ -37,50 +37,39 @@ class MyNoteRulerSprite
 	// создаем новые sprites и показываем
 	show({points})
 	{
-		const sprites = [];
+		const sprite = this.crSprite({points: [points[0], points[1]]});
 		
-		for ( let i = 0; i < points.length - 1; i++ )
-		{
-			const p1 = points[i];
-			const p2 = points[i + 1];
-			
-			const sprite = this.crSprite({points: [p1, p2]});
-			
-			sprites.push(sprite);
-		}
+		this.setPosRot({sprite});
 		
+		this.upCanvasSprite({sprite});
 		
-		this.setPosRot({sprites});
-		
-		this.upCanvasSprites({sprites});
-		
-		return sprites;
+		return sprite;
 	}	
 
 
-	// устанавливаем всем sprites позицию и поворот
-	setPosRot({sprites})
+	// устанавливаем sprite позицию и поворот
+	setPosRot({sprite})
 	{
 		
-		for ( let i = 0; i < sprites.length; i++ )
+		if(1===1)
 		{
-			const line = this.getPointsFromSprite({sprite: sprites[i]});
+			const line = this.getPointsFromSprite({sprite});
 			const p1 = line[0].position.clone();
 			const p2 = line[1].position.clone();			
 			
 			const pos = p2.clone().sub(p1).divideScalar(2).add(p1);			
-			sprites[i].position.copy(pos);
+			sprite.position.copy(pos);
 
 			const normal = myMath.calcNormal2D({p1, p2, reverse: true});
 			normal.x *= 0.1;
 			normal.z *= 0.1;
-			sprites[i].position.add(normal);
+			sprite.position.add(normal);
 		}
 		
 		
-		for ( let i = 0; i < sprites.length; i++ )
+		if(1===1)
 		{
-			const line = this.getPointsFromSprite({sprite: sprites[i]});
+			const line = this.getPointsFromSprite({sprite});
 			const p1 = line[0].position.clone();
 			const p2 = line[1].position.clone();	
 			
@@ -90,30 +79,27 @@ class MyNoteRulerSprite
 			if(rotY <= 0.001){ rotY += Math.PI / 2; }
 			else { rotY -= Math.PI / 2; }
 
-			sprites[i].rotation.set( 0, rotY, 0 );
+			sprite.rotation.set( 0, rotY, 0 );
 		}		
 	}
 	
 	
 	// обвноляем всем sprites изображение с текстом
-	upCanvasSprites({sprites})
+	upCanvasSprite({sprite})
 	{		
-		for ( let i = 0; i < sprites.length; i++ )
-		{
-			const line = this.getPointsFromSprite({sprite: sprites[i]});
-			const p1 = line[0].position.clone();
-			const p2 = line[1].position.clone();
-			
-			let dist = p1.distanceTo(p2);
-			dist = Math.round(dist * 100)/100;
-			
-			this.upCanvasSprite({sprite: sprites[i], text: dist});
-		}		
+		const line = this.getPointsFromSprite({sprite});
+		const p1 = line[0].position.clone();
+		const p2 = line[1].position.clone();
+		
+		let dist = p1.distanceTo(p2);
+		dist = Math.round(dist * 100)/100;
+		
+		this.upSpriteText({sprite, text: dist});		
 	}
 	
 	
 	// меняем изображение на canvas
-	upCanvasSprite({sprite, text, sizeText = '55'})  
+	upSpriteText({sprite, text, sizeText = '55'})  
 	{		
 		const canvs = sprite.material.map.image; 
 		const ctx = canvs.getContext("2d");
@@ -136,23 +122,35 @@ class MyNoteRulerSprite
 		return [sprite.userData.line[0], sprite.userData.line[1]];
 	}
 	
-	getSpritesFromPoint({point})
+	getSpriteFromPoint({point})
 	{
 		const line = myNoteRuler.getLineFromPoint({point});
-		const sprites = (line && line.userData.sprites) ? line.userData.sprites : [];
+		const sprite = (line && line.userData.sprite) ? line.userData.sprite : null;
 		
-		return sprites;
+		return sprite;
 	}
 
 
 	// обновляем положение и текст и всех sprites
-	upSprites({sprites})
+	upSprite({sprite})
 	{
-		this.setPosRot({sprites});
+		this.setPosRot({sprite});
 		
-		this.upCanvasSprites({sprites});		
+		this.upCanvasSprite({sprite});		
 	}	
 
+
+	// удаляем все sprites
+	deleteRulerSprite({points})
+	{
+		const sprite = this.getSpriteFromPoint({point: points[0]});
+		
+		if(!sprite) return;
+		
+		scene.remove(sprite);
+		disposeNode(sprite);	
+	}
+	
 }
 
 

@@ -125,11 +125,13 @@ class MyNoteMarkerTool
 		myNotes.addDataNote({data: structure});		
 	}
 
-	// удаляем линейку (по правой кнопки мыши)
+	// удаляем (по правой кнопки мыши)
 	deleteTool()
 	{
 		const points = this.arrPoints;
 		const line = myNoteMarker.getLineFromPoint({point: points[0]});
+		
+		myNoteMarkerSprite.deleteSprite({points});
 				
 		for ( let i = 0; i < points.length; i++ )
 		{

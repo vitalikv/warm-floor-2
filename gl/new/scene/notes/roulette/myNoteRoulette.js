@@ -92,7 +92,7 @@ class MyNoteRoulette
 		line.geometry = geometry;	
 		
 		const sprites = myNoteRouletteSprite.getSpritesFromPoint({point: points[0]});
-		if(sprites.length > 0) myNoteRouletteSprite.upGridSprites({sprites});		
+		if(sprites.length > 0) myNoteRouletteSprite.upSprites({sprites});		
 	}
 
 
@@ -259,11 +259,7 @@ class MyNoteRoulette
 			scene.remove(line);
 		}
 		
-		for ( let i = 0; i < sprites.length; i++ )
-		{				
-			scene.remove(sprites[i]);
-			disposeNode(sprites[i]);
-		}		
+		myNoteRouletteSprite.deleteSprites({points});		
 	}	
 
 

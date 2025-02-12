@@ -124,12 +124,17 @@ class MyNoteRouletteTool
 		{
 			if(points.length < 2)
 			{
+				myNoteRouletteSprite.deleteSprites({points});
+				
 				scene.remove(points[0]);
 				line.geometry.dispose();
 				scene.remove(line);
 			}		
 			else
 			{
+				const sprites = myNoteRouletteSprite.show({points});
+				line.userData.sprites = sprites;				
+				
 				myNoteRoulette.setPointsForPoint({points});							
 				myNoteRoulette.upGeometryLine({point: points[0]});
 				this.addNoteRoulette();

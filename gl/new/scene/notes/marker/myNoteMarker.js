@@ -245,11 +245,7 @@ class MyNoteMarker
 			scene.remove(line);
 		}
 		
-		if(sprite)
-		{				
-			scene.remove(sprite);
-			disposeNode(sprite);
-		}			
+		myNoteMarkerSprite.deleteSprite({points});			
 	}
 
 

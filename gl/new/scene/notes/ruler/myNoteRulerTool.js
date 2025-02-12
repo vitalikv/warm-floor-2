@@ -130,7 +130,9 @@ class MyNoteRulerTool
 	{
 		const points = this.arrPoints;
 		const line = myNoteRuler.getLineFromPoint({point: points[0]});
-				
+		
+		myNoteRulerSprite.deleteRulerSprite({points});
+		
 		for ( let i = 0; i < points.length; i++ )
 		{
 			scene.remove(points[i]);
