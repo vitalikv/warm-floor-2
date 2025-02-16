@@ -45,33 +45,16 @@ class MyNoteTextTool
 	{
 		this.isDown = false;
 		this.isMove = false;	
-
-		// закончили построение линейки
-		if(this.arrPoints.length === 2) 
-		{
-			this.addNoteText();
-			return null;
-		}
 		
 		obj = myNoteText.crPoint({pos: obj.position.clone()});
 		obj.userData.tag = 'noteTextToolPoint';
 		
 		this.arrPoints.push(obj);		
-		if(this.arrPoints.length > 1) myNoteText.crLine({points: [...this.arrPoints]});				
+		if(this.arrPoints.length > 1) myNoteText.crLine({points: [...this.arrPoints]});	
+		
+		this.addNoteText();
 
-		
-		planeMath.position.set( 0, obj.position.y, 0 );
-		planeMath.rotation.set(-Math.PI/2, 0, 0);
-		planeMath.updateMatrixWorld();
-		
-		const intersects = rayIntersect(event, planeMath, 'one');
-		if (intersects.length === 0) return;
-		this.offset = intersects[0].point;		
-		
-		this.actObj = obj;
-		this.isDown = true;
-
-		return this.actObj;
+		return null;
 	}
 	
 	mousemove = (event) =>

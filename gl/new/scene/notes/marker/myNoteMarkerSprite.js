@@ -2,7 +2,11 @@
 // sprite для выноски с текстом
 class MyNoteMarkerSprite
 {
-
+	isDown = false;
+	isMove = false;
+	offset = new THREE.Vector3();	
+	actObj = null;
+	
 	
 	// создание sprite
 	crSprite({point, text = '0', sizeText = '85', geometry = infProject.geometry.labelWall}) 
@@ -15,6 +19,14 @@ class MyNoteMarkerSprite
 		
 		ctx.font = sizeText + 'pt Arial';		
 
+		if(1 === 1)
+		{
+			ctx.fillStyle = 'rgba(0,0,0,1)';
+			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			ctx.fillStyle = 'rgba(255,255,255,1)';
+			ctx.fillRect(1, 1, canvas.width - 2, canvas.height - 2);	 	
+		}
+		
 		ctx.fillStyle = 'rgba(82,82,82,1)';
 		ctx.textAlign = "center";
 		ctx.textBaseline = "middle";
@@ -23,10 +35,11 @@ class MyNoteMarkerSprite
 		const texture = new THREE.Texture(canvas);
 		texture.needsUpdate = true;	
 		
-		const material = new THREE.MeshBasicMaterial({map: texture, transparent: true, opacity: 0.5, depthTest: false});		
+		const material = new THREE.MeshBasicMaterial({map: texture, transparent: true, opacity: 1, depthTest: false});		
 		
 		const sprite = new THREE.Mesh(geometry, material);
-		sprite.userData = { point };		
+		sprite.userData = { point };
+		sprite.userData.tag = 'noteMarkerSprite';
 		sprite.visible = true;
 		sprite.renderOrder = 1.1;
 		scene.add( sprite );
@@ -52,7 +65,7 @@ class MyNoteMarkerSprite
 	{
 		const point = this.getPointFromSprite({sprite});
 		const pos = point.position.clone();
-		sprite.position.copy(pos.add(new THREE.Vector3(0.1, 0, -0.1)));		
+		sprite.position.copy(pos.add(new THREE.Vector3(0, 0, -0.1)));		
 	}
 	
 	
@@ -71,6 +84,14 @@ class MyNoteMarkerSprite
 		
 		ctx.clearRect(0, 0, canvs.width, canvs.height);
 		ctx.font = sizeText + 'pt Arial';		
+
+		if(1 === 1)
+		{
+			ctx.fillStyle = 'rgba(0,0,0,1)';
+			ctx.fillRect(0, 0, canvs.width, canvs.height);
+			ctx.fillStyle = 'rgba(255,255,255,1)';
+			ctx.fillRect(1, 1, canvs.width - 2, canvs.height - 2);	 	
+		}
 		
 		ctx.fillStyle = '#222222';
 		ctx.textAlign = "center";
@@ -115,6 +136,66 @@ class MyNoteMarkerSprite
 		scene.remove(sprite);
 		disposeNode(sprite);		
 	}
+
+
+
+	//----
+	
+	mousedown = ({event, obj}) =>
+	{
+		this.isDown = false;
+		this.isMove = false;	
+		
+		this.actObj = obj;
+		
+		planeMath.position.set( 0, obj.position.y, 0 );
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld();
+		
+		const intersects = rayIntersect(event, planeMath, 'one');
+		if (intersects.length === 0) return;
+		this.offset = intersects[0].point;		
+
+		const point = this.getPointFromSprite({sprite: obj});
+		myNoteMarker.activateNoteMarker({obj: point});
+		
+		this.isDown = true;
+
+		return this.actObj;
+	}	
+	
+	
+	mousemove = (event) =>
+	{
+		if (!this.isDown) return;
+		this.isMove = true;
+		
+		const obj = this.actObj;	
+		
+		const intersects = rayIntersect(event, planeMath, 'one');
+		if (intersects.length === 0) return;
+
+		const offset = new THREE.Vector3().subVectors(intersects[0].point, this.offset);
+		this.offset = intersects[0].point;		
+		
+		offset.y = 0;		
+		
+		obj.position.add( offset );
+
+		const point = this.getPointFromSprite({sprite: obj});
+		point.position.add( offset );
+		
+		myNoteMarker.upGeometryLine({point});		
+	}	
+	
+	mouseup = () =>
+	{
+		const obj = this.actObj;
+		const isDown = this.isDown;
+		const isMove = this.isMove;
+		
+		this.clearPoint();		
+	}	
 }
 
 

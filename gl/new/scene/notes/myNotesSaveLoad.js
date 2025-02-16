@@ -22,7 +22,11 @@ class MyNotesSaveLoad
 			if(tag === 'noteMarker')
 			{
 				myNoteMarker.deleteNoteMarker({obj: dataNotes[i].points[0]});
-			}			
+			}
+			if(tag === 'noteText')
+			{
+				myNoteText.deleteNoteText({obj: dataNotes[i].points[0]});
+			}				
 		}	
 	}
 	
@@ -73,6 +77,10 @@ class MyNotesSaveLoad
 				{
 					point = myNoteMarker.crPoint({pos: new THREE.Vector3(pos.x, pos.y, pos.z)});
 				}
+				if(tag === 'noteText')
+				{
+					point = myNoteText.crPoint({pos: new THREE.Vector3(pos.x, pos.y, pos.z)});
+				}
 				
 				if(point) points.push(point);
 			}
@@ -102,6 +110,13 @@ class MyNotesSaveLoad
 					structure = myNoteMarker.getStructure({obj: points[0]});
 				}				
 
+				if(tag === 'noteText')
+				{
+					myNoteText.crLine({points});
+					myNoteText.upGeometryLine({point: points[0]});
+					structure = myNoteText.getStructure({obj: points[0]});
+				}
+				
 				if(structure)
 				{
 					myNotes.addDataNote({data: structure});

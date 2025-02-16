@@ -347,7 +347,9 @@ function clickMouseActive(cdm)
 		else if( tag == 'noteRulerPoint' && camera == cameraTop  ) { clickO.move = myNoteRuler.mousedown({event, obj}); }
 		else if ( tag == 'noteRoulettePoint' && camera == cameraTop  ) { clickO.move = myNoteRoulette.mousedown({event, obj}); }
 		else if ( tag == 'noteMarkerPoint' && camera == cameraTop  ) { clickO.move = myNoteMarker.mousedown({event, obj}); }
+		else if ( tag == 'noteMarkerSprite' && camera == cameraTop  ) { clickO.move = myNoteMarkerSprite.mousedown({event, obj}); }
 		else if ( tag == 'noteTextPoint' && camera == cameraTop  ) { clickO.move = myNoteText.mousedown({event, obj}); }
+		else if ( tag == 'noteTextSprite' && camera == cameraTop  ) { clickO.move = myNoteTextSprite.mousedown({event, obj}); }
 		else if( tag == 'arrowContourWf' && camera == cameraTop ) { clickO.move = myGeneratorWFToolP.mousedown({event, obj}); }
 		else { flag = false; }
 	}
@@ -459,7 +461,9 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'noteRulerPoint' ) { myNoteRuler.mousemove( event ); }
 		else if ( tag == 'noteRoulettePoint' ) { myNoteRoulette.mousemove( event ); }
 		else if ( tag == 'noteMarkerPoint' ) { myNoteMarker.mousemove( event ); }
+		else if ( tag == 'noteMarkerSprite' ) { myNoteMarkerSprite.mousemove( event ); }
 		else if ( tag == 'noteTextPoint' ) { myNoteText.mousemove( event ); }
+		else if ( tag == 'noteTextSprite' ) { myNoteTextSprite.mousemove( event ); }
 		else if ( tag == 'arrowContourWf' ) { myGeneratorWFToolP.mousemove(event); }
 	}
 	else 

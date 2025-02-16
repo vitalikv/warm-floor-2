@@ -2,7 +2,11 @@
 // sprite для текста
 class MyNoteTextSprite
 {
-
+	isDown = false;
+	isMove = false;
+	offset = new THREE.Vector3();	
+	actObj = null;
+	
 	
 	// создание sprite
 	crSprite({point, text = '0', sizeText = '85', geometry = infProject.geometry.labelWall}) 
@@ -31,10 +35,11 @@ class MyNoteTextSprite
 		const texture = new THREE.Texture(canvas);
 		texture.needsUpdate = true;	
 		
-		const material = new THREE.MeshBasicMaterial({map: texture, transparent: true, opacity: 1, depthTest: false});		
+		const material = new THREE.MeshBasicMaterial({map: texture, transparent: true, opacity: 1});		
 		
 		const sprite = new THREE.Mesh(geometry, material);
-		sprite.userData = { point };		
+		sprite.userData = { point };
+		sprite.userData.tag = 'noteTextSprite';		
 		sprite.visible = true;
 		sprite.renderOrder = 1.1;
 		scene.add( sprite );
@@ -132,6 +137,66 @@ class MyNoteTextSprite
 		scene.remove(sprite);
 		disposeNode(sprite);		
 	}
+
+
+
+	//----
+	
+	mousedown = ({event, obj}) =>
+	{
+		this.isDown = false;
+		this.isMove = false;	
+		
+		this.actObj = obj;
+		
+		planeMath.position.set( 0, obj.position.y, 0 );
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld();
+		
+		const intersects = rayIntersect(event, planeMath, 'one');
+		if (intersects.length === 0) return;
+		this.offset = intersects[0].point;		
+
+		const point = this.getPointFromSprite({sprite: obj});
+		myNoteText.activateNoteText({obj: point});
+		
+		this.isDown = true;
+
+		return this.actObj;
+	}	
+	
+	
+	mousemove = (event) =>
+	{
+		if (!this.isDown) return;
+		this.isMove = true;
+		
+		const obj = this.actObj;	
+		
+		const intersects = rayIntersect(event, planeMath, 'one');
+		if (intersects.length === 0) return;
+
+		const offset = new THREE.Vector3().subVectors(intersects[0].point, this.offset);
+		this.offset = intersects[0].point;		
+		
+		offset.y = 0;		
+		
+		obj.position.add( offset );
+
+		const point = this.getPointFromSprite({sprite: obj});
+		point.position.add( offset );
+		
+		myNoteText.upGeometryLine({point});		
+	}	
+	
+	mouseup = () =>
+	{
+		const obj = this.actObj;
+		const isDown = this.isDown;
+		const isMove = this.isMove;
+		
+		this.clearPoint();		
+	}	
 }
 
 

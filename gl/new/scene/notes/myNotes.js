@@ -40,13 +40,19 @@ class MyNotes
 	{
 		let rayhit = null;
 		
-		const arr = [];
+		const points = [];
+		const sprites = [];
 		for ( let i = 0; i < this.dataNotes.length; i++ )
 		{
-			arr.push(...this.dataNotes[i].points);			
+			points.push(...this.dataNotes[i].points);
+
+			if(this.dataNotes[i].tag === 'noteMarker' || this.dataNotes[i].tag === 'noteText')
+			{
+				sprites.push(this.dataNotes[i].sprite);
+			}
 		}		
 		
-		const ray = rayIntersect( event, arr, 'arr' );
+		const ray = rayIntersect( event, [...points, ...sprites], 'arr' );
 		if(ray.length > 0) { rayhit = ray[0]; }
 
 		return rayhit;

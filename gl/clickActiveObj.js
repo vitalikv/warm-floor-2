@@ -188,7 +188,17 @@ function objDeActiveColor_2D()
 	else if(o.userData.tag == 'noteRulerPoint'){ myNoteRuler.deActivateNoteRuler({obj: o}); }
 	else if(o.userData.tag == 'noteRoulettePoint'){ myNoteRoulette.deActivateNoteRoulette({obj: o}); }
 	else if(o.userData.tag == 'noteMarkerPoint'){ myNoteMarker.deActivateNoteMarker({obj: o}); }
+	else if(o.userData.tag == 'noteMarkerSprite')
+	{ 
+		const point = myNoteMarkerSprite.getPointFromSprite({sprite: o});
+		myNoteMarker.deActivateNoteMarker({obj: point}); 
+	}
 	else if(o.userData.tag == 'noteTextPoint'){ myNoteText.deActivateNoteText({obj: o}); }
+	else if(o.userData.tag == 'noteTextSprite')
+	{ 
+		const point = myNoteTextSprite.getPointFromSprite({sprite: o});
+		myNoteText.deActivateNoteText({obj: point}); 
+	}	
 	
 	if(clickO.hover == clickO.last_obj) { clickO.hover = null; }
 } 
