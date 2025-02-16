@@ -1760,6 +1760,9 @@ let myNoteRouletteSprite;
 let myNoteMarker;
 let myNoteMarkerTool;
 let myNoteMarkerSprite;
+let myNoteText;
+let myNoteTextTool;
+let myNoteTextSprite;
 let myNotesSaveLoad;
 let myGeneratorWF;
 let myGeneratorWFToolP;
@@ -1813,6 +1816,9 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myNoteMarker = new MyNoteMarker();
 	myNoteMarkerTool = new MyNoteMarkerTool();
 	myNoteMarkerSprite = new MyNoteMarkerSprite();
+	myNoteText = new MyNoteText();
+	myNoteTextTool = new MyNoteTextTool();
+	myNoteTextSprite = new MyNoteTextSprite();
 	myNotesSaveLoad = new MyNotesSaveLoad();
 	
 	myGeneratorWF = new MyGeneratorWF();	

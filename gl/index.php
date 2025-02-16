@@ -120,6 +120,9 @@
 	<script src="<?=$path?>new/scene/notes/marker/myNoteMarker.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/marker/myNoteMarkerTool.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/marker/myNoteMarkerSprite.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/text/myNoteText.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/text/myNoteTextTool.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>new/scene/notes/text/myNoteTextSprite.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>new/scene/notes/myNotesSaveLoad.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>new/scene/generatorWF/myGeneratorWF.js?<?=$vrs?>"></script>	

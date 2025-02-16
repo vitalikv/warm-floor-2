@@ -29,6 +29,7 @@ function detectDeleteObj()
 	else if ( tag == 'noteRulerPoint' ) { myNoteRuler.deleteNoteRuler({obj}); }
 	else if ( tag == 'noteRoulettePoint' ) { myNoteRoulette.deleteNoteRoulette({obj}); }
 	else if ( tag == 'noteMarkerPoint' ) { myNoteMarker.deleteNoteMarker({obj}); }
+	else if ( tag == 'noteTextPoint' ) { myNoteText.deleteNoteText({obj}); }
 	
 	clickO = resetPop.clickO();
 	

@@ -20,6 +20,7 @@ class MyNotes
 		if(lotid === 1) obj = myNoteRulerTool.crToolPoint({pos, event});
 		if(lotid === 2) obj = myNoteRouletteTool.crToolPoint({pos, event});
 		if(lotid === 3) obj = myNoteMarkerTool.crToolPoint({pos, event});
+		if(lotid === 4) obj = myNoteTextTool.crToolPoint({pos, event});
 		
 		return obj;
 	}
