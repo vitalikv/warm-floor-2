@@ -56,6 +56,7 @@ class MyNoteMarker
 			points[i].userData.points = points;
 		}
 		
+		points[1].visible = false;	// делаем вторую точку невидемой
 		this.changeGeometryPoint({point: points[0], type: 'cone'});	// заменяем geometry точки на стрелку
 		
 		this.setRotCone({points});

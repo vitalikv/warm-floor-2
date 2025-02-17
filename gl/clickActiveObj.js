@@ -193,7 +193,6 @@ function objDeActiveColor_2D()
 		const point = myNoteMarkerSprite.getPointFromSprite({sprite: o});
 		myNoteMarker.deActivateNoteMarker({obj: point}); 
 	}
-	else if(o.userData.tag == 'noteTextPoint'){ myNoteText.deActivateNoteText({obj: o}); }
 	else if(o.userData.tag == 'noteTextSprite')
 	{ 
 		const point = myNoteTextSprite.getPointFromSprite({sprite: o});

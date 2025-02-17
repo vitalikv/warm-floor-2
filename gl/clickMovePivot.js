@@ -250,10 +250,24 @@ function movePivot( event )
 		{
 			myNoteMarker.upGeometryLine({point: obj});
 		}
-		
-		if(obj.userData.tag === 'noteTextPoint')
+
+		if(obj.userData.tag === 'noteMarkerSprite')
 		{
-			myNoteText.upGeometryLine({point: obj});
+			const point = myNoteMarkerSprite.getPointFromSprite({sprite: obj});
+			point.position.add( pos2 );				
+			myNoteMarker.upGeometryLine({point});
+		}
+		
+		if(obj.userData.tag === 'noteTextSprite')
+		{
+			const point = myNoteTextSprite.getPointFromSprite({sprite: obj});
+			const points = myNoteText.getPointsFromPoint({point});
+			
+			for ( let i = 0; i < points.length; i++ )
+			{
+				points[i].position.add( pos2 );
+			}			
+			myNoteText.upGeometryLine({point});
 		}		
 	}
 		

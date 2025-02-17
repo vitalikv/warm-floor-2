@@ -348,7 +348,6 @@ function clickMouseActive(cdm)
 		else if ( tag == 'noteRoulettePoint' && camera == cameraTop  ) { clickO.move = myNoteRoulette.mousedown({event, obj}); }
 		else if ( tag == 'noteMarkerPoint' && camera == cameraTop  ) { clickO.move = myNoteMarker.mousedown({event, obj}); }
 		else if ( tag == 'noteMarkerSprite' && camera == cameraTop  ) { clickO.move = myNoteMarkerSprite.mousedown({event, obj}); }
-		else if ( tag == 'noteTextPoint' && camera == cameraTop  ) { clickO.move = myNoteText.mousedown({event, obj}); }
 		else if ( tag == 'noteTextSprite' && camera == cameraTop  ) { clickO.move = myNoteTextSprite.mousedown({event, obj}); }
 		else if( tag == 'arrowContourWf' && camera == cameraTop ) { clickO.move = myGeneratorWFToolP.mousedown({event, obj}); }
 		else { flag = false; }
@@ -357,10 +356,11 @@ function clickMouseActive(cdm)
 	{		
 		if ( tag == 'wall' && camera == camera3D ) {  }
 		else if ( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, rayhit ); }
-		else if ( tag == 'noteRulerPoint' && camera == camera3D  ) { clickO.move = myNoteRuler.mousedown({event, obj}); setPivotOnObj({obj}); }
-		else if ( tag == 'noteRoulettePoint' && camera == camera3D  ) { clickO.move = myNoteRoulette.mousedown({event, obj}); setPivotOnObj({obj}); }
-		else if ( tag == 'noteMarkerPoint' && camera == camera3D  ) { clickO.move = myNoteMarker.mousedown({event, obj}); setPivotOnObj({obj}); }
-		else if ( tag == 'noteTextPoint' && camera == camera3D  ) { clickO.move = myNoteText.mousedown({event, obj}); setPivotOnObj({obj}); }
+		else if ( tag == 'noteRulerPoint' && camera == camera3D  ) { myNoteRuler.mousedown({event, obj}); setPivotOnObj({obj}); }
+		else if ( tag == 'noteRoulettePoint' && camera == camera3D  ) { myNoteRoulette.mousedown({event, obj}); setPivotOnObj({obj}); }
+		else if ( tag == 'noteMarkerPoint' && camera == camera3D  ) { myNoteMarker.mousedown({event, obj}); setPivotOnObj({obj}); }
+		else if ( tag == 'noteMarkerSprite' && camera == camera3D  ) { myNoteMarkerSprite.mousedown({event, obj}); setPivotOnObj({obj}); }
+		else if ( tag == 'noteTextSprite' && camera == camera3D  ) { myNoteTextSprite.mousedown({event, obj}); setPivotOnObj({obj}); }
 		else { flag = false; }
 	}	
 	else 
@@ -462,7 +462,6 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'noteRoulettePoint' ) { myNoteRoulette.mousemove( event ); }
 		else if ( tag == 'noteMarkerPoint' ) { myNoteMarker.mousemove( event ); }
 		else if ( tag == 'noteMarkerSprite' ) { myNoteMarkerSprite.mousemove( event ); }
-		else if ( tag == 'noteTextPoint' ) { myNoteText.mousemove( event ); }
 		else if ( tag == 'noteTextSprite' ) { myNoteTextSprite.mousemove( event ); }
 		else if ( tag == 'arrowContourWf' ) { myGeneratorWFToolP.mousemove(event); }
 	}
@@ -634,7 +633,17 @@ function hideMenuObjUI_3D( o )
 				hidePivotGizmo();				
 			}
 		}
-		if(o.userData.tag === 'noteTextPoint')
+		if(o.userData.tag === 'noteMarkerSprite')
+		{
+			const pivot = infProject.tools.pivot;
+			
+			if(!(clickO.rayhit && clickO.rayhit.object.userData.tag === 'pivot' && pivot.userData.pivot.obj === clickO.last_obj))
+			{
+				myNoteMarker.deActivateNoteMarker({obj: o}); 
+				hidePivotGizmo();				
+			}
+		}		
+		if(o.userData.tag === 'noteTextSprite')
 		{
 			const pivot = infProject.tools.pivot;
 			

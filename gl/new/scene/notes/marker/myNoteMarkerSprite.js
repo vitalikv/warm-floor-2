@@ -35,13 +35,12 @@ class MyNoteMarkerSprite
 		const texture = new THREE.Texture(canvas);
 		texture.needsUpdate = true;	
 		
-		const material = new THREE.MeshBasicMaterial({map: texture, transparent: true, opacity: 1, depthTest: false});		
+		const material = new THREE.MeshBasicMaterial({map: texture});		
 		
 		const sprite = new THREE.Mesh(geometry, material);
 		sprite.userData = { point };
 		sprite.userData.tag = 'noteMarkerSprite';
 		sprite.visible = true;
-		sprite.renderOrder = 1.1;
 		scene.add( sprite );
 		
 		return sprite;
@@ -65,7 +64,7 @@ class MyNoteMarkerSprite
 	{
 		const point = this.getPointFromSprite({sprite});
 		const pos = point.position.clone();
-		sprite.position.copy(pos.add(new THREE.Vector3(0, 0, -0.1)));		
+		sprite.position.copy(pos.add(new THREE.Vector3(0, 0.01, -0.1)));		
 	}
 	
 	

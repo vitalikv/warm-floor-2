@@ -54,11 +54,8 @@ class MyNoteText
 		{				
 			points[i].userData.line = line;
 			points[i].userData.points = points;
-			
-			this.changeGeometryPoint({point: points[i], type: 'cone'});	// заменяем geometry точки на стрелку
 		}
-		
-		this.setRotCone({points});		
+				
 		
 		const sprite = myNoteTextSprite.show({points});
 		line.userData.sprite = sprite;
@@ -84,23 +81,10 @@ class MyNoteText
 		line.geometry.dispose();
 		line.geometry = geometry;
 		
-		this.setRotCone({points});
-		
 		const sprite = myNoteTextSprite.getSpriteFromPoint({point});
 		if(sprite) myNoteTextSprite.upSprite({sprite});		
 	}
 
-
-	// поворачиваем конусы(стерлки) с учетом расположения линии
-	setRotCone({points})
-	{
-		const p1 = points[0];
-		const p2 = points[points.length - 1];
-		
-		p1.lookAt(p2.position);
-		p2.lookAt(p1.position);
-	}
-	
 
 	// получаем массив точек из точки
 	getPointsFromPoint({point})
@@ -230,19 +214,6 @@ class MyNoteText
 	}
 	
 
-	// заменяем geometry точки на точку или стрелку
-	changeGeometryPoint({point, type = 'cone'})
-	{
-		if(type === 'cone')
-		{
-			point.geometry = myNotesInstance.geomCone;
-		}
-		if(type === 'point')
-		{
-			point.geometry = myNotesInstance.geomPoint;
-		}		
-	}
-	
 	
 	deleteNoteText({obj})
 	{

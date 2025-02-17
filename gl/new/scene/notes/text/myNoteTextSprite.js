@@ -35,13 +35,12 @@ class MyNoteTextSprite
 		const texture = new THREE.Texture(canvas);
 		texture.needsUpdate = true;	
 		
-		const material = new THREE.MeshBasicMaterial({map: texture, transparent: true, opacity: 1});		
+		const material = new THREE.MeshBasicMaterial({map: texture});		
 		
 		const sprite = new THREE.Mesh(geometry, material);
 		sprite.userData = { point };
 		sprite.userData.tag = 'noteTextSprite';		
 		sprite.visible = true;
-		sprite.renderOrder = 1.1;
 		scene.add( sprite );
 		
 		return sprite;
@@ -184,7 +183,12 @@ class MyNoteTextSprite
 		obj.position.add( offset );
 
 		const point = this.getPointFromSprite({sprite: obj});
-		point.position.add( offset );
+		const points = myNoteText.getPointsFromPoint({point});
+		
+		for ( let i = 0; i < points.length; i++ )
+		{
+			points[i].position.add( offset );
+		}		
 		
 		myNoteText.upGeometryLine({point});		
 	}	
