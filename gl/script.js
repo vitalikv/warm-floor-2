@@ -1670,7 +1670,14 @@ document.body.addEventListener("keydown", function (e)
 	if(clickO.keys[18] && e.keyCode == 86) { console.log(clickO); }  		// alt + v
 } );
 
-document.body.addEventListener("keydown", function (e) { clickO.keys[e.keyCode] = true; });
+document.body.addEventListener("keydown", function (e) 
+{ 
+	if(document.activeElement === document.body)
+	{
+		clickO.keys[e.keyCode] = true; 
+	}	
+});
+
 document.body.addEventListener("keyup", function (e) { clickO.keys[e.keyCode] = false; });
 
 
@@ -1760,9 +1767,11 @@ let myNoteRouletteSprite;
 let myNoteMarker;
 let myNoteMarkerTool;
 let myNoteMarkerSprite;
+let myNoteMarkerInput;
 let myNoteText;
 let myNoteTextTool;
 let myNoteTextSprite;
+let myNoteTextInput;
 let myNotesSaveLoad;
 let myGeneratorWF;
 let myGeneratorWFToolP;
@@ -1816,9 +1825,11 @@ document.addEventListener("DOMContentLoaded", ()=>
 	myNoteMarker = new MyNoteMarker();
 	myNoteMarkerTool = new MyNoteMarkerTool();
 	myNoteMarkerSprite = new MyNoteMarkerSprite();
+	myNoteMarkerInput = new MyNoteMarkerInput();
 	myNoteText = new MyNoteText();
 	myNoteTextTool = new MyNoteTextTool();
 	myNoteTextSprite = new MyNoteTextSprite();
+	myNoteTextInput = new MyNoteTextInput();
 	myNotesSaveLoad = new MyNotesSaveLoad();
 	
 	myGeneratorWF = new MyGeneratorWF();	

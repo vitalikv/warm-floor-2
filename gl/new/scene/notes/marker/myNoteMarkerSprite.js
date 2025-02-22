@@ -9,7 +9,7 @@ class MyNoteMarkerSprite
 	
 	
 	// создание sprite
-	crSprite({point, text = '0', sizeText = '85', geometry = infProject.geometry.labelWall}) 
+	crSprite({point, text = '0', sizeText = '85', borderColor = 'rgba(0,0,0,1)', geometry = infProject.geometry.labelWall}) 
 	{	
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
@@ -21,7 +21,7 @@ class MyNoteMarkerSprite
 
 		if(1 === 1)
 		{
-			ctx.fillStyle = 'rgba(0,0,0,1)';
+			ctx.fillStyle = borderColor;
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 			ctx.fillStyle = 'rgba(255,255,255,1)';
 			ctx.fillRect(1, 1, canvas.width - 2, canvas.height - 2);	 	
@@ -40,7 +40,9 @@ class MyNoteMarkerSprite
 		const sprite = new THREE.Mesh(geometry, material);
 		sprite.userData = { point };
 		sprite.userData.tag = 'noteMarkerSprite';
-		sprite.visible = true;
+		sprite.userData.input = null;
+		sprite.userData.text = text;		
+		sprite.visible = true; 
 		scene.add( sprite );
 		
 		return sprite;
@@ -71,12 +73,12 @@ class MyNoteMarkerSprite
 	// обвноляем всем sprites изображение с текстом
 	upSpriteText({sprite})
 	{		
-		this.upCanvasSprite({sprite, text: 'dist'});		
+		this.upCanvasSprite({sprite});		
 	}
 	
 	
 	// меняем изображение на canvas
-	upCanvasSprite({sprite, text, sizeText = '55'})  
+	upCanvasSprite({sprite, text = 'dist', sizeText = '55', borderColor = 'rgba(0,0,0,1)'})  
 	{		
 		const canvs = sprite.material.map.image; 
 		const ctx = canvs.getContext("2d");
@@ -86,7 +88,7 @@ class MyNoteMarkerSprite
 
 		if(1 === 1)
 		{
-			ctx.fillStyle = 'rgba(0,0,0,1)';
+			ctx.fillStyle = borderColor;
 			ctx.fillRect(0, 0, canvs.width, canvs.height);
 			ctx.fillStyle = 'rgba(255,255,255,1)';
 			ctx.fillRect(1, 1, canvs.width - 2, canvs.height - 2);	 	
@@ -95,7 +97,7 @@ class MyNoteMarkerSprite
 		ctx.fillStyle = '#222222';
 		ctx.textAlign = "center";
 		ctx.textBaseline = "middle";
-		ctx.fillText(text + ' м', canvs.width / 2, canvs.height / 2 );
+		ctx.fillText(myNoteMarkerInput.getTextFromSprite({sprite}), canvs.width / 2, canvs.height / 2 );
 		
 		sprite.material.map.needsUpdate = true;
 	}
@@ -132,12 +134,27 @@ class MyNoteMarkerSprite
 		
 		if(!sprite) return;
 		
+		myNoteMarkerInput.deleteInputSprite({sprite});
+		
 		scene.remove(sprite);
 		disposeNode(sprite);		
 	}
 
+	
+	// при активации меняем цвет обводки sprite
+	activateSpriteMarker({point})
+	{
+		const sprite = this.getSpriteFromPoint({point});
+		if(sprite) this.upCanvasSprite({sprite, borderColor: '#ff0000'});
+	}
 
-
+	deActivateSpriteMarker({point})
+	{
+		const sprite = this.getSpriteFromPoint({point});
+		if(sprite) this.upCanvasSprite({sprite});		
+	}
+	
+	
 	//----
 	
 	mousedown = ({event, obj}) =>
@@ -159,6 +176,8 @@ class MyNoteMarkerSprite
 		myNoteMarker.activateNoteMarker({obj: point});
 		
 		this.isDown = true;
+		
+		myNoteMarkerInput.crInputHtml({event, sprite: obj});
 
 		return this.actObj;
 	}	

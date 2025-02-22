@@ -42,7 +42,8 @@ class MyNoteText
 			const geometry = new THREE.Geometry();
 			geometry.vertices = arrP;
 	
-			line = new THREE.Line( geometry, myNotesInstance.matDef.clone() );	
+			line = new THREE.Line( geometry, myNotesInstance.matDef.clone() );
+			line.visible = false;
 			scene.add( line );					
 		}
 		else
@@ -54,6 +55,7 @@ class MyNoteText
 		{				
 			points[i].userData.line = line;
 			points[i].userData.points = points;
+			points[i].visible = false;
 		}
 				
 		
@@ -170,11 +172,18 @@ class MyNoteText
 	
 	activateNoteText({obj})
 	{
+		myNoteTextSprite.activateSprite({point: obj});
+		
 		this.setColorNoteText({obj, color: myNotesInstance.actColor});
 	}
 	
 	deActivateNoteText({obj})
 	{
+		myNoteTextSprite.deActivateSprite({point: obj});
+		
+		const sprite = myNoteTextSprite.getSpriteFromPoint({point: obj});
+		if(sprite) myNoteTextInput.deleteInputSprite({sprite});
+		 
 		this.setColorNoteText({obj, color: myNotesInstance.defColor});
 	}	
 	

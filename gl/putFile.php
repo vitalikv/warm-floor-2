@@ -67,9 +67,11 @@ new/scene/notes/roulette/myNoteRouletteSprite.js
 new/scene/notes/marker/myNoteMarker.js
 new/scene/notes/marker/myNoteMarkerTool.js
 new/scene/notes/marker/myNoteMarkerSprite.js
+new/scene/notes/marker/myNoteMarkerInput.js
 new/scene/notes/text/myNoteText.js
 new/scene/notes/text/myNoteTextTool.js
 new/scene/notes/text/myNoteTextSprite.js
+new/scene/notes/text/myNoteTextInput.js
 new/scene/notes/myNotesSaveLoad.js
 new/scene/generatorWF/myGeneratorWF.js
 new/scene/generatorWF/myGeneratorWFToolP.js

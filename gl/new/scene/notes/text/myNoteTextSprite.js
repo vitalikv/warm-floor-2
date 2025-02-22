@@ -9,7 +9,7 @@ class MyNoteTextSprite
 	
 	
 	// создание sprite
-	crSprite({point, text = '0', sizeText = '85', geometry = infProject.geometry.labelWall}) 
+	crSprite({point, text = 'test text', sizeText = '85', borderColor = 'rgba(0,0,0,1)', geometry = infProject.geometry.labelWall}) 
 	{	
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
@@ -21,7 +21,7 @@ class MyNoteTextSprite
 
 		if(1 === 1)
 		{
-			ctx.fillStyle = 'rgba(0,0,0,1)';
+			ctx.fillStyle = borderColor;
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 			ctx.fillStyle = 'rgba(255,255,255,1)';
 			ctx.fillRect(1, 1, canvas.width - 2, canvas.height - 2);	 	
@@ -39,7 +39,9 @@ class MyNoteTextSprite
 		
 		const sprite = new THREE.Mesh(geometry, material);
 		sprite.userData = { point };
-		sprite.userData.tag = 'noteTextSprite';		
+		sprite.userData.tag = 'noteTextSprite';
+		sprite.userData.input = null;
+		sprite.userData.text = text;
 		sprite.visible = true;
 		scene.add( sprite );
 		
@@ -63,7 +65,7 @@ class MyNoteTextSprite
 	setPosSprite({sprite})
 	{
 		const point = this.getPointFromSprite({sprite});
-		console.log(sprite.userData);
+		
 		const pos = point.position.clone();
 		sprite.position.copy(pos.add(new THREE.Vector3(0, 0, -0.1)));		
 	}
@@ -72,12 +74,12 @@ class MyNoteTextSprite
 	// обвноляем всем sprites изображение с текстом
 	upSpriteText({sprite})
 	{		
-		this.upCanvasSprite({sprite, text: 'dist'});		
+		this.upCanvasSprite({sprite});		
 	}
 	
 	
 	// меняем изображение на canvas
-	upCanvasSprite({sprite, text, sizeText = '55'})  
+	upCanvasSprite({sprite, sizeText = '55', borderColor = 'rgba(0,0,0,1)'})  
 	{		
 		const canvs = sprite.material.map.image; 
 		const ctx = canvs.getContext("2d");
@@ -87,7 +89,7 @@ class MyNoteTextSprite
 
 		if(1 === 1)
 		{
-			ctx.fillStyle = 'rgba(0,0,0,1)';
+			ctx.fillStyle = borderColor;
 			ctx.fillRect(0, 0, canvs.width, canvs.height);
 			ctx.fillStyle = 'rgba(255,255,255,1)';
 			ctx.fillRect(1, 1, canvs.width - 2, canvs.height - 2);	 	
@@ -96,7 +98,7 @@ class MyNoteTextSprite
 		ctx.fillStyle = '#222222';
 		ctx.textAlign = "center";
 		ctx.textBaseline = "middle";
-		ctx.fillText(text + ' м', canvs.width / 2, canvs.height / 2 );
+		ctx.fillText(myNoteTextInput.getTextFromSprite({sprite}), canvs.width / 2, canvs.height / 2 );
 		
 		sprite.material.map.needsUpdate = true;
 	}
@@ -133,10 +135,25 @@ class MyNoteTextSprite
 		
 		if(!sprite) return;
 		
+		myNoteTextInput.deleteInputSprite({sprite});
+		
 		scene.remove(sprite);
 		disposeNode(sprite);		
 	}
 
+	
+	// при активации меняем цвет обводки sprite
+	activateSprite({point})
+	{
+		const sprite = this.getSpriteFromPoint({point});
+		if(sprite) this.upCanvasSprite({sprite, borderColor: '#ff0000'});
+	}
+
+	deActivateSprite({point})
+	{
+		const sprite = this.getSpriteFromPoint({point});
+		if(sprite) this.upCanvasSprite({sprite});		
+	}
 
 
 	//----
@@ -160,6 +177,8 @@ class MyNoteTextSprite
 		myNoteText.activateNoteText({obj: point});
 		
 		this.isDown = true;
+		
+		myNoteTextInput.crInputHtml({event, sprite: obj});
 
 		return this.actObj;
 	}	
@@ -201,6 +220,7 @@ class MyNoteTextSprite
 		
 		this.clearPoint();		
 	}	
+	
 }
 
 

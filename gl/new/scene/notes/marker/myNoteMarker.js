@@ -186,11 +186,17 @@ class MyNoteMarker
 	
 	activateNoteMarker({obj})
 	{
+		myNoteMarkerSprite.activateSpriteMarker({point: obj});
 		this.setColorNoteMarker({obj, color: myNotesInstance.actColor});
 	}
 	
 	deActivateNoteMarker({obj})
 	{
+		myNoteMarkerSprite.deActivateSpriteMarker({point: obj});
+		
+		const sprite = myNoteMarkerSprite.getSpriteFromPoint({point: obj});
+		if(sprite) myNoteMarkerInput.deleteInputSprite({sprite});
+		
 		this.setColorNoteMarker({obj, color: myNotesInstance.defColor});
 	}	
 	
