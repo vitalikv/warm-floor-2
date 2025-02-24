@@ -23,7 +23,8 @@ class MyNoteMarkerInput
 		div.style.height = 50 + 'px';
 		div.style.textAlign = 'center';
 		//div.style.fontSize = svgText.getAttribute('font-size');
-		//div.style.fontFamily = 'Gostcadkk';
+		div.style.fontFamily = 'Arial, sans-serif';
+		div.style.fontSize = '14px';
 		div.style.boxSizing = 'border-box';
 		
 		document.body.append(div);
@@ -51,7 +52,7 @@ class MyNoteMarkerInput
 				if (e2.code === 'Enter') 
 				{
 					this.setSpriteText({sprite, text: div.value});
-					myNoteMarkerSprite.upCanvasSprite({sprite});
+					myNoteMarkerSprite.upSpriteText({sprite, actBorderColor: true});
 					this.deleteInputSprite({sprite});
 					this.render();
 				}

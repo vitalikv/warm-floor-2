@@ -2,16 +2,12 @@
 // input для текста
 class MyNoteTextInput
 {
-
-
-
-
 	
 	crInputHtml({event, sprite})
 	{
 		this.deleteInputSprite({sprite});
 		
-		const div = document.createElement('input');
+		const div = document.createElement('textarea');
 		//const x = event.clientX;
 		//const y = event.clientY;
 		
@@ -23,15 +19,44 @@ class MyNoteTextInput
 		//div.style.background = 'rgb(255, 255, 255)';
 		//div.style.border = 'none';
 		div.style.outline = 'none';
-		div.style.width = 100 + 'px';
-		div.style.height = 50 + 'px';
+		div.style.width = 'auto';
+		div.style.height = 'auto';		
 		div.style.textAlign = 'center';
-		//div.style.fontSize = svgText.getAttribute('font-size');
-		//div.style.fontFamily = 'Gostcadkk';
+		div.style.fontFamily = 'Arial, sans-serif';
+		div.style.fontSize = '14px';
 		div.style.boxSizing = 'border-box';
-		
+
 		document.body.append(div);
 		
+
+		// Функция для автоматического изменения ширины и высоты textarea
+		const autoResizeTextarea =()=> 
+		{
+			// Создаем скрытый элемент span для измерения ширины текста
+			const hiddenSpan = document.createElement("span");
+			hiddenSpan.style.position = "absolute";
+			hiddenSpan.style.visibility = "hidden";
+			hiddenSpan.style.whiteSpace = "pre"; // Сохраняем пробелы и переносы
+			hiddenSpan.style.fontFamily = div.style.fontFamily;
+			hiddenSpan.style.fontSize = div.style.fontSize;
+			document.body.appendChild(hiddenSpan);	  
+
+			// Устанавливаем текст в скрытый span
+			hiddenSpan.textContent = div.value;
+
+			// Измеряем ширину текста
+			const textWidth = hiddenSpan.offsetWidth;
+
+			// Устанавливаем ширину textarea на основе ширины текста
+			div.style.width = textWidth + 20 + "px"; // +20 для отступов
+
+			// Автоматически изменяем высоту textarea
+			div.style.height = div.scrollHeight + 10 + "px";
+			
+			hiddenSpan.remove();
+		}	
+
+		autoResizeTextarea();
 		
 		const rect = div.getBoundingClientRect();
 		div.style.top = y - rect.height/2 + 'px';
@@ -48,20 +73,31 @@ class MyNoteTextInput
 		{
 			div.focus();
 			
-			div.onkeydown = (e2) => 
+			div.onkeydown = (e) => 
 			{
 				//this.fontHtmlSizeAutoAdjustToFit({ input: elem2 });
 
-				if (e2.code === 'Enter') 
+				if (e.code === 'Enter') 
 				{
-					this.setSpriteText({sprite, text: div.value});
-					myNoteTextSprite.upCanvasSprite({sprite});
-					this.deleteInputSprite({sprite});
-					this.render();
+					// если зажат shift, то выполняем перенос строки
+					if (e.shiftKey) 
+					{
+
+					}
+					else
+					{
+						e.preventDefault(); // Отменяем стандартное поведение
+						
+						this.setSpriteText({sprite, text: div.value});
+						myNoteTextSprite.upSpriteText({sprite, actBorderColor: true});
+						this.deleteInputSprite({sprite});
+						this.render();						
+					}
+					
 				}
 			};
 
-			div.onblur = (e2) => 
+			div.onblur = (e) => 
 			{
 				this.deleteInputSprite({sprite});
 				this.render();			

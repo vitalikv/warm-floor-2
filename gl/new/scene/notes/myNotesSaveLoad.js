@@ -43,7 +43,22 @@ class MyNotesSaveLoad
 			const points = dataNotes[i].points;
 			const pos = points.map((p) => p.position);
 			
-			data.push({tag, pos});
+			const info = {tag, pos};
+			
+			if(tag === 'noteMarker')
+			{
+				const sprite = dataNotes[i].sprite;
+				const text = myNoteTextInput.getTextFromSprite({sprite});
+				info.text = text;				
+			}
+			if(tag === 'noteText')
+			{
+				const sprite = dataNotes[i].sprite;
+				const text = myNoteMarkerInput.getTextFromSprite({sprite});
+				info.text = text;
+			}			
+			
+			data.push(info);
 		}
 		
 		return data;		
@@ -107,13 +122,31 @@ class MyNotesSaveLoad
 				{
 					myNoteMarker.crLine({points});
 					myNoteMarker.upGeometryLine({point: points[0]});
-					structure = myNoteMarker.getStructure({obj: points[0]});
+					
+					const sprite = myNoteMarkerSprite.getSpriteFromPoint({point: points[0]});
+					if(sprite)
+					{
+						const text = data[i].text;
+						myNoteMarkerInput.setSpriteText({sprite, text});
+						myNoteMarkerSprite.upCanvasSprite({sprite});						
+					}
+					
+					structure = myNoteMarker.getStructure({obj: points[0]}); 
 				}				
 
 				if(tag === 'noteText')
 				{
 					myNoteText.crLine({points});
 					myNoteText.upGeometryLine({point: points[0]});
+					
+					const sprite = myNoteTextSprite.getSpriteFromPoint({point: points[0]});
+					if(sprite)
+					{
+						const text = data[i].text;
+						myNoteTextInput.setSpriteText({sprite, text});
+						myNoteTextSprite.upCanvasSprite({sprite});						
+					}					
+					
 					structure = myNoteText.getStructure({obj: points[0]});
 				}
 				
