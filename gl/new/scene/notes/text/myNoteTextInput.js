@@ -12,24 +12,26 @@ class MyNoteTextInput
 		//const y = event.clientY;
 		
 		const {x, y} = this.getPosScreen({obj: sprite});
-
+		const inputSize = myNoteTextSprite.getSpriteInputSize({sprite});
+		
 		div.style.position = 'absolute';
 
 		div.value = this.getTextFromSprite({sprite});
 		//div.style.background = 'rgb(255, 255, 255)';
 		//div.style.border = 'none';
 		div.style.outline = 'none';
-		div.style.width = 'auto';
-		div.style.height = 'auto';		
+		div.style.width = inputSize.x + 'px';
+		div.style.height = inputSize.y + 'px';		 
 		div.style.textAlign = 'center';
 		div.style.fontFamily = 'Arial, sans-serif';
 		div.style.fontSize = '14px';
 		div.style.boxSizing = 'border-box';
+		div.style.overflow = 'hidden'; // прячем scroll
 
 		document.body.append(div);
 		
 
-		// Функция для автоматического изменения ширины и высоты textarea
+		// Функция для автоматического изменения ширины и высоты textarea, чтобы подстраивался под размер текста
 		const autoResizeTextarea =()=> 
 		{
 			// Создаем скрытый элемент span для измерения ширины текста
@@ -56,19 +58,17 @@ class MyNoteTextInput
 			hiddenSpan.remove();
 		}	
 
-		autoResizeTextarea();
+		//autoResizeTextarea();
 		
 		const rect = div.getBoundingClientRect();
 		div.style.top = y - rect.height/2 + 'px';
 		div.style.left = x - rect.width/2 + 'px';				
 
-		
-		
+				
 		this.setSpriteInput({sprite, input: div});
 		
 		this.eventStop({div});
 
-		
 		setTimeout(() => 
 		{
 			div.focus();
@@ -104,11 +104,66 @@ class MyNoteTextInput
 			};		
 			
 		}, 0);
-		
-	  
-				
+
+
+		// Отслеживаем изменение размера		
+		this.addEvent({div, sprite});		
 	}
 	
+	
+	// Отслеживаем изменение размера
+	addEvent({div, sprite})
+	{
+		let widthDisplay = 0;
+		let heightDisplay = 0;
+
+		let isResizing = false;
+
+		// Функция для обновления размеров
+		const updateSize = () => 
+		{
+			const width = div.offsetWidth;
+			const height = div.offsetHeight;
+			
+			myNoteTextSprite.setSpriteInputSize({sprite, size: {x: width, y: height}});
+			myNoteTextSprite.upSpriteText({sprite, actBorderColor: true});
+			
+			this.render()
+		}		
+		
+		// Начало перетаскивания
+		div.onmousedown = (e) => 
+		{
+			e.stopPropagation();
+			
+			// Проверяем, что курсор находится в области изменения размера (правый нижний угол)
+			const rect = div.getBoundingClientRect();
+			const cornerSize = 16; // Размер области перетаскивания (примерно 16x16 пикселей)
+			if (e.clientX > rect.right - cornerSize && e.clientY > rect.bottom - cornerSize) 
+			{
+				isResizing = true;
+			}
+		};
+
+		// Перетаскивание
+		div.onmousemove = (e) => 
+		{
+			e.stopPropagation();
+			
+			if (isResizing) 
+			{
+				updateSize();
+			}
+		};
+
+		// Завершение перетаскивания
+		div.onmouseup = (e) => 
+		{
+			e.stopPropagation();
+			
+			isResizing = false;
+		};		
+	}
 	
 	// получить позицию объекта из 3D на экран
 	getPosScreen({obj})

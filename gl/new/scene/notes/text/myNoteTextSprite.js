@@ -6,10 +6,15 @@ class MyNoteTextSprite
 	isMove = false;
 	offset = new THREE.Vector3();	
 	actObj = null;
+	geometryP = null;
 	
+	constructor()
+	{
+		this.geometryP = createGeometryPlan(0.25 * 2, 0.125 * 2);
+	}
 	
 	// создание sprite
-	crSprite({point, text = 'текст', sizeText = '85', borderColor = 'rgba(0,0,0,1)', geometry = infProject.geometry.labelWall}) 
+	crSprite({point, text = 'текст', sizeText = '55', borderColor = 'rgba(0,0,0,1)', geometry = this.geometryP}) 
 	{	
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
@@ -17,7 +22,7 @@ class MyNoteTextSprite
 		canvas.width = 256*2;
 		canvas.height = 256;
 		
-		ctx.font = sizeText + 'pt Arial';		
+		ctx.font = sizeText + 'px Arial';		
 
 		if(1 === 1)
 		{
@@ -41,6 +46,7 @@ class MyNoteTextSprite
 		sprite.userData = { point };
 		sprite.userData.tag = 'noteTextSprite';
 		sprite.userData.input = null;
+		sprite.userData.inputSize = { x: 140, y: 70, def: {x: 140, y: 70} };
 		sprite.userData.text = text;
 		sprite.visible = true;
 		scene.add( sprite );
@@ -100,9 +106,10 @@ class MyNoteTextSprite
 		
 		ctx.fillStyle = '#222222';
 		ctx.textAlign = "center";
-		ctx.textBaseline = "middle";
+		ctx.textBaseline = "top";
 
-		//ctx.fillText(text, canvas.width / 2, canvas.height / 2 );		старый метод, просто отображения текста
+		ctx.font = sizeText + 'px Arial';
+		//ctx.fillText(text, canvas.width / 2, canvas.height / 2 );		// старый метод, просто отображения текста
 		this.drawText({text, canvas, ctx, sizeText});
 		
 		sprite.material.map.needsUpdate = true;
@@ -113,29 +120,22 @@ class MyNoteTextSprite
 	drawText({text, canvas, ctx, sizeText}) 
 	{
 		const x = canvas.width / 2; // Центр canvas по горизонтали
-		//let y = canvas.height / 2; // Начальная координата Y (центр canvas)
-		const maxWidth = canvas.width - 20; // Максимальная ширина текста (с отступами)
-		const maxHeight = canvas.height - 20; // Максимальная высота текста (с отступами)
+		let y = 20; // Начальная координата Y (центр canvas)
+		const maxWidth = canvas.width - 10; // Максимальная ширина текста (с отступами)
+		const maxHeight = canvas.height - 10; // Максимальная высота текста (с отступами)
 
-		// Автоматически уменьшаем размер текста
-		const fontSize = this.autoResizeText({ctx, text, maxWidth, maxHeight, initialFontSize: Number(sizeText)});
+		let fontSize = Number(sizeText);
 		
-		const lineHeight = Number(fontSize) * 1.5;	// Расстояние между строками
+		const lineHeight = Number(fontSize) * 1.2;	// Расстояние между строками
 		
 		
 		// Разбиваем текст на строки по символу \n
 		const lines = text.split('\n');
-
-		// Рассчитываем общую высоту текста
-		const totalHeight = lines.length * lineHeight;
-
-    // Начинаем отрисовку с учетом центрирования по высоте
-    let y = (canvas.height - totalHeight) / 2 + lineHeight / 2; // Центрируем текст по вертикали
 	
 		// Отрисовываем каждую строку
 		lines.forEach((line) => 
 		{
-			this.wrapText(ctx, line, x, y, maxWidth, lineHeight); // Автоматический перенос текста
+			y = this.wrapText(ctx, line, x, y, maxWidth, lineHeight); // Автоматический перенос текста
 			y += lineHeight; // Увеличиваем Y для следующей строки
 		});
 	}
@@ -168,55 +168,31 @@ class MyNoteTextSprite
 
 		// Отрисовываем последнюю строку
 		ctx.fillText(line, x, y);
+		
+		return y;
 	}
 
 
-	// Функция для автоматического уменьшения размера текста canvas
-	autoResizeText({ctx, text, maxWidth, maxHeight, initialFontSize}) 
-	{
-		let fontSize = initialFontSize;
-		ctx.font = `${fontSize}px Arial`; // Устанавливаем начальный размер шрифта
-
-		// Проверяем, помещается ли текст в заданные границы
-		// Минимальный размер шрифта (10px)
-		while (fontSize > 10) 
-		{ 
-			const lines = text.split('\n'); // Разбиваем текст на строки
-			let totalHeight = 0; // Общая высота текста
-			let fits = true; // Флаг, указывающий, помещается ли текст
-
-			// Проверяем каждую строку
-			for (const line of lines) 
-			{
-				const metrics = ctx.measureText(line); // Измеряем ширину строки
-				if (metrics.width > maxWidth) 
-				{
-					fits = false; // Если строка не помещается, уменьшаем размер шрифта
-					break;
-				}
-				totalHeight += fontSize * 1.2; // Учитываем межстрочный интервал (1.2 * fontSize)
-			}
-
-			// Проверяем, помещается ли текст по высоте
-			if (totalHeight > maxHeight) 
-			{
-				fits = false;
-			}
-
-			// Если текст помещается, завершаем цикл
-			if (fits) 
-			{
-				break;
-			}
-
-			// Уменьшаем размер шрифта
-			fontSize -= 1;
-			ctx.font = `${fontSize}px Arial`;
-		}
-
-		return fontSize; // Возвращаем итоговый размер шрифта
-	}	
 	
+	getSpriteInputSize({sprite})
+	{
+		return sprite.userData.inputSize;
+	}
+	
+	setSpriteInputSize({sprite, size})
+	{
+		sprite.userData.inputSize.x = size.x;
+		sprite.userData.inputSize.y = size.y;
+		const sizeDef = sprite.userData.inputSize.def;
+		 
+		
+		sprite.scale.set(size.x/sizeDef.x, 1, size.y/sizeDef.y);
+
+		const canvas = sprite.material.map.image;
+		canvas.width = 256 * 2 * sprite.scale.x;
+		canvas.height = 256 * sprite.scale.z;
+		sprite.material.map.needsUpdate = true;
+	}	
 	
 	// получаем у sprite 2 точки между которыми он должен располагаться
 	getPointFromSprite({sprite})
@@ -332,7 +308,13 @@ class MyNoteTextSprite
 		
 		this.clearPoint();		
 	}	
-	
+
+
+	render()
+	{
+		renderCamera();
+	}
+		
 }
 
 

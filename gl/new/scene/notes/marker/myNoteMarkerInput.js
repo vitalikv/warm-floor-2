@@ -19,8 +19,8 @@ class MyNoteMarkerInput
 		//div.style.background = 'rgb(255, 255, 255)';
 		//div.style.border = 'none';
 		div.style.outline = 'none';
-		div.style.width = 100 + 'px';
-		div.style.height = 50 + 'px';
+		div.style.width = 140 + 'px';
+		div.style.height = 70 + 'px';
 		div.style.textAlign = 'center';
 		//div.style.fontSize = svgText.getAttribute('font-size');
 		div.style.fontFamily = 'Arial, sans-serif';

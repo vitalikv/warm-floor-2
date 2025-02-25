@@ -1603,6 +1603,18 @@ document.body.addEventListener( 'mousedown', onDocumentMouseDown, false );
 document.body.addEventListener( 'mousemove', onDocumentMouseMove, false );
 document.body.addEventListener( 'mouseup', onDocumentMouseUp, false );
 
+document.body.addEventListener("dblclick", (e) => {
+	if(clickO.obj && clickO.obj.userData.tag && clickO.obj.userData.tag === 'noteMarkerSprite')
+	{
+		console.log("Двойной клик сработал!", clickO.obj);
+		
+		myNoteMarkerInput.crInputHtml({event, sprite: clickO.obj});
+	}
+ 	if(clickO.obj && clickO.obj.userData.tag && clickO.obj.userData.tag === 'noteTextSprite')
+	{		
+		myNoteTextInput.crInputHtml({event, sprite: clickO.obj});
+	} 
+});
 
 document.body.addEventListener( 'touchstart', onDocumentMouseDown, false );
 document.body.addEventListener( 'touchmove', onDocumentMouseMove, false );

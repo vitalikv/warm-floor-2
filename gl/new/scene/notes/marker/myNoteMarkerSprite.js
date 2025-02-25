@@ -9,7 +9,7 @@ class MyNoteMarkerSprite
 	
 	
 	// создание sprite
-	crSprite({point, text = '', sizeText = '85', borderColor = 'rgba(0,0,0,1)', geometry = infProject.geometry.labelWall}) 
+	crSprite({point, text = '', sizeText = '55', borderColor = 'rgba(0,0,0,1)', geometry = infProject.geometry.labelWall}) 
 	{	
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
@@ -19,7 +19,7 @@ class MyNoteMarkerSprite
 		canvas.width = screenResolution * 2;
 		canvas.height = screenResolution;
 		
-		ctx.font = sizeText + 'pt Arial';		
+		ctx.font = sizeText + 'px Arial';		
 
 		if(1 === 1)
 		{
@@ -127,7 +127,7 @@ class MyNoteMarkerSprite
 	} 
 
 
-	// Функция для автоматического уменьшения размера текста canvas
+	// Функция для автоматического уменьшения размера текста canvas чтобы полностью попадал в sprite
 	autoResizeText({ctx, canvas, text, initialFontSize}) 
 	{
 		const maxWidth = canvas.width - 20; // Максимальная ширина текста (с отступами)

@@ -48,14 +48,17 @@ class MyNotesSaveLoad
 			if(tag === 'noteMarker')
 			{
 				const sprite = dataNotes[i].sprite;
-				const text = myNoteTextInput.getTextFromSprite({sprite});
+				const text = myNoteMarkerInput.getTextFromSprite({sprite});
 				info.text = text;				
 			}
 			if(tag === 'noteText')
 			{
 				const sprite = dataNotes[i].sprite;
-				const text = myNoteMarkerInput.getTextFromSprite({sprite});
+				const text = myNoteTextInput.getTextFromSprite({sprite});
+				const inputSize = myNoteTextSprite.getSpriteInputSize({sprite});
+				
 				info.text = text;
+				info.inputSize = inputSize;
 			}			
 			
 			data.push(info);
@@ -143,8 +146,11 @@ class MyNotesSaveLoad
 					if(sprite)
 					{
 						const text = data[i].text;
+						const inputSize = data[i].inputSize;
+						
+						myNoteTextSprite.setSpriteInputSize({sprite, size: {x: inputSize.x, y: inputSize.y}});
 						myNoteTextInput.setSpriteText({sprite, text});
-						myNoteTextSprite.upCanvasSprite({sprite});						
+						myNoteTextSprite.upCanvasSprite({sprite});					
 					}					
 					
 					structure = myNoteText.getStructure({obj: points[0]});
