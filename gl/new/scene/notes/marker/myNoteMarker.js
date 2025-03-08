@@ -163,7 +163,9 @@ class MyNoteMarker
 		
 		obj.position.add( offset );
 
-		this.upGeometryLine({point: obj});		
+		this.upGeometryLine({point: obj});	
+		
+		myNoteMarkerSprite.rayDetectObj({targetObj: obj});	// определяем объект на который указывает и меняем текст sprite		
 	}	
 	
 	mouseup = () =>
@@ -193,7 +195,7 @@ class MyNoteMarker
 	deActivateNoteMarker({obj})
 	{
 		myNoteMarkerSprite.deActivateSpriteMarker({point: obj});
-		
+		 
 		const sprite = myNoteMarkerSprite.getSpriteFromPoint({point: obj});
 		if(sprite) myNoteMarkerInput.deleteInputSprite({sprite});
 		

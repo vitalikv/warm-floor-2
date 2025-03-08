@@ -249,13 +249,15 @@ function movePivot( event )
 		if(obj.userData.tag === 'noteMarkerPoint')
 		{
 			myNoteMarker.upGeometryLine({point: obj});
+			
+			myNoteMarkerSprite.rayDetectObj({targetObj: obj});	// определяем объект на который указывает и меняем текст sprite
 		}
 
 		if(obj.userData.tag === 'noteMarkerSprite')
 		{
 			const point = myNoteMarkerSprite.getPointFromSprite({sprite: obj});
 			point.position.add( pos2 );				
-			myNoteMarker.upGeometryLine({point});
+			myNoteMarker.upGeometryLine({point}); 
 		}
 		
 		if(obj.userData.tag === 'noteTextSprite')

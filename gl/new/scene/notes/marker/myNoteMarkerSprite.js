@@ -68,7 +68,7 @@ class MyNoteMarkerSprite
 	{
 		const point = this.getPointFromSprite({sprite});
 		const pos = point.position.clone();
-		sprite.position.copy(pos.add(new THREE.Vector3(0, 0.01, -0.1)));		
+		sprite.position.copy(pos.add(new THREE.Vector3(0, 0.01, 0)));		
 	}
 	
 	
@@ -228,6 +228,101 @@ class MyNoteMarkerSprite
 		if(sprite) this.upSpriteText({sprite, actBorderColor: false});		
 	}
 	
+	
+	// определяем объект на который указывает targetObj и меняем текст sprite	
+	// targetObj - конус стрелки
+	rayDetectObj({targetObj})
+	{
+		const posScreen = myNoteMarkerInput.getPosScreen({obj: targetObj});
+		
+		const lines = infProject.scene.array.tube;
+		const tubes = [];
+		
+		for ( let i = 0; i < lines.length; i++ )
+		{				
+			if(lines[i].userData.wf_line.tube)
+			{
+				tubes.push(lines[i].userData.wf_line.tube);
+			}
+		}
+		
+		const arr = [];		
+		arr.push(...infProject.scene.array.door);
+		arr.push(...infProject.scene.array.window);
+		arr.push(...infProject.scene.array.wall);
+		arr.push(...infProject.scene.array.obj);		
+		arr.push(...tubes);
+		
+		let text = null;
+		 
+		const intersects = rayIntersect({clientX: posScreen.x, clientY: posScreen.y}, arr, 'arr');
+		
+		if (intersects.length > 0) 
+		{	
+			if(camera === camera3D)
+			{
+				const dist = intersects[0].point.distanceTo(targetObj.position);
+				if(dist > 0.05) return;
+			}
+			
+			const result = intersects.find(item => item.object.userData && (item.object.userData.tag === 'window' || item.object.userData.tag === 'door'));
+			
+			const obj = (result) ? result.object : intersects[0].object;
+			
+			if(obj.userData && obj.userData.tag === 'wall')
+			{
+				text = 'стена';
+			}
+			else if(obj.userData && obj.userData.tag === 'window')
+			{
+				text = 'окно';
+			}	
+			else if(obj.userData && obj.userData.tag === 'door')
+			{
+				text = 'дверь';
+			}			
+			else if(obj.userData && obj.userData.tag === 'obj')
+			{
+				text = obj.userData.obj3D.nameRus;
+			}
+			else if(obj.userData && obj.userData.wf_tube)
+			{
+				let line = null;
+				
+				for ( let i = 0; i < lines.length; i++ )
+				{				
+					if(lines[i].userData.wf_line.tube && lines[i].userData.wf_line.tube === obj)
+					{
+						line = lines[i];
+						break;
+					}
+				}
+				 
+				if(!line) return;
+				
+				const v = line.geometry.vertices;
+				let length = 0;
+				
+				for(let i = 0; i < v.length - 1; i++)
+				{
+					length += v[i].distanceTo(v[i + 1]);
+				}
+				
+				const txt1 = (line.userData.wf_line.diameter * 1000);
+				const txt2 = (Math.round(length * 100)/100) + 'м';
+				text = 'труба ' + txt1 + ' (' + txt2 + ')';				
+			}			
+		}
+		
+		
+		if(!text) return;
+
+		const sprite = this.getSpriteFromPoint({point: targetObj});
+		myNoteMarkerInput.setSpriteText({sprite, text});
+		this.upSpriteText({sprite, actBorderColor: true});			
+					
+		
+	}
 	
 	//----
 	
