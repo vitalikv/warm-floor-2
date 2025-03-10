@@ -232,6 +232,7 @@ class MyNoteMarker
 		for ( let i = 0; i < points.length; i++ )
 		{				
 			points[i].material.color = new THREE.Color(color);
+			points[i].material.depthTest = (myNotesInstance.actColor === color) ? false : true;
 		}
 		
 		structure.line.material.color = new THREE.Color(color);

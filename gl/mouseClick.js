@@ -639,7 +639,8 @@ function hideMenuObjUI_3D( o )
 			
 			if(!(clickO.rayhit && clickO.rayhit.object.userData.tag === 'pivot' && pivot.userData.pivot.obj === clickO.last_obj))
 			{
-				myNoteMarker.deActivateNoteMarker({obj: o}); 
+				const point = myNoteMarkerSprite.getPointFromSprite({sprite: o});
+				myNoteMarker.deActivateNoteMarker({obj: point}); 
 				hidePivotGizmo();				
 			}
 		}		
@@ -649,7 +650,8 @@ function hideMenuObjUI_3D( o )
 			
 			if(!(clickO.rayhit && clickO.rayhit.object.userData.tag === 'pivot' && pivot.userData.pivot.obj === clickO.last_obj))
 			{
-				myNoteText.deActivateNoteText({obj: o}); 
+				const point = myNoteTextSprite.getPointFromSprite({sprite: o});
+				myNoteText.deActivateNoteText({obj: point}); 
 				hidePivotGizmo();				
 			}
 		}		

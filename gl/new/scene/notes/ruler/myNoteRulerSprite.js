@@ -23,7 +23,7 @@ class MyNoteRulerSprite
 		const texture = new THREE.Texture(canvas);
 		texture.needsUpdate = true;	
 		
-		const material = new THREE.MeshBasicMaterial({map: texture, transparent: true, opacity: 0.5, depthTest: false});		
+		const material = new THREE.MeshBasicMaterial({map: texture, transparent: true, opacity: 1});		
 		
 		const sprite = new THREE.Mesh(geometry, material);
 		sprite.userData = { line: [points[0], points[1]] };		
