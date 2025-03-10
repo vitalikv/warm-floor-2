@@ -7,11 +7,6 @@ class MyUiPanelFloor
 	divPanel;
 	
 	
-	constructor()
-	{
-		this.init();
-	}
-	
 	// вкл отображение кнопки создания сетки
 	init()
 	{
@@ -71,11 +66,15 @@ class MyUiPanelFloor
 	
 	showPanel()
 	{
+		if(!this.activated) return;
+		
 		this.divPanel.style.display = '';
 	}
 	
 	hidePanel()
 	{
+		if(!this.activated) return;
+		
 		this.divPanel.style.display = 'none';
 	}	
 }

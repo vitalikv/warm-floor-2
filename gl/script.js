@@ -1856,10 +1856,16 @@ document.addEventListener("DOMContentLoaded", ()=>
 	{		
 		myUiBtnGrid.initEventForUser();		
 		myUiGridUserPanel.init();
-		myUiGeneratorWFPanel.init();
 		
+		myUiGeneratorWFPanel.init();		
 		myGeneratorWFToolP.init();
 	}
+	
+	// активация кнопки создание сетки по контуру помещения (так она активруется при оплаченной подписке)
+	if(window.location.hostname === 'warm-floor-2' && 1===1)
+	{		
+		myUiPanelFloor.init();
+	}	
 	
 	// показываем в правой панеле Tab выноски
 	if (window.location.hostname === 'warm-floor-2' && 1===1)
@@ -1875,8 +1881,14 @@ document.addEventListener("DOMContentLoaded", ()=>
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);
 	
-	infProject.localFile = 'fileJson-2.json';
-	loadFile({local: true, urlLocal: infProject.localFile});	
+	let local = false;
+	if (window.location.hostname === 'warm-floor-2' && 1===1)
+	{
+		infProject.localFile = 'fileJson-2.json';
+		local = true;
+	}
+	
+	loadFile({local, urlLocal: infProject.localFile});	
 });
 
 
