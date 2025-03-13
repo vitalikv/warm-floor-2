@@ -1876,7 +1876,7 @@ document.addEventListener("DOMContentLoaded", ()=>
 	
 
 	// скрываем главное меню в локальной версии
-	if (window.location.hostname === 'warm-floor-2') { myUiMainMenu.hideMenu(); } 	
+	if (window.location.hostname === 'warm-floor-2' && 1===1) { myUiMainMenu.hideMenu(); } 	
 
 	
 	infProject.scene.grid.obj = createGrid(infProject.settings.grid);

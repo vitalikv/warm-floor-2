@@ -10,6 +10,8 @@ class MyUiListProjects
 		const b_load = document.querySelector('[nameId="wm_list_load"]');
 		const b_save = document.querySelector('[nameId="wm_list_save"]');
 		
+		
+		
 		const cssInf =
 		`margin: 30px auto 0 auto;
 		width: 70%;
@@ -40,7 +42,7 @@ class MyUiListProjects
 
 
 		var arr = [];
-		var count = 2;
+		var count = 4;
 		
 		if(infProject.user.status){ if(infProject.user.status == 'admin'){ count = 5; } }
 		
@@ -57,10 +59,10 @@ class MyUiListProjects
 		justify-content: center;
 		flex-direction: column;
 		position: relative;		
-		margin: 35px;
+		margin: 25px;
 		width: 250px;	
-		height: 250px;
-		font-size: 18px;
+		height: 150px;
+		font-size: 16px;
 		color: #666;
 		text-decoration: none;
 		text-align: center;			
@@ -69,8 +71,8 @@ class MyUiListProjects
 		background:#f1f1f1;
 		cursor: pointer;`;	
 
-		const cssName = `position: absolute; top: 20px; margin: auto;`;
-		const cssBtn = `position: absolute; bottom: 10px; margin: auto; padding: 10px; border: 1px solid #b3b3b3; cursor: pointer; user-select: none;`;
+		const cssName = `position: absolute; top: 5px; margin: auto; background: rgba(255,255,255,1); border: 1px solid #b3b3b3;`;
+		const cssBtn = `position: absolute; bottom: 5px; margin: auto; padding: 10px; border: 1px solid #b3b3b3; cursor: pointer; user-select: none;`;
 		const cssImg = `display: block; width: 100%; margin: auto; -o-object-fit: contain; object-fit: contain;`;
 			
 		let html_load = '';
@@ -82,7 +84,7 @@ class MyUiListProjects
 			
 			if(arr[i].preview) 
 			{
-				prev = `<div style="padding: 15px;"><img src="${arr[i].preview}" style="${cssImg}"></div>`;			
+				prev = `<div style="margin: 5px; overflow: hidden;"><img src="${arr[i].preview}" style="${cssImg}"></div>`;			
 			}
 
 			let btn1 = `<div style="${cssName}">${arr[i].name}</div>${prev}<div class="button_gradient_1" style="${cssBtn}">сохранить</div>`;
@@ -92,6 +94,24 @@ class MyUiListProjects
 			html_load += `<div style='${css1} background: #d1d9f0;' projectId="${arr[i].id}" nameId="load_pr_1">${btn2}</div>`;
 		}	
 		
+		
+		b_load.classList.remove('window_main_menu_content_1_wrap_1');
+		b_save.classList.remove('window_main_menu_content_1_wrap_1');
+
+		const css2 =		
+		`display: grid;
+		grid-template-columns: auto auto;
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		margin-top: 30px;
+		justify-content: center;
+		align-items: center;`;
+
+		b_load.style.cssText = css2;
+		b_save.style.cssText = css2;
 		
 		b_load.innerHTML = html_load;
 		b_save.innerHTML = html_save;

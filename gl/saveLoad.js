@@ -608,16 +608,23 @@ async function loadFile({id = undefined, local = undefined, urlLocal = 'fileJson
 		});		
 		data = await response.json();					
 	}
-	else if(id)	// загрузка json из бд
+	else if(id && Number(id) > 0)	// загрузка json из бд
 	{
-		const url = infProject.path + 'components/loadSql.php';		
-		const response = await fetch(url, 
+		try 
 		{
-			method: 'POST',
-			body: 'id='+id,
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },						
-		});		
-		data = await response.json();		
+			const url = infProject.path + 'components/loadSql.php';		
+			const response = await fetch(url, 
+			{
+				method: 'POST',
+				body: 'id='+id,
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },						
+			});		
+			data = await response.json();	
+		}
+		catch (error) 
+		{
+
+		}			
 	}
 	
 	if(data) loadFilePL(data);
