@@ -82,35 +82,69 @@ new/scene/generatorWF/myGeneratorWFOffsetStep.js
 uiInterface.js
 ';
 
+$path = 't/tw5.js';
+$contentOld = '';
 
-$arr = explode(".js", $list);
+// Разделяем строку по переводам строк и пробелам, удаляем пустые элементы
+$arr = preg_split("/\s+/", $list, -1, PREG_SPLIT_NO_EMPTY);
 
+// Открываем файл для записи
+$newFile = fopen($path, 'w');
 
-for ($i = 0; $i < count($arr); $i++)
-{
-	$arr[$i] = trim($arr[$i]).'.js';
+foreach ($arr as $file) {
+    // Проверяем, существует ли файл
+    if (!file_exists($file)) {
+        echo "Файл $file не найден.<br>";
+        continue;
+    }
+
+    // Читаем содержимое файла
+    $content = file_get_contents($file);
+	$contentOld .= $content;
+
+    // Удаляем console.log
+    $content = preg_replace("/console\.log\(.*?\);/s", "", $content);
+
+    // Удаляем однострочные комментарии //, но не трогаем http:// и https://
+    $content = preg_replace("/(?<!http:|https:)\/\/.*$/m", "", $content);	
+
+    // Удаляем многострочные комментарии (/* ... */)
+    $content = preg_replace('/\/\*.*?\*\//s', '', $content);	
+
+    // Переименовываем функции (пример)
+    //$content = preg_replace("/function\s+(\w+)\s*\(/", "function new_$1(", $content);
+
+    // Записываем содержимое в новый файл
+    fwrite($newFile, $content);
 }
 
-
-// Открываем файл, флаг W означает - файл открыт на запись
-$newFile = fopen('t/test.js', 'w');
-
-
-// Записываем в файл $text
-for ($i = 0; $i < count($arr)-1; $i++)
-{
-	echo $arr[$i].'<br>';
-	$file = file_get_contents($arr[$i]);
-	$file = preg_replace("|console.log\((.*)\);|i","",$file);
-	fwrite($newFile, $file);	
-}
-
-//$file2 = preg_replace('#(\/\/(.*?)(\n|$|\r|(\r\n)))|(\/\*(.*?)\*\/)#i','',$file2);	// удаляем комменты
-
-// Закрывает открытый файл
+// Закрываем файл
 fclose($newFile);
 
+echo "Файлы успешно объединены и обработаны.<br><br>";
 
-echo 11;
+getSizeFile1($contentOld);
+getSizeFile2($path);
 
+
+
+function getSizeFile1($fileContent)
+{
+	// Получаем размер содержимого в байтах
+	$fileSizeBytes = mb_strlen($fileContent, '8bit');
+
+	// Переводим размер в килобайты (1 КБ = 1024 байта)
+	$fileSizeKB = $fileSizeBytes / 1024;
+
+	// Выводим размер с округлением до двух знаков после запятой
+	echo "Размер старого файла: " . round($fileSizeKB, 2) . " КБ<br><br>";	
+}
+
+// Получаем размер записанного файла на диске
+function getSizeFile2($path)
+{
+	$fileSizeBytes = filesize($path);
+	$fileSizeKB = $fileSizeBytes / 1024;
+	echo "Размер нового файла: " . round($fileSizeKB, 2) . " КБ<br>";	
+}
 
