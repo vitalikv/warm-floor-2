@@ -161,10 +161,14 @@
 			<div class="toolbar-header">объект</div>
 			<div class="toolbar-menu">
 				<div style="margin: 10px;">
-					<div data-action ='select_pivot' class="button1">перемещение</div>
+					<div data-action ='select_pivot' class="button1">
+						<img src="<?=$path?>/img/icon/tools/pivot.svg">
+					</div>
 				</div>
 				<div style="margin: 10px;">
-					<div data-action ='select_gizmo' class="button1">вращение</div>
+					<div data-action ='select_gizmo' class="button1">
+						<img src="<?=$path?>/img/icon/tools/gizmo.svg">
+					</div>
 				</div>				
 				<div style="margin: 10px;">
 					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
