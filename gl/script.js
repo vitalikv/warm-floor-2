@@ -1180,7 +1180,7 @@ function clickButton( event )
 		}
 		else if(clickO.button == 'addNotes')
 		{
-			clickO.move = myNotes.crNotesFromBtn({lotid: clickO.lotid, pos: intersects[0].point, event});
+			clickO.move = myNotes.crNotesFromBtn({lotid: clickO.lotid, event});
 		}		
 	}
 	else if(camera == camera3D)
@@ -1188,7 +1188,11 @@ function clickButton( event )
 		if(clickO.button == 'add_lotid')
 		{
 			loadObjServer({lotid: clickO.options, cursor: true});
-		}		
+		}
+		else if(clickO.button == 'addNotes')
+		{
+			clickO.move = myNotes.crNotesFromBtn({lotid: clickO.lotid, event});
+		}			
 	}
 	else if(camera == cameraWall)
 	{
@@ -1861,9 +1865,10 @@ document.addEventListener("DOMContentLoaded", ()=>
 		myGeneratorWFToolP.init();
 	}
 	
-	// активация кнопки создание сетки по контуру помещения (так она активруется при оплаченной подписке)
+	// outline контура помещения (так она активруется при оплаченной подписке)
 	if(window.location.hostname === 'warm-floor-2' && 1===1)
-	{		
+	{	
+		myFloorActivate.init();
 		myUiPanelFloor.init();
 	}	
 	

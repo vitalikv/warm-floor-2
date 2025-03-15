@@ -11,7 +11,7 @@ class MyGridSprite
 
 
 	// создание sprite
-	crGridSprite({points, text = '0', sizeText = '85', geometry = infProject.geometry.labelWall}) 
+	crGridSprite({points, text = '0', sizeText = '35', geometry = infProject.geometry.labelWall}) 
 	{	
 		const canvs = document.createElement("canvas");
 		const ctx = canvs.getContext("2d");
@@ -29,7 +29,7 @@ class MyGridSprite
 		const texture = new THREE.Texture(canvs);
 		texture.needsUpdate = true;	
 		
-		const material = new THREE.MeshBasicMaterial({map: texture, transparent: true, opacity: 0.5, depthTest: false});		
+		const material = new THREE.MeshBasicMaterial({map: texture, transparent: true, opacity: 1});		
 		
 		const sprite = new THREE.Mesh(geometry, material);
 		sprite.userData = { line: [points[0], points[1]] };		
@@ -122,7 +122,7 @@ class MyGridSprite
 	
 	
 	// меняем изображение на canvas
-	upCanvasGridSprite({sprite, text, sizeText = '55'})  
+	upCanvasGridSprite({sprite, text, sizeText = '35'})  
 	{		
 		const canvs = sprite.material.map.image; 
 		const ctx = canvs.getContext("2d");

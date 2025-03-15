@@ -10,12 +10,17 @@ class MyNotes
 		this.posY = infProject.settings.grid.pos.y;
 	}
 	
-	
-	crNotesFromBtn({lotid, pos, event})
+	// создание выноски через кнопку в панеле
+	crNotesFromBtn({lotid, event})
 	{
 		console.log(lotid);
 		let obj = null;
-		pos = new THREE.Vector3(pos.x, this.posY, pos.z);
+		
+		planeMath.position.set(0, this.posY + 0.1, 0);
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld();
+		const intersects = rayIntersect( event, planeMath, 'one' );
+		const pos = intersects[0].point;
 		
 		if(lotid === 1) obj = myNoteRulerTool.crToolPoint({pos, event});
 		if(lotid === 2) obj = myNoteRouletteTool.crToolPoint({pos, event});

@@ -39,7 +39,8 @@ class MyUserActive
 			myUiBtnGrid.initEventForUser();
 			myUiGridUserPanel.init();
 			
-			// кнопка создания сетки по контуру помещения
+			// outline контура помещения
+			myFloorActivate.init();
 			myUiPanelFloor.init();
 			
 			// подписка заканчивается, показываем что можно оплатить (это не работает, специально отключено, потому что подписка закончилась)

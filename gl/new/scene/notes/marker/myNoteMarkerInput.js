@@ -48,7 +48,13 @@ class MyNoteMarkerInput
 			div.onkeydown = (e2) => 
 			{
 				//this.fontHtmlSizeAutoAdjustToFit({ input: elem2 });
-
+				
+				const maxLength = 30;
+				if (div.value.length > maxLength) 
+				{
+					div.value = div.value.slice(0, maxLength); // Обрезать текст
+				}
+								
 				if (e2.code === 'Enter') 
 				{
 					this.setSpriteText({sprite, text: div.value});
@@ -105,13 +111,13 @@ class MyNoteMarkerInput
 	// сохраняем в текст что написано на sprite
 	setSpriteText({sprite, text})
 	{
-		sprite.userData.text = text;
+		sprite.userData.text = encodeURIComponent(text);
 	}
 		
 	// получаем текст что написано на sprite
 	getTextFromSprite({sprite})
 	{
-		return sprite.userData.text;
+		return decodeURIComponent(sprite.userData.text);
 	}
 	
 	// при создании input привязываем его к sprite

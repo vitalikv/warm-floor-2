@@ -2,16 +2,24 @@
 
 class MyFloorActivate 
 {
+	activated = false;
+	
+	init()
+	{
+		if(this.activated) return; // уже активирована кнопка
+		
+		this.activated = true;
+	}
 	
 	// кликнули на пол
 	clickFloor({obj})
 	{
+		if(!this.activated) return;
+		
 		myFloorOutline.deleteOutline();
 		myFloorOutline.crFloorOutline({obj});
 		
-		myUiPanelFloor.showPanel();
-		
-		//this.crGridAuto();	
+		myUiPanelFloor.showPanel();	
 	}	
 
 	

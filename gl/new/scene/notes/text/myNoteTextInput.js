@@ -76,7 +76,13 @@ class MyNoteTextInput
 			div.onkeydown = (e) => 
 			{
 				//this.fontHtmlSizeAutoAdjustToFit({ input: elem2 });
-
+				
+				// блокировка длина ввода текста
+				const maxLength = 300;
+				if (div.value.length >= maxLength && e.key !== 'Backspace') {
+				  e.preventDefault(); 
+				}
+	
 				if (e.code === 'Enter') 
 				{
 					// если зажат shift, то выполняем перенос строки
@@ -101,7 +107,19 @@ class MyNoteTextInput
 			{
 				this.deleteInputSprite({sprite});
 				this.render();			
-			};		
+			};
+
+			div.onpaste = (e) => 
+			{
+				// блокировка длина вставки текста
+				const maxLength = 300;
+				const pasteText = (e.clipboardData || window.clipboardData).getData('text');
+				
+				if (div.value.length + pasteText.length > maxLength) 
+				{
+					e.preventDefault(); // Блокировать вставку
+				}					
+			};			
 			
 		}, 0);
 
@@ -116,7 +134,8 @@ class MyNoteTextInput
 	{
 		let widthDisplay = 0;
 		let heightDisplay = 0;
-
+		let offset = {x: 0, y: 0};
+		
 		let isResizing = false;
 
 		// Функция для обновления размеров
@@ -124,6 +143,9 @@ class MyNoteTextInput
 		{
 			const width = div.offsetWidth;
 			const height = div.offsetHeight;
+			
+			div.style.left = parseFloat(div.style.left) + offset.x / 2 + 'px';
+			div.style.top = parseFloat(div.style.top) + offset.y / 2 + 'px';
 			
 			myNoteTextSprite.setSpriteInputSize({sprite, size: {x: width, y: height}});
 			myNoteTextSprite.upSpriteText({sprite, actBorderColor: true});
@@ -135,6 +157,8 @@ class MyNoteTextInput
 		div.onmousedown = (e) => 
 		{
 			e.stopPropagation();
+			
+			offset = {x: e.clientX, y: e.clientY};
 			
 			// Проверяем, что курсор находится в области изменения размера (правый нижний угол)
 			const rect = div.getBoundingClientRect();
@@ -152,7 +176,12 @@ class MyNoteTextInput
 			
 			if (isResizing) 
 			{
+				offset.x -= e.clientX;
+				offset.y -= e.clientY;
+				
 				updateSize();
+				
+				offset = {x: e.clientX, y: e.clientY};
 			}
 		};
 
@@ -199,13 +228,13 @@ class MyNoteTextInput
 	// сохраняем в текст что написано на sprite
 	setSpriteText({sprite, text})
 	{
-		sprite.userData.text = text;
+		sprite.userData.text = encodeURIComponent(text);
 	}
 		
 	// получаем текст что написано на sprite
 	getTextFromSprite({sprite})
 	{
-		return sprite.userData.text;
+		return decodeURIComponent(sprite.userData.text);
 	}
 	
 	// при создании input привязываем его к sprite

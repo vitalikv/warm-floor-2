@@ -166,6 +166,9 @@ function resetScene()
 	
 	myNotesSaveLoad.resetNotes();
 	
+	myFloorOutline.deleteOutline();
+	myUiPanelFloor.hidePanel();
+	
 	// удаляем список материалов UI
 	for(var i = 0; i < infProject.ui.list_wf.length; i++)
 	{
