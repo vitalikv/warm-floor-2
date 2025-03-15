@@ -40,7 +40,7 @@ class MyNoteTextSprite
 		const texture = new THREE.Texture(canvas);
 		texture.needsUpdate = true;	
 		
-		const material = new THREE.MeshBasicMaterial({map: texture});		
+		const material = new THREE.MeshBasicMaterial({map: texture, side: THREE.DoubleSide});		
 		
 		const sprite = new THREE.Mesh(geometry, material);
 		sprite.userData = { point };
