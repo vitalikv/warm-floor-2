@@ -47,6 +47,7 @@ class MyNotes
 		
 		const points = [];
 		const sprites = [];
+		const tubes = [];
 		for ( let i = 0; i < this.dataNotes.length; i++ )
 		{
 			points.push(...this.dataNotes[i].points);
@@ -55,10 +56,41 @@ class MyNotes
 			{
 				sprites.push(this.dataNotes[i].sprite);
 			}
+			
+			const tube = myNotesInstance.getTube({line: this.dataNotes[i].line});
+			if(tube) tubes.push(tube);
 		}		
 		
-		const ray = rayIntersect( event, [...points, ...sprites], 'arr' );
-		if(ray.length > 0) { rayhit = ray[0]; }
+		const ray = rayIntersect( event, [...points, ...sprites, ...tubes], 'arr' );
+		if(ray.length > 0) 
+		{ 
+			rayhit = ray[0]; 
+			
+			// проверка куда кликнули, если кликнули на прозрачную трубу, то убеждаеся что под ней нет (точки/стрелки)
+			// если есть, то назначаем точку/стрелку rayhit
+			if(rayhit.object.userData.tag === 'noteTubeHelp')
+			{
+				const tube = rayhit.object;
+				const points = myNotesInstance.getPointsFromTube({tube});
+				
+				let result = null;
+				
+				for ( let i = 1; i < ray.length; i++ )
+				{
+					for ( let i2 = 0; i2 < points.length; i2++ )
+					{
+						if(ray[i].object === points[i2])
+						{
+							result = ray[i];
+							break;
+						}
+					}
+					if(result) break;
+				}
+				
+				if(result) rayhit = result;
+			}
+		}
 
 		return rayhit;
 	}
@@ -84,7 +116,6 @@ class MyNotes
 				break;
 			}
 		}
-		console.log(555, this.dataNotes);
 	}
 
 

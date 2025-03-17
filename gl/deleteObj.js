@@ -31,6 +31,7 @@ function detectDeleteObj()
 	else if ( tag == 'noteMarkerPoint' ) { myNoteMarker.deleteNoteMarker({obj}); }
 	else if ( tag == 'noteMarkerSprite' ) { const point = myNoteMarkerSprite.getPointFromSprite({sprite: obj}); myNoteMarker.deleteNoteMarker({obj: point}); }
 	else if ( tag == 'noteTextSprite' ) { const point = myNoteTextSprite.getPointFromSprite({sprite: obj}); myNoteText.deleteNoteText({obj: point}); }
+	else if ( tag == 'noteTubeHelp' ) { myNotesInstance.deleteActTube({tube: obj}); }
 	
 	clickO = resetPop.clickO();
 	

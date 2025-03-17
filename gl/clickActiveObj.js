@@ -197,6 +197,10 @@ function objDeActiveColor_2D()
 	{ 
 		const point = myNoteTextSprite.getPointFromSprite({sprite: o});
 		myNoteText.deActivateNoteText({obj: point}); 
+	}
+	else if(o.userData.tag == 'noteTubeHelp')
+	{ 
+		myNotesInstance.deAct({tube: o}); 
 	}	
 	
 	if(clickO.hover == clickO.last_obj) { clickO.hover = null; }

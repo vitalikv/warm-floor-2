@@ -21,6 +21,7 @@ class MyNoteRoulette
 		obj.userData.id = this.indPoint;
 		obj.userData.line = null;
 		obj.userData.points = [];
+		obj.userData.tube = null;
 		obj.position.set(pos.x, pos.y, pos.z);		
 		scene.add( obj );
 		
@@ -43,7 +44,10 @@ class MyNoteRoulette
 			geometry.vertices = arrP;
 	
 			line = new THREE.Line( geometry, myNotesInstance.matDef.clone() );	
-			scene.add( line );					
+			scene.add( line );	
+
+			const tube = myNotesInstance.crTube({line, points});
+			myNotesInstance.setTube({line, tube});			
 		}
 		else
 		{
@@ -91,10 +95,16 @@ class MyNoteRoulette
 		this.setRotCone({points});
 		
 		const sprites = myNoteRouletteSprite.getSpritesFromPoint({point: points[0]});
-		if(sprites.length > 0) myNoteRouletteSprite.upSprites({sprites});		
+		if(sprites.length > 0) myNoteRouletteSprite.upSprites({sprites});
+
+		const tube = myNotesInstance.getTube({line});
+		if(tube)
+		{
+			myNotesInstance.upTube({line, tube, points});
+		}		
 	}
-
-
+	
+	
 	// поворачиваем конусы(стерлки) с учетом расположения линии
 	setRotCone({points})
 	{
@@ -270,6 +280,7 @@ class MyNoteRoulette
 		const points = structure.points;
 		const line = structure.line;
 		const sprites = structure.sprites;
+		const tube = myNotesInstance.getTube({line});
 		
 		for ( let i = 0; i < points.length; i++ )
 		{				
@@ -280,6 +291,12 @@ class MyNoteRoulette
 		{
 			line.geometry.dispose();
 			scene.remove(line);
+		}
+		
+		if(tube)
+		{
+			tube.geometry.dispose();
+			scene.remove(tube);			
 		}
 		
 		myNoteRouletteSprite.deleteSprites({points});		
